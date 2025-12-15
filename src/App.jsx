@@ -24,13 +24,13 @@ export default function App() {
   }, [dark])
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair">
       <Navbar dark={dark} setDark={setDark} />
-      <main className="max-w-6xl mx-auto px-6 lg:px-8">
+      <main className="max-w-screen">
         <Hero />
-        <About />
+        {/* <About />
         <Projects />
-        <Contact />
+        <Contact /> */}
       </main>
       <Footer />
     </div>
