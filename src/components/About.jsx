@@ -1,132 +1,161 @@
-import React from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { FaGraduationCap, FaCode, FaLaptopCode } from "react-icons/fa";
+import React, { useRef } from 'react';
+import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
+import { GraduationCap, School, Award, CalendarClock } from 'lucide-react';
 
-// --- 3D CARD COMPONENT ---
-const ThreeDCard = () => {
+// --- Configuration Data ---
+const educationData = [
+  {
+    id: 1,
+    level: "Post Graduation",
+    institution: "Lovely Professional University",
+    score: "7.86 CGPA",
+    status: "Currently Pursuing",
+    color: "from-blue-500 to-cyan-500",
+    icon: <GraduationCap className="w-8 h-8 text-white" />,
+    image: "https://example.com/postgrad-image.jpg" 
+  },
+  {
+    id: 2, // Added dummy data for variety based on the image structure
+    level: "Graduation (B.Tech)",
+    institution: "Lovely Professional University",
+    score: "8.1 CGPA",
+    status: "Completed",
+    color: "from-purple-500 to-pink-500",
+    icon: <School className="w-8 h-8 text-white" />
+  },
+  {
+    id: 3,
+    level: "High School",
+    institution: "Government Model Senior Secondary",
+    score: "85%",
+    status: "Completed",
+    color: "from-amber-500 to-orange-500",
+    icon: <Award className="w-8 h-8 text-white" />
+  }
+];
+
+// --- 3D Card Component ---
+const Card3D = ({ data, index }) => {
+  const ref = useRef(null);
+
+  // Mouse position logic for 3D tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Smooth out the mouse movement
-  const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-  const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
+  // Smooth physics for the tilt
+  const xSpring = useSpring(x, { stiffness: 300, damping: 30 });
+  const ySpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-  function handleMouseMove({ currentTarget, clientX, clientY }) {
-    const { left, top, width, height } = currentTarget.getBoundingClientRect();
-    const xPct = (clientX - left) / width - 0.5;
-    const yPct = (clientY - top) / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  }
+  const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
 
-  function handleMouseLeave() {
+  const handleMouseMove = (e) => {
+    if (!ref.current) return;
+
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+
+    const mouseX = (e.clientX - rect.left) * 32.5;
+    const mouseY = (e.clientY - rect.top) * 32.5;
+
+    const rX = (mouseY / height - 32.5 / 2) * -1;
+    const rY = mouseX / width - 32.5 / 2;
+
+    x.set(rX);
+    y.set(rY);
+  };
+
+  const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
-  }
-
-  // Rotate based on mouse position
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-15deg", "15deg"]);
+  };
 
   return (
     <motion.div
+      ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.2, duration: 0.5 }}
       style={{
-        rotateX,
-        rotateY,
         transformStyle: "preserve-3d",
+        transform,
       }}
-      className="relative h-96 w-72 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 backdrop-blur-md border border-white/10 shadow-xl"
+      className="relative h-96 w-full rounded-2xl bg-gray-900/40 backdrop-blur-md border border-white/10 p-6 shadow-xl cursor-pointer group"
     >
-      <div
-        style={{ transform: "translateZ(75px)", transformStyle: "preserve-3d" }}
-        className="absolute inset-4 grid place-content-center rounded-xl bg-white/10 shadow-lg text-center p-6 border border-white/10"
+      {/* Floating 3D Elements */}
+      <div 
+        style={{ transform: "translateZ(75px)" }} 
+        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
       >
-        <FaLaptopCode className="text-6xl text-cyan-400 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-white mb-2">Full Stack Ready</h3>
-        <p className="text-gray-300 text-sm">
-          MERN Stack • React • Tailwind • Redux
-        </p>
+        {/* Animated Icon Container */}
+        <div className={`mb-6 p-4 rounded-full bg-gradient-to-br ${data.color} shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform duration-300`}>
+          {data.icon}
+        </div>
+
+        {/* Text Content */}
+        <h3 className="text-xl font-bold text-white mb-2 tracking-wide">{data.level}</h3>
         
-        {/* Floating Badge inside 3D Card */}
-        <div 
-           style={{ transform: "translateZ(50px)" }}
-           className="mt-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg"
-        >
-          MCA Pursuing
+        <p className="text-gray-300 text-center font-medium px-4 mb-6 leading-relaxed">
+          {data.institution}
+        </p>
+
+        {/* Score Badge */}
+        <div className="bg-white/10 border border-white/20 px-4 py-1 rounded-full mb-4">
+          <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+            {data.score}
+          </span>
+        </div>
+
+        {/* Status */}
+        <div className="flex items-center gap-2 text-sm text-gray-400">
+            <CalendarClock size={16} />
+            <span className={`uppercase tracking-wider text-xs font-semibold ${data.status === 'Currently Pursuing' ? 'text-green-400' : 'text-blue-400'}`}>
+                {data.status}
+            </span>
         </div>
       </div>
+
+      {/* Decorative Gradient Background Glow */}
+      <div 
+        style={{ transform: "translateZ(50px)" }}
+        className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${data.color} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} 
+      />
     </motion.div>
   );
 };
 
-// --- MAIN ABOUT SECTION ---
-const About = () => {
+// --- Main Layout Component ---
+export default function EducationSection() {
   return (
-    <section className="py-24 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden" id="about">
-      <div className="container mx-auto px-4 lg:px-8">
-        
-        <div className="flex flex-col lg:flex-row items-center gap-16">
-          
-          {/* LEFT SIDE: TEXT & EDUCATION */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
-            className="flex-1"
-          >
-            {/* Heading */}
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              About <span className="text-cyan-600 dark:text-cyan-400">Me</span>
-            </h2>
-
-            {/* Bio from Resume */}
-            <p className="text-gray-600 dark:text-gray-300 text-lg mb-8 leading-relaxed">
-              I am a dedicated <strong>Front-End Developer</strong> with hands-on experience in building responsive web applications. 
-              With a strong foundation in <span className="text-cyan-600 dark:text-cyan-400 font-semibold">React.js, Tailwind CSS, and JavaScript</span>, 
-              I focus on writing maintainable code and optimizing performance to ensure accessible and engaging user interfaces[cite: 6, 7].
-            </p>
-
-            {/* Education Timeline */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-semibold flex items-center gap-2">
-                <FaGraduationCap className="text-cyan-500" /> Education
-              </h3>
-
-              {/* MCA */}
-              <div className="relative pl-8 border-l-2 border-cyan-500/30">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-cyan-500"></div>
-                <h4 className="text-lg font-bold">Master of Computer Applications (MCA)</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Lovely Professional University | <span className="text-cyan-600 dark:text-cyan-400">Expected 2026</span></p>
-                <p className="text-sm text-gray-500 mt-1">GPA: 7.85/10 [cite: 31, 32]</p>
-              </div>
-
-              {/* BCA */}
-              <div className="relative pl-8 border-l-2 border-purple-500/30">
-                <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-purple-500"></div>
-                <h4 className="text-lg font-bold">Bachelor of Computer Applications (BCA)</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Govt. Degree College Dharamshala | <span className="text-purple-600 dark:text-purple-400">Graduated 2023</span></p>
-                <p className="text-sm text-gray-500 mt-1">GPA: 7.44/10 [cite: 35, 36]</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* RIGHT SIDE: 3D ELEMENT */}
-          <motion.div 
-             initial={{ opacity: 0, scale: 0.8 }}
-             whileInView={{ opacity: 1, scale: 1 }}
-             transition={{ duration: 0.8 }}
-             className="flex-1 flex justify-center lg:justify-end perspective-1000"
-          >
-             <ThreeDCard />
-          </motion.div>
-
-        </div>
+    <div className="min-h-screen bg-gray-950/50 rounded-2xl flex flex-col items-center justify-center py-20 px-4 relative overflow-hidden">
+      
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
       </div>
-    </section>
-  );
-};
 
-export default About;
+      {/* Header */}
+      <motion.div 
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-16 relative z-10"
+      >
+        <h2 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 tracking-tight">
+          EDUCATION
+        </h2>
+        <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full" />
+      </motion.div>
+
+      {/* Grid Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full perspective-1000">
+        {educationData.map((item, index) => (
+          <Card3D key={item.id} data={item} index={index} />
+        ))}
+      </div>
+
+    </div>
+  );
+}
