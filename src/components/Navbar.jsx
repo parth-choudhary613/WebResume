@@ -23,7 +23,7 @@ export default function Navbar() {
         w-[95%] max-w-full
         rounded-2xl
         bg-white/70 dark:bg-black/60
-        backdrop-blur-xl
+        backdrop-blur-sm
         border border-black/1 dark:border-white/1
       "
     >
