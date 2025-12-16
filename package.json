@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "classnames": "^2.5.1",
     "framer-motion": "^12.23.25",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.560.0",
     "motion": "^12.23.26",
     "react": "^19.2.0",

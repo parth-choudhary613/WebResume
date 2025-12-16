@@ -25,8 +25,9 @@ export default function App() {
   }, [dark])
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair" style={{ width: '100%', height: '600px', position: 'relative' }}>
-       <LightPillar
+    <>
+    <div className=" min-h-full bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair" style={{ width: '100%', height: 'full', position: 'relative' }}>
+      <LightPillar
     topColor="#5227FF"
     bottomColor="#FF9FFC"
     intensity={1.0}
@@ -38,15 +39,16 @@ export default function App() {
     pillarRotation={0}
     interactive={false}
     mixBlendMode="normal"
-  />
+    />
       <Navbar dark={dark} setDark={setDark} />
       <main className="max-w-screen">
         <Hero />
-        {/* <About />
+        <About />
         <Projects />
-        <Contact /> */}
+        <Contact />
       </main>
       <Footer />
     </div>
+    </>
   )
 }

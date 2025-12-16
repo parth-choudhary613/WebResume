@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import MarqueeText from "./Marqueetext";
 import SplitText from "./SplitText";
+
 export default function Hero() {
   return (
     <section className="playfair pt-30">
@@ -12,6 +13,7 @@ export default function Hero() {
       />
 
       <SplitText />
+      
     </section>
   );
 }
