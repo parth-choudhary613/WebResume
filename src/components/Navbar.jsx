@@ -38,12 +38,12 @@ export default function Navbar() {
     >
       {/* ================= DESKTOP ================= */}
       <div className="hidden md:grid grid-cols-[1fr_1fr_auto_1fr_1fr_auto] items-center px-6 py-3">
-        <a href="#home" className="nav-link text-center text-white">
+        <Link to="#home" className="nav-link text-center text-white">
           Home
-        </a>
-        <a href="#about" className="nav-link text-center text-white">
+        </Link>
+        <Link to="#about" className="nav-link text-center text-white">
           About
-        </a>
+        </Link>
 
         {/* LOGO */}
         <div className="flex justify-center">
@@ -54,12 +54,12 @@ export default function Navbar() {
           />
         </div>
 
-        <a href="#projects" className="nav-link text-center text-white">
+        <Link to="#projects" className="nav-link text-center text-white">
           Projects
-        </a>
-        <a href="#contact" className="nav-link text-center text-white">
+        </Link>
+        <Link to="#contact" className="nav-link text-center text-white">
           Contact
-        </a>
+        </Link>
 
         {/* DARK MODE BUTTON */}
         <button
@@ -120,14 +120,14 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-4 p-4 text-center">
               {links.map((link) => (
-                <a
+                <Link
                   key={link}
-                  href={`#${link.toLowerCase()}`}
+                  to={`#${link.toLowerCase()}`}
                   onClick={() => setOpen(false)}
                   className="text-sm font-medium text-white"
                 >
                   {link}
-                </a>
+                </Link>
               ))}
             </div>
           </motion.div>
