@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <>
-    <div className=" min-h-full bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair" style={{ width: '100%', height: 'full', position: 'relative' }}>
+    <div className=" min-h-screen bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair" style={{ width: '100%', height: '1000px', position: 'relative' }}>
       <LightPillar
     topColor="#5227FF"
     bottomColor="#FF9FFC"

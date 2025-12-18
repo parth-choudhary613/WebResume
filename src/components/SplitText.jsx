@@ -169,21 +169,22 @@ const Banner = () => {
           </div>
 
           {/* --- IMAGE / LOTTIE SECTION --- */}
-          <motion.div
-            variants={fadeIn("up", 0.8)} // Changed to 'up' for better mobile feel
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: false, amount: 0.5 }}
-            className=" flex-1 flex justify-center lg:justify-end"
-          >
-            <div className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px]">
-              <Lottie
-                animationData={Coding}
-                loop
-                className="w-full h-auto drop-shadow-2xl"
-              />
-            </div>
-          </motion.div>
+      <motion.div
+  variants={fadeIn("up", 0.8)}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: false, amount: 0.5 }}
+  className="flex-1 hidden sm:flex  justify-center lg:justify-end"
+>
+  <div className="w-full max-w-[300px] sm:max-w-[400px] lg:max-w-[500px]">
+    <Lottie
+      animationData={Coding}
+      loop
+      className="w-full h-auto drop-shadow-2xl"
+    />
+  </div>
+</motion.div>
+
 
         </div>
       </div>

@@ -6,11 +6,19 @@ import Logo from "./assets/navlogo.png";
 const links = ["Home", "About", "Projects", "Contact"];
 
 export default function Navbar() {
-  const [dark, setDark] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(
+    () => localStorage.getItem("theme") === "dark"
+  );
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
+    if (dark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
   }, [dark]);
 
   return (
@@ -22,15 +30,20 @@ export default function Navbar() {
         fixed top-4 left-1/2 -translate-x-1/2 z-50
         w-[95%] max-w-full
         rounded-2xl
-        bg-white/70 dark:bg-black/60
-        backdrop-blur-sm
-        border border-black/1 dark:border-white/1
+        backdrop-blur-xl
+        bg-white/10 dark:bg-black/30
+        border border-white/20 dark:border-white/10
+        text-white
       "
     >
       {/* ================= DESKTOP ================= */}
       <div className="hidden md:grid grid-cols-[1fr_1fr_auto_1fr_1fr_auto] items-center px-6 py-3">
-        <a href="#home" className="nav-link text-center">Home</a>
-        <a href="#about" className="nav-link text-center">About</a>
+        <a href="#home" className="nav-link text-center text-white">
+          Home
+        </a>
+        <a href="#about" className="nav-link text-center text-white">
+          About
+        </a>
 
         {/* LOGO */}
         <div className="flex justify-center">
@@ -41,12 +54,22 @@ export default function Navbar() {
           />
         </div>
 
-        <a href="#projects" className="nav-link text-center">Projects</a>
-        <a href="#contact" className="nav-link text-center">Contact</a>
+        <a href="#projects" className="nav-link text-center text-white">
+          Projects
+        </a>
+        <a href="#contact" className="nav-link text-center text-white">
+          Contact
+        </a>
 
+        {/* DARK MODE BUTTON */}
         <button
           onClick={() => setDark(!dark)}
-          className="mx-auto p-2 rounded-lg border border-black/10 dark:border-white/10"
+          className="
+            mx-auto p-2 rounded-lg
+            border border-white/30
+            hover:bg-white/10
+            transition
+          "
         >
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
@@ -55,7 +78,10 @@ export default function Navbar() {
       {/* ================= MOBILE ================= */}
       <div className="md:hidden grid grid-cols-[auto_1fr_auto] items-center px-4 py-3">
         {/* MENU */}
-        <button onClick={() => setOpen(!open)} className="justify-self-start">
+        <button
+          onClick={() => setOpen(!open)}
+          className="justify-self-start text-white"
+        >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
 
@@ -71,7 +97,12 @@ export default function Navbar() {
         {/* DARK MODE */}
         <button
           onClick={() => setDark(!dark)}
-          className="justify-self-end p-2 rounded-lg border border-black/10 dark:border-white/10"
+          className="
+            justify-self-end p-2 rounded-lg
+            border border-white/30
+            hover:bg-white/10
+            transition
+          "
         >
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
@@ -85,7 +116,7 @@ export default function Navbar() {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden overflow-hidden border-t border-black/10 dark:border-white/10"
+            className="md:hidden overflow-hidden border-t border-white/20"
           >
             <div className="flex flex-col gap-4 p-4 text-center">
               {links.map((link) => (
@@ -93,7 +124,7 @@ export default function Navbar() {
                   key={link}
                   href={`#${link.toLowerCase()}`}
                   onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-black/80 dark:text-white/80"
+                  className="text-sm font-medium text-white"
                 >
                   {link}
                 </a>
