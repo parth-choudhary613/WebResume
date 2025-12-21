@@ -1,175 +1,383 @@
-import React, { useRef } from 'react';
-import { motion, useMotionTemplate, useMotionValue, useSpring } from 'framer-motion';
-import { GraduationCap, School, Award, CalendarClock } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Terminal,
+  Code,
+  Briefcase,
+  Car,
+  Dumbbell,
+  Cpu,
+  Zap,
+  Layers,
+  FolderGit2,
+} from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
-// --- Configuration Data ---
-const educationData = [
-  {
-    id: 1,
-    level: "Post Graduation",
-    institution: "Lovely Professional University",
-    score: "7.86 CGPA",
-    status: "Currently Pursuing",
-    color: "from-blue-500 to-cyan-500",
-    icon: <GraduationCap className="w-6 h-6 md:w-8 md:h-8 text-white" />
-  },
-  {
-    id: 2,
-    level: "Graduation (B.Tech)",
-    institution: "Lovely Professional University",
-    score: "8.1 CGPA",
-    status: "Completed",
-    color: "from-purple-500 to-pink-500",
-    icon: <School className="w-6 h-6 md:w-8 md:h-8 text-white" />
-  },
-  {
-    id: 3,
-    level: "High School",
-    institution: "Government Model Senior Secondary",
-    score: "85%",
-    status: "Completed",
-    color: "from-amber-500 to-orange-500",
-    icon: <Award className="w-6 h-6 md:w-8 md:h-8 text-white" />
-  }
-];
+const CyberpunkCard = ({ title, icon: Icon, children, className = "" }) => {
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
 
-// --- 3D Card Component ---
-const Card3D = ({ data, index }) => {
-  const ref = useRef(null);
+  const onMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left;
+    const y = e.clientY - box.top;
+    const centerX = box.width / 2;
+    const centerY = box.height / 2;
 
-  // Mouse position logic for 3D tilt
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
 
-  const xSpring = useSpring(x, { stiffness: 300, damping: 30 });
-  const ySpring = useSpring(y, { stiffness: 300, damping: 30 });
-
-  const transform = useMotionTemplate`rotateX(${xSpring}deg) rotateY(${ySpring}deg)`;
-
-  const handleMouseMove = (e) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = (e.clientX - rect.left) * 32.5;
-    const mouseY = (e.clientY - rect.top) * 32.5;
-    const rX = (mouseY / height - 32.5 / 2) * -1;
-    const rY = mouseX / width - 32.5 / 2;
-    x.set(rX);
-    y.set(rY);
+    setRotate({ x: rotateX, y: rotateY });
   };
 
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
+  const onMouseLeave = () => {
+    setRotate({ x: 0, y: 0 });
   };
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      style={{
-        transformStyle: "preserve-3d",
-        transform,
-      }}
-      // CHANGED: 
-      // 1. h-auto min-h-[380px] ensures it fits content on mobile without overflow
-      // 2. md:h-96 locks it to a nice uniform height on desktop
-      className="relative w-full h-auto min-h-[380px] md:h-96  p-6 md:p-8 cursor-pointer group
-                 bg-white/80 dark:bg-gray-900/40 
-                 backdrop-blur-md 
-                 border border-slate-200 dark:border-white/10 
-                 shadow-lg dark:shadow-xl
-                 transition-colors duration-300 ease-in-out
-                 flex flex-col justify-center items-center"
+    <div
+      className={`relative group perspective-1000 ${className}`}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
-      {/* Floating 3D Elements */}
-      <div 
-        style={{ transform: "translateZ(75px)" }} 
-        className="relative z-10 flex flex-col items-center justify-center pointer-events-none w-full"
+      <div
+        className="relative h-full bg-black/80 border border-cyan-500/30 p-6 rounded-xl transition-all duration-200 ease-out transform-gpu hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] backdrop-blur-sm overflow-hidden flex flex-col"
+        style={{
+          transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) scale3d(1, 1, 1)`,
+        }}
       >
-        {/* Animated Icon Container */}
-        <div className={`mb-4 md:mb-6 p-3 md:p-4 rounded-full bg-gradient-to-br ${data.color} shadow-lg shadow-purple-500/20 group-hover:scale-110 transition-transform duration-300`}>
-          {data.icon}
+        {/* Cyberpunk Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-500/20 blur-3xl rounded-full pointer-events-none" />
+
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-4 border-b border-cyan-500/20 pb-2">
+          <div className="p-2 bg-cyan-950/50 rounded-lg border border-cyan-500/50 text-cyan-400 group-hover:animate-pulse">
+            <Icon size={24} />
+          </div>
+          <h3 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-mono tracking-wider uppercase">
+            {title}
+          </h3>
         </div>
 
-        {/* Text Content */}
-        {/* CHANGED: Responsive font sizes */}
-        <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white mb-2 tracking-wide transition-colors duration-300 text-center">
-          {data.level}
-        </h3>
-        
-        <p className="text-sm md:text-base text-slate-600 dark:text-gray-300 text-center font-medium px-2 md:px-4 mb-4 md:mb-6 leading-relaxed transition-colors duration-300">
-          {data.institution}
-        </p>
-
-        {/* Score Badge */}
-        <div className="bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/20 px-4 py-1 rounded-full mb-4 transition-colors duration-300">
-          <span className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-700 to-slate-900 dark:from-white dark:to-gray-400">
-            {data.score}
-          </span>
+        {/* Content */}
+        <div className="text-gray-300 font-mono text-sm leading-relaxed relative z-10 flex-grow">
+          {children}
         </div>
 
-        {/* Status */}
-        <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-gray-400 transition-colors duration-300">
-            <CalendarClock size={16} />
-            <span className={`uppercase tracking-wider text-[10px] md:text-xs font-semibold ${data.status === 'Currently Pursuing' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'}`}>
-                {data.status}
-            </span>
-        </div>
+        {/* Corner Accents */}
+        <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-500" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-purple-500" />
       </div>
-
-      {/* Decorative Gradient Background Glow */}
-      <div 
-        style={{ transform: "translateZ(50px)" }}
-        className={`absolute -inset-1 rounded-2xl bg-gradient-to-br ${data.color} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500`} 
-      />
-    </motion.div>
+    </div>
   );
 };
 
-// --- Main Layout Component ---
-export default function EducationSection() {
+const SkillTag = ({ text }) => (
+  <span className="inline-block px-2 py-1 mr-2 mb-2 text-xs font-bold text-cyan-300 bg-cyan-950/50 border border-cyan-500/30 rounded hover:bg-cyan-500/20 hover:border-cyan-400 transition-colors cursor-default">
+    {text}
+  </span>
+);
+
+export default function AboutSection() {
   return (
-    // CHANGED: Adjusted padding for mobile (py-12) vs desktop (md:py-20)
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center py-12 md:py-20 px-4 sm:px-6 relative overflow-hidden transition-colors duration-300">
+    <div className="min-h-screen bg-slate-950 text-white p-6 md:p-12 overflow-hidden relative selection:bg-cyan-500/30">
+      {/* Background Grid Animation */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(6,182,212,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(6,182,212,0.1) 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+          maskImage:
+            "radial-gradient(circle at center, black 40%, transparent 100%)",
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Glitch Title */}
+        <div className="mb-16 text-center relative group">
+          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase relative inline-block">
+            <span className="relative z-10">System_Data</span>
+            <span
+              className="absolute top-0 left-0 -ml-1 text-cyan-500 opacity-70 animate-pulse z-0"
+              style={{ clipPath: "inset(10% 0 60% 0)" }}
+            >
+              System_Data
+            </span>
+            <span
+              className="absolute top-0 left-0 ml-1 text-purple-500 opacity-70 animate-bounce z-0"
+              style={{ clipPath: "inset(40% 0 20% 0)" }}
+            >
+              System_Data
+            </span>
+          </h2>
+          <p className="mt-4 text-cyan-400/80 font-mono text-sm tracking-[0.3em]">
+            PARTH CHOUDHARY // FRONT-END DEVELOPER
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          {/* Main Bio - Spans 8 cols */}
+          <div className="md:col-span-8">
+            <CyberpunkCard
+              title="Profile_Initialization"
+              icon={Terminal}
+              className="h-full"
+            >
+              <p className="mb-4">
+                [cite_start]
+                <span className="text-cyan-400"> const developer = </span>{" "}
+                "Front-end specialist focused on writing maintainable code and
+                tackling complex layout challenges."; [cite: 8]
+              </p>
+              <p className="mb-6">
+                Experienced in building seamless digital experiences using the
+                MERN stack. [cite_start]I prioritize user accessibility and
+                performance optimization, recently enhancing application speeds
+                by 40%. [cite: 6, 23]
+              </p>
+              <div className="flex flex-wrap mt-4">
+                <SkillTag text="React.js" />
+                <SkillTag text="Redux Toolkit" />
+                <SkillTag text="Tailwind CSS" />
+                <SkillTag text="Three.js" />
+                <SkillTag text="MongoDB" />
+                <SkillTag text="Material-UI" />
+                <SkillTag text="Git/GitHub" />
+              </div>
+            </CyberpunkCard>
+          </div>
+
+          {/* Stat Card - 4 cols */}
+          <div className="md:col-span-4">
+            <CyberpunkCard title="Current_Status" icon={Zap} className="h-full">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+                  <span>Education</span>
+                  <span className="text-purple-400 font-bold">
+                    MCA (Pursuing)
+                  </span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+                  <span>Location</span>
+                  <span className="text-purple-400 font-bold text-right">
+                    Himachal Pradesh
+                  </span>
+                </div>
+                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
+                  <span>Contact</span>
+                  <span className="text-cyan-400 font-bold text-xs truncate ml-2">
+                    +91 8894459562
+                  </span>
+                </div>
+                <div className="flex justify-between items-center pb-2">
+                  <span>Status</span>
+                  <span className="text-green-400 font-bold animate-pulse">
+                    Open to Work
+                  </span>
+                </div>
+              </div>
+            </CyberpunkCard>
+          </div>
+
+          {/* Work Experience */}
+          <div className="md:col-span-6">
+            <CyberpunkCard title="Experience_Log" icon={Briefcase}>
+              <ul className="space-y-8 relative border-l border-gray-800 ml-2 pl-6 py-2">
+                <li className="relative">
+                  <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-cyan-500 shadow-[0_0_10px_#06b6d4]" />
+                  <h4 className="text-white font-bold text-lg">Omnicassions</h4>
+                  <p className="text-purple-400 text-xs mb-1">
+                    Front-End Developer Intern | Aug '24 - Mar '25
+                  </p>
+                  <p className="text-gray-400 text-xs">
+                    Developed vendor display front-end using React.js &
+                    Tailwind. [cite_start]Collaborated with backend teams for
+                    seamless data flow. [cite: 16, 17, 18]
+                  </p>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-gray-700 border border-gray-500" />
+                  <h4 className="text-white font-bold text-lg">
+                    Excellence Technologies
+                  </h4>
+                  <p className="text-purple-400 text-xs mb-1">
+                    Junior Web Developer | Sept '23 - Mar '24
+                  </p>
+                  <p className="text-gray-400 text-xs">
+                    Full-stack MERN development. [cite_start]Enhanced app
+                    performance by 40% and reduced load times by 2 seconds via
+                    optimized queries. [cite: 21, 22, 23]
+                  </p>
+                </li>
+                <li className="relative">
+                  <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-gray-700 border border-gray-500" />
+                  <h4 className="text-white font-bold text-lg">
+                    Government of India
+                  </h4>
+                  <p className="text-purple-400 text-xs mb-1">
+                    Web Developer | Sept '22 - Mar '23
+                  </p>
+                  <p className="text-gray-400 text-xs">
+                    Level-5 qualification in web development. [cite_start]Enabling contribution
+                    to complex development projects and increased team capabilities. [cite: 21, 22, 23]
+                  </p>
+                </li>
+              </ul>
+            </CyberpunkCard>
+          </div>
+
+          {/* Education */}
+          <div className="md:col-span-6">
+            <CyberpunkCard title="Education_Matrix" icon={Layers}>
+              <div className="space-y-4">
+                <div className="bg-white/5 p-4 rounded border-l-4 border-purple-500">
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-white font-bold">
+                      Lovely Professional University
+                    </h4>
+                    <span className="text-xs text-purple-400">2026</span>
+                  </div>
+                  <p className="text-sm text-cyan-300">
+                    Masters of Computer Applications (MCA)
+                  </p>
+                  [cite_start]
+                  <p className="text-xs text-gray-500 mt-1">
+                    Cumulative GPA: 7.85/10 [cite: 32]
+                  </p>
+                </div>
+
+                <div className="bg-white/5 p-4 rounded border-l-4 border-gray-600 opacity-80 hover:opacity-100 transition-opacity">
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-white font-bold">
+                      Govt. Degree College
+                    </h4>
+                    <span className="text-xs text-purple-400">2023</span>
+                  </div>
+                  <p className="text-sm text-cyan-300">
+                    Bachelor of Computer Applications (BCA)
+                  </p>
+                  [cite_start]
+                  <p className="text-xs text-gray-500 mt-1">
+                    Cumulative GPA: 7.44/10 [cite: 36]
+                  </p>
+                </div>
+                <div className="bg-white/5 p-4 rounded border-l-4 border-gray-600 opacity-80 hover:opacity-100 transition-opacity">
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-white font-bold">
+                      Govt. Sen. Sec. School
+                    </h4>
+                    <span className="text-xs text-purple-400">2023</span>
+                  </div>
+                  <p className="text-sm text-cyan-300">
+                    Non-Medical Stream
+                  </p>
+                  [cite_start]
+                  <p className="text-xs text-gray-500 mt-1">
+                    Cumulative Percentage: 68 [cite: 36]
+                  </p>
+                </div>
+              </div>
+            </CyberpunkCard>
+          </div>
+
+          {/* Projects Row */}
+  
+<div className="md:col-span-12">
+  <CyberpunkCard title="Deployed_Prototypes" icon={FolderGit2}>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       
-      {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-64 h-64 md:w-96 md:h-96 bg-purple-500/10 dark:bg-purple-500/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 md:w-96 md:h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
+      {/* --- Project 1: HumFlow --- */}
+      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
+        <h4 className="text-cyan-400 font-bold mb-2">HumFlow</h4>
+        <p className="text-xs text-gray-400 mb-4 flex-grow">
+          ASMR-based emotion tracking app blending relaxing audio with immersive
+          UI using <span className="text-white">React & Tailwind</span>.
+        </p>
+        <a
+          href="https://parth-choudhary613.github.io/HumFlow/" 
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
+        >
+          <span>Live Demo</span>
+          <ExternalLink size={14} />
+        </a>
       </div>
 
-      {/* Header */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-10 md:mb-16 relative z-10 w-full max-w-4xl"
-      >
-        {/* CHANGED: Fluid typography text-4xl -> text-7xl */}
-        <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 tracking-tight">
-          EDUCATION
-        </h2>
-        <div className="w-16 md:w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full" />
-      </motion.div>
-
-      {/* Grid Layout */}
-      {/* CHANGED: 
-          - grid-cols-1 for mobile
-          - md:grid-cols-2 for tablets
-          - lg:grid-cols-3 for desktop
-          - max-w-6xl ensures it doesn't stretch too wide on huge monitors 
-      */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-6xl perspective-1000">
-        {educationData.map((item, index) => (
-          <Card3D key={item.id} data={item} index={index} />
-        ))}
+      {/* --- Project 2: Omnicassion --- */}
+      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
+        <h4 className="text-cyan-400 font-bold mb-2">Omnicassion</h4>
+        <p className="text-xs text-gray-400 mb-4 flex-grow">
+          Developed vendor display front-end using React.js & Tailwind.
+          Collaborated with backend teams for seamless data flow.
+        </p>
+        <a
+          href="https://omnicassion.com/vendors"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
+        >
+          <span>Live Demo</span>
+          <ExternalLink size={14} />
+        </a>
       </div>
 
+      {/* --- Project 3: Bus Booking System --- */}
+      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
+        <h4 className="text-cyan-400 font-bold mb-2">Bus Booking System</h4>
+        <p className="text-xs text-gray-400 mb-4 flex-grow">
+          Full MERN stack application allowing users to search, book, and
+          manage tickets efficiently.
+        </p>
+        <a
+          href="https://parthchoudhary2003jobapplication.framer.website/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
+        >
+          <span>Live Demo</span>
+          <ExternalLink size={14} />
+        </a>
+      </div>
+
+    </div>
+  </CyberpunkCard>
+</div>
+          {/* Hobbies / Personal */}
+          <div className="md:col-span-12">
+            <CyberpunkCard title="Offline_Activities" icon={Cpu}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-cyan-500 transition-colors group/hobby">
+                  <Car className="w-8 h-8 text-cyan-500 mb-2 group-hover/hobby:translate-x-2 transition-transform" />
+                  <h4 className="font-bold text-white">Car Enthusiast</h4>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Exploring Himachal on my{" "}
+                    <span className="text-cyan-300">Suzuki Swift</span>.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-purple-500 transition-colors group/hobby">
+                  <Dumbbell className="w-8 h-8 text-purple-500 mb-2 group-hover/hobby:-rotate-45 transition-transform" />
+                  <h4 className="font-bold text-white">Fitness Startup</h4>
+                  <p className="text-xs text-gray-400 mt-1">
+                    Co-founding a Gym Apparel Brand with friends.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-green-500 transition-colors group/hobby">
+                  <Code className="w-8 h-8 text-green-500 mb-2 group-hover/hobby:scale-110 transition-transform" />
+                  <h4 className="font-bold text-white">Certifications</h4>
+                  [cite_start]
+                  <p className="text-xs text-gray-400 mt-1">
+                    Accenture Data Analytics & Visulaization Job Simulation. [cite: 49]
+                  </p>
+                </div>
+              </div>
+            </CyberpunkCard>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
