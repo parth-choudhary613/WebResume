@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Terminal,
-  Code,
-  Briefcase,
-  Car,
-  Dumbbell,
-  Cpu,
-  Zap,
-  Layers,
-  FolderGit2,
-} from "lucide-react";
+import { Terminal, Code, Briefcase, Bike, Dumbbell, Cpu, Zap, Layers, FolderGit2, Car, Moon, Mountain, Music } from 'lucide-react';
 import { ExternalLink } from "lucide-react";
 
 const CyberpunkCard = ({ title, icon: Icon, children, className = "" }) => {
@@ -267,7 +257,7 @@ export default function AboutSection() {
                     <h4 className="text-white font-bold">
                       Govt. Sen. Sec. School
                     </h4>
-                    <span className="text-xs text-purple-400">2023</span>
+                    <span className="text-xs text-purple-400">2020</span>
                   </div>
                   <p className="text-sm text-cyan-300">
                     Non-Medical Stream
@@ -283,99 +273,54 @@ export default function AboutSection() {
 
           {/* Projects Row */}
   
-<div className="md:col-span-12">
-  <CyberpunkCard title="Deployed_Prototypes" icon={FolderGit2}>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      
-      {/* --- Project 1: HumFlow --- */}
-      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
-        <h4 className="text-cyan-400 font-bold mb-2">HumFlow</h4>
-        <p className="text-xs text-gray-400 mb-4 flex-grow">
-          ASMR-based emotion tracking app blending relaxing audio with immersive
-          UI using <span className="text-white">React & Tailwind</span>.
-        </p>
-        <a
-          href="https://parth-choudhary613.github.io/HumFlow/" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
-        >
-          <span>Live Demo</span>
-          <ExternalLink size={14} />
-        </a>
-      </div>
 
-      {/* --- Project 2: Omnicassion --- */}
-      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
-        <h4 className="text-cyan-400 font-bold mb-2">Omnicassion</h4>
-        <p className="text-xs text-gray-400 mb-4 flex-grow">
-          Developed vendor display front-end using React.js & Tailwind.
-          Collaborated with backend teams for seamless data flow.
-        </p>
-        <a
-          href="https://omnicassion.com/vendors"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
-        >
-          <span>Live Demo</span>
-          <ExternalLink size={14} />
-        </a>
-      </div>
-
-      {/* --- Project 3: Bus Booking System --- */}
-      <div className="bg-white/5 p-4 rounded border border-gray-800 hover:border-cyan-500/50 transition-all duration-300 flex flex-col h-full group">
-        <h4 className="text-cyan-400 font-bold mb-2">Bus Booking System</h4>
-        <p className="text-xs text-gray-400 mb-4 flex-grow">
-          Full MERN stack application allowing users to search, book, and
-          manage tickets efficiently.
-        </p>
-        <a
-          href="https://parthchoudhary2003jobapplication.framer.website/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-2 text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all"
-        >
-          <span>Live Demo</span>
-          <ExternalLink size={14} />
-        </a>
-      </div>
-
-    </div>
-  </CyberpunkCard>
-</div>
           {/* Hobbies / Personal */}
+         {/* Hobbies / Personal - UPDATED */}
           <div className="md:col-span-12">
             <CyberpunkCard title="Offline_Activities" icon={Cpu}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Changed grid to 4 columns to fit new items */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                
+                {/* Car Enthusiast */}
                 <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-cyan-500 transition-colors group/hobby">
                   <Car className="w-8 h-8 text-cyan-500 mb-2 group-hover/hobby:translate-x-2 transition-transform" />
-                  <h4 className="font-bold text-white">Car Enthusiast</h4>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Exploring Himachal on my{" "}
-                    <span className="text-cyan-300">Suzuki Swift</span>.
+                  <h4 className="font-bold text-white text-sm">Car Enthusiast</h4>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Obsessed with cars.
                   </p>
                 </div>
 
+                {/* Night Drives */}
                 <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-purple-500 transition-colors group/hobby">
-                  <Dumbbell className="w-8 h-8 text-purple-500 mb-2 group-hover/hobby:-rotate-45 transition-transform" />
-                  <h4 className="font-bold text-white">Fitness Startup</h4>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Co-founding a Gym Apparel Brand with friends.
+                  <Moon className="w-8 h-8 text-purple-500 mb-2 group-hover/hobby:-rotate-12 transition-transform" />
+                  <h4 className="font-bold text-white text-sm">Night Drives</h4>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Late night cruiser.
                   </p>
                 </div>
 
+                {/* Trekking */}
                 <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-green-500 transition-colors group/hobby">
-                  <Code className="w-8 h-8 text-green-500 mb-2 group-hover/hobby:scale-110 transition-transform" />
-                  <h4 className="font-bold text-white">Certifications</h4>
-                  [cite_start]
-                  <p className="text-xs text-gray-400 mt-1">
-                    Accenture Data Analytics & Visulaization Job Simulation. [cite: 49]
+                  <Mountain className="w-8 h-8 text-green-500 mb-2 group-hover/hobby:-translate-y-1 transition-transform" />
+                  <h4 className="font-bold text-white text-sm">Trekking</h4>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Exploring the valley and nature trails.
                   </p>
                 </div>
+
+                {/* Listening Music */}
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 p-4 rounded border border-gray-700 hover:border-pink-500 transition-colors group/hobby">
+                  <Music className="w-8 h-8 text-pink-500 mb-2 group-hover/hobby:scale-110 transition-transform" />
+                  <h4 className="font-bold text-white text-sm">Listening Music</h4>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Vibing to 90's bangers.
+                  </p>
+                </div>
+
               </div>
             </CyberpunkCard>
           </div>
+
         </div>
       </div>
     </div>
