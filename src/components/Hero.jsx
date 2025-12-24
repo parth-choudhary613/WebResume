@@ -7,6 +7,7 @@ import SplitText from "./SplitText";
 export default function Hero() {
   return (
     <section className="playfair pt-30">
+    
       <MarqueeText
         texts={["PARTH CHOUDHARY | FRONT-END DEVELOPER |"]}
         className="custom-scroll-text"

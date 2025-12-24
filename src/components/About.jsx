@@ -130,8 +130,6 @@ export default function AboutSection() {
                 <SkillTag text="React.js" />
                 <SkillTag text="Redux Toolkit" />
                 <SkillTag text="Tailwind CSS" />
-                <SkillTag text="Three.js" />
-                <SkillTag text="MongoDB" />
                 <SkillTag text="Material-UI" />
                 <SkillTag text="Git/GitHub" />
               </div>

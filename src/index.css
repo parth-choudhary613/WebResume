@@ -1,6 +1,30 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+html {
+  scroll-behavior: smooth;
+}
+html {
+  /* 1. Enables smooth scrolling for anchor links (#home, etc.) */
+  scroll-behavior: smooth;
+}
+
+/* 2. Define base colors for light/dark mode if not already done */
+body {
+    @apply bg-slate-100 text-slate-900;
+}
+
+/* When the 'dark' class is added to HTML tag */
+.dark body {
+    @apply bg-[#020617] text-slate-100; /* A very deep dark blue/black */
+}
+
+/* Optional fonts to enhance cyberpunk feel */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
 .playfair {
   font-family: 'Playfair Display', serif;
   font-optical-sizing: auto;
