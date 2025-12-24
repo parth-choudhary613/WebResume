@@ -85,7 +85,7 @@ const ContactPage = () => {
 
           <div className="grid gap-6">
             <TiltCard className="w-full">
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-cyan-400/50 transition-colors duration-300 group">
+              <a href="https://www.linkedin.com/in/parth-choudhary-79b168290/" target="_blank" rel="noreferrer" className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-cyan-400/50 transition-colors duration-300 group">
                 <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="flex items-center gap-4 relative z-10">
                   <div className="p-3 bg-cyan-950 rounded-lg text-cyan-400 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-shadow">
@@ -101,7 +101,7 @@ const ContactPage = () => {
             </TiltCard>
 
             <TiltCard className="w-full">
-              <a href="mailto:contact@example.com" className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-pink-400/50 transition-colors duration-300 group">
+              <a href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=new" className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-pink-400/50 transition-colors duration-300 group">
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="flex items-center gap-4 relative z-10">
                   <div className="p-3 bg-pink-950 rounded-lg text-pink-400 group-hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-shadow">
@@ -111,23 +111,32 @@ const ContactPage = () => {
                     <h3 className="text-xl font-bold text-white group-hover:text-pink-300 transition-colors">Gmail</h3>
                     <p className="text-slate-400">Direct Transmission</p>
                   </div>
+                   <Cpu className="ml-auto text-slate-700 group-hover:text-cyan-400 animate-pulse" />
+               
                 </div>
               </a>
             </TiltCard>
 
             <TiltCard className="w-full">
-              <a href="https://wa.me/1234567890" target="_blank" rel="noreferrer" className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-green-400/50 transition-colors duration-300 group">
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="flex items-center gap-4 relative z-10">
-                  <div className="p-3 bg-emerald-950 rounded-lg text-emerald-400 group-hover:shadow-[0_0_15px_rgba(52,211,153,0.5)] transition-shadow">
-                    <Phone size={28} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">WhatsApp</h3>
-                    <p className="text-slate-400">Encrypted Channel</p>
-                  </div>
-                </div>
-              </a>
+          <a 
+  href="https://wa.me/8894459562" 
+  target="_blank" 
+  rel="noreferrer" 
+  className="block relative bg-slate-900/50 backdrop-blur-md border border-slate-800 p-6 rounded-xl hover:border-green-400/50 transition-colors duration-300 group"
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+  <div className="flex items-center gap-4 relative z-10">
+    <div className="p-3 bg-emerald-950 rounded-lg text-emerald-400 group-hover:shadow-[0_0_15px_rgba(52,211,153,0.5)] transition-shadow">
+      <Phone size={28} />
+    </div>
+    <div>
+      <h3 className="text-xl font-bold text-white group-hover:text-emerald-300 transition-colors">WhatsApp</h3>
+      <p className="text-slate-400">Encrypted Channel</p>
+    </div>
+     <Cpu className="ml-auto text-slate-700 group-hover:text-cyan-400 animate-pulse" />
+               
+  </div>
+</a>
             </TiltCard>
           </div>
         </div>
@@ -158,7 +167,7 @@ const ContactPage = () => {
                     type="text" 
                     required
                     className="w-full bg-slate-900/50 border border-slate-800 rounded-lg p-3 text-white outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300"
-                    placeholder="John Doe"
+                    placeholder="Your Name"
                   />
                 </div>
 
@@ -168,7 +177,7 @@ const ContactPage = () => {
                     type="email" 
                     required
                     className="w-full bg-slate-900/50 border border-slate-800 rounded-lg p-3 text-white outline-none focus:border-cyan-400 focus:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all duration-300"
-                    placeholder="john@example.com"
+                    placeholder="name@example.com"
                   />
                 </div>
 
@@ -215,4 +224,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+export default ContactPage;2

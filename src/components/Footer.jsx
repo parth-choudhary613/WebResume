@@ -70,7 +70,7 @@ const CyberFooter = () => {
               STACK_MATRIX
             </h3>
             <div className="flex flex-wrap gap-2">
-              {['React', 'Vite', 'Tailwind', 'Three.js', 'Node'].map((tech) => (
+              {['React', 'Vite', 'Tailwind'].map((tech) => (
                 <span key={tech} className="px-2 py-1 bg-slate-900 border border-slate-800 text-xs hover:border-cyan-500/50 hover:text-cyan-400 transition-colors cursor-default">
                   {tech}
                 </span>

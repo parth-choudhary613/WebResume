@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Box, Hexagon, Zap, Terminal } from "lucide-react";
+import { Menu, X, Box, Hexagon, Zap, Terminal } from "lucide-react";
 import Logo from "./assets/navlogo.png";
 
 // Define links with associated "3D" tech icons
@@ -65,44 +65,8 @@ const CyberLink = ({ item, onClick }) => {
   );
 };
 
-// --- Sub-Component: Reactor Core Theme Toggle ---
-const ReactorToggle = ({ dark, setDark }) => {
-  return (
-    <button
-      onClick={() => setDark(!dark)}
-      className="relative group flex items-center justify-center p-2 rounded-md overflow-hidden"
-    >
-      {/* Reactor Core container styling */}
-      <div
-        className={`absolute inset-0 border-2 transition-all duration-500 ${
-          dark
-            ? "border-[#ff00ff] shadow-[0_0_15px_#ff00ff50]"
-            : "border-[#00f2ff] shadow-[0_0_15px_#00f2ff50]"
-        } bg-black/50 backdrop-blur-md clip-path-octagon`}
-      />
-      
-      {/* Animated spinning icon */}
-      <motion.div
-        initial={false}
-        animate={{ rotate: dark ? 180 : 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="relative z-10"
-      >
-        {dark ? (
-          <Moon size={20} className="text-[#ff00ff] fill-[#ff00ff]/20" />
-        ) : (
-          <Sun size={20} className="text-[#00f2ff] fill-[#00f2ff]/20" />
-        )}
-      </motion.div>
-
-      {/* Internal energy pulse */}
-      <div className={`absolute inset-1 rounded-full opacity-30 animate-pulse ${dark ? 'bg-[#ff00ff]' : 'bg-[#00f2ff]'}`}></div>
-    </button>
-  );
-};
-
 // --- MAIN NAVBAR COMPONENT ---
-export default function Navbar({ dark, setDark }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
@@ -131,7 +95,7 @@ export default function Navbar({ dark, setDark }) {
         <div className="relative z-10 flex items-center justify-between px-6 py-3">
           
           {/* === DESKTOP LEFT LINKS === */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.slice(0, 2).map((item) => (
               <CyberLink key={item.name} item={item} />
             ))}
@@ -158,21 +122,17 @@ export default function Navbar({ dark, setDark }) {
           </div>
 
 
-          {/* === DESKTOP RIGHT LINKS & TOGGLE === */}
-          <div className="hidden md:flex items-center gap-6">
-             <div className="flex items-center gap-2">
+          {/* === DESKTOP RIGHT LINKS === */}
+          <div className="hidden md:flex items-center gap-8">
+             <div className="flex items-center gap-8">
               {navItems.slice(2, 4).map((item) => (
                 <CyberLink key={item.name} item={item} />
               ))}
              </div>
-            {/* Reactor Core Dark Mode Toggle */}
-            <ReactorToggle dark={dark} setDark={setDark} />
           </div>
 
-           {/* === MOBILE TOGGLE (Right side) === */}
-           <div className="md:hidden">
-             <ReactorToggle dark={dark} setDark={setDark} />
-           </div>
+           {/* === MOBILE SPACER (Right side) === */}
+           <div className="md:hidden w-8"></div> 
 
         </div>
 
@@ -217,10 +177,6 @@ export default function Navbar({ dark, setDark }) {
       
       {/* Required CSS for specific Cyberpunk effects */}
       <style jsx="true">{`
-        /* Creates an octagonal shape for the toggle button */
-        .clip-path-octagon {
-            clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-        }
         /* Moving scanline background animation */
         @keyframes scanline {
             0% { background-position: 0 0; }
