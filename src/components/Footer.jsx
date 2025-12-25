@@ -93,7 +93,7 @@ const CyberFooter = () => {
 
              <div className="flex gap-4">
                {[Github, Linkedin, Twitter].map((Icon, i) => (
-                 <a key={i} href="#" className="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded transition-all">
+                 <a key={i} href="/" className="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded transition-all">
                    <Icon size={20} />
                  </a>
                ))}

@@ -26,7 +26,7 @@ const Banner = () => {
       <div className="absolute top-32 md:top-40 lg:top-20 w-full z-0 opacity-10 pointer-events-none select-none">
         <MarqueeText
           texts={["PARTH CHOUDHARY | FRONT-END DEVELOPER |"]}
-          className="custom-scroll-text text-5xl md:text-7xl lg:text-9xl font-bold uppercase"
+          className="custom-scroll-text text-5xl md:text-7xl lg:text-9xl font-bold uppercase mt-10"
         />
       </div>
 
@@ -41,7 +41,7 @@ const Banner = () => {
         <div className="flex flex-col lg:flex-row lg:items-center lg:gap-x-12 gap-y-10">
           
           {/* --- LEFT: TEXT SECTION --- */}
-          <div className="flex-1 text-center lg:text-left font-secondary">
+          <div className="flex-1 text-center lg:text-left font-secondary mt-30 lg:mt-0">
             <motion.div
               initial="hidden"
               whileInView="show"
