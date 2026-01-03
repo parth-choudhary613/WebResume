@@ -5,19 +5,7 @@ import { ExternalLink } from "lucide-react";
 const CyberpunkCard = ({ title, icon: Icon, children, className = "" }) => {
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
 
-  const onMouseMove = (e) => {
-    const card = e.currentTarget;
-    const box = card.getBoundingClientRect();
-    const x = e.clientX - box.left;
-    const y = e.clientY - box.top;
-    const centerX = box.width / 2;
-    const centerY = box.height / 2;
-
-    const rotateX = (y - centerY) / 10;
-    const rotateY = (centerX - x) / 10;
-
-    setRotate({ x: rotateX, y: rotateY });
-  };
+ 
 
   const onMouseLeave = () => {
     setRotate({ x: 0, y: 0 });
@@ -26,7 +14,7 @@ const CyberpunkCard = ({ title, icon: Icon, children, className = "" }) => {
   return (
     <div
       className={`relative group perspective-1000 ${className}`}
-      onMouseMove={onMouseMove}
+    
       onMouseLeave={onMouseLeave}
     >
       <div
@@ -269,9 +257,7 @@ export default function AboutSection() {
             </CyberpunkCard>
           </div>
 
-          {/* Projects Row */}
-  
-
+    
           {/* Hobbies / Personal */}
          {/* Hobbies / Personal - UPDATED */}
           <div className="md:col-span-12">
