@@ -1,0 +1,73 @@
+/* Marquee.css */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background-color: #020617; /* Dark background */
+  padding: 3rem 0;
+  position: relative;
+}
+
+/* Fades on the sides to smooth the entry/exit visually */
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 150px; /* Width of the fade */
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #020617, transparent);
+}
+
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #020617, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  /* 1. GAP: Controls space between icons */
+  gap: 4rem; 
+  /* 2. MAX-CONTENT: Forces the div to be wide, preventing wrapping */
+  width: max-content; 
+  /* 3. ANIMATION */
+  animation: scroll-infinite 5s linear infinite;
+}
+
+/* Pause on hover */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    /* 4. THE MAGIC: Move exactly 50% so the 2nd set replaces the 1st set perfectly */
+    transform: translateX(-50%); 
+  }
+}
+
+/* --- Styling for Icons --- */
+.tech-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem; /* Icon size */
+  color: #475569; /* Base color (slate-600) */
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect for individual icons */
+.tech-item:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
