@@ -42,7 +42,7 @@ const CyberpunkPortfolio = () => {
         "A minimal cyber-aesthetic showcasing identity, skill, and precision.",
       tags: ["React", "Tailwind", "Bootstrap", "Material UI", "Framer Motion"],
       imgUrl: Vendor, // Studio placeholder
-      liveLink: "https://parth-choudhary613.github.io/vandorProfile/",
+      liveLink: "https://vandorprofile.parthchoudhary4372.workers.dev/",
       repoLink: "https://github.com/parth-choudhary613/vandorProfile",
     },
     {
