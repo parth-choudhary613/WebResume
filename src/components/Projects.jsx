@@ -47,12 +47,12 @@ const CyberpunkPortfolio = () => {
     },
     {
       id: 4,
-      title: "Personal Profile",
+      title: "AgroVision",
       description:
-        "A futuristic dashboard engineered for clarity and performance.",
-      tags: ["Wix Studio", "CMF Integration", "Framer"],
+        "AI Based Crop Disease Detection and Smart Pesticide Recommendation System",
+      tags: ["Node", "API Integration", "Express", "MongoDB", "React", "Tailwind"],
       imgUrl: Portfolio, // Studio placeholder
-      liveLink: "https://parthchoudhary2003jobapplication.framer.website/",
+      liveLink: "https://agrovision-sand.vercel.app/",
       repoLink: "#",
     },
   ];
