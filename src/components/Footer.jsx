@@ -1,148 +1,130 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Twitter, ArrowUp, Zap, Hexagon, Code, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+import { ArrowUp, Github, Linkedin, Mail, Phone } from 'lucide-react'
+import { personalData } from '../data/portfolioData'
 
-const CyberFooter = () => {
-  const [time, setTime] = useState(new Date());
+export default function Footer() {
+  const [time, setTime] = useState('')
 
-  // Update time every second for the live clock
   useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const updateTime = () => {
+      const now = new Date()
+      const istString = now.toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Kolkata',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+      setTime(istString)
+    }
+
+    updateTime()
+    const timer = setInterval(updateTime, 1000)
+    return () => clearInterval(timer)
+  }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Format time as HH:MM:SS UTC
-  const timeString = time.toISOString().split('T')[1].split('.')[0] + " UTC";
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
-    <footer className="relative bg-[#020202] text-slate-400 font-mono overflow-hidden pt-20 pb-5 border-t border-slate-900">
-      
-      {/* --- DECORATIVE TOP BORDER WITH GLOW --- */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 shadow-[0_0_10px_#06b6d4]" />
-      <div className="absolute top-[-1px] left-1/2 -translate-x-1/2 w-32 h-1 bg-cyan-500 blur-[2px]" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    <footer className="bg-surface border-t border-border py-14 sm:py-16 text-text-secondary">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-10 lg:px-16">
+        
+        {/* Top Tier: Identity, Technical Specs, Return to Top */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-border-subtle items-start">
           
-          {/* COLUMN 1: BRANDING & STATUS */}
-          <div className="md:col-span-1 space-y-4">
-            <div className="flex items-center gap-2 text-white">
-              <Hexagon className="text-cyan-500 animate-pulse" size={24} strokeWidth={2.5} />
-              <span className="text-2xl font-black tracking-tighter">DEV_PORTFOLIO</span>
+          {/* Identity (4 cols) */}
+          <div className="md:col-span-4 space-y-2">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-xs bg-accent inline-block" />
+              <span className="font-mono text-sm font-semibold tracking-tight text-text-primary uppercase">
+                {personalData.name}
+              </span>
             </div>
-            <p className="text-xs leading-relaxed text-slate-500">
-              Constructing digital experiences in the void. Open for collaborations on planetary and orbital scales.
+            <p className="font-mono text-xs text-text-muted leading-relaxed">
+              Frontend Engineer specialized in React, TypeScript, and interface architecture.
             </p>
-            
-            {/* Live System Status Box */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-950/30 border border-green-900 rounded text-[10px] text-green-500 font-bold uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              System Operational
+            <div className="font-mono text-[11px] text-text-muted">
+              LOC: {personalData.location} // {personalData.coordinates}
             </div>
           </div>
 
-          {/* COLUMN 2: NAVIGATION */}
-          <div className="md:col-span-1">
-            <h3 className="text-white font-bold mb-6 flex items-center gap-2">
-              <span className="w-1 h-4 bg-pink-500" />
-              NAVIGATION
-            </h3>
-            <ul className="space-y-3 text-sm">
-              {['Home', 'Projects', 'About', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a href={`#${item.toLowerCase()}`} className="group flex items-center gap-2 hover:text-cyan-400 transition-colors">
-                    <span className="w-0 h-[1px] bg-cyan-400 group-hover:w-3 transition-all duration-300" />
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {/* Architecture Spec (5 cols) */}
+          <div className="md:col-span-5 space-y-2 font-mono text-xs">
+            <span className="text-text-primary uppercase tracking-wider block text-[11px] font-medium">
+              System Architecture
+            </span>
+            <p className="text-text-secondary leading-relaxed text-[11px]">
+              Engineered with React 19, TypeScript, Three.js spatial modeling, Tailwind CSS token architecture, and Framer Motion. Built with zero gratuitous animations and strict performance benchmarks.
+            </p>
           </div>
 
-          {/* COLUMN 3: TECH STACK (Visuals) */}
-          <div className="md:col-span-1">
-             <h3 className="text-white font-bold mb-6 flex items-center gap-2">
-              <span className="w-1 h-4 bg-purple-500" />
-              STACK_MATRIX
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {['React', 'Vite', 'Tailwind'].map((tech) => (
-                <span key={tech} className="px-2 py-1 bg-slate-900 border border-slate-800 text-xs hover:border-cyan-500/50 hover:text-cyan-400 transition-colors cursor-default">
-                  {tech}
-                </span>
-              ))}
-            </div>
+          {/* Back to top (3 cols) */}
+          <div className="md:col-span-3 flex md:justify-end">
+            <button
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-2 px-4 py-2 border border-border bg-bg hover:border-text-secondary hover:text-text-primary text-text-secondary font-mono text-xs uppercase tracking-wider rounded-xs transition-colors cursor-pointer"
+            >
+              <span>Back to Top</span>
+              <ArrowUp size={13} />
+            </button>
           </div>
 
-          {/* COLUMN 4: ACTIONS & SOCIALS */}
-          <div className="md:col-span-1 flex flex-col items-start md:items-end gap-6">
-             <button 
-                onClick={scrollToTop}
-                className="group relative px-6 py-3 bg-slate-900 border border-slate-800 hover:border-cyan-500 transition-all duration-300 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-cyan-500/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300" />
-                <div className="flex items-center gap-2 relative z-10 text-xs font-bold uppercase tracking-widest text-cyan-500 group-hover:text-cyan-400">
-                  <ArrowUp size={14} className="group-hover:-translate-y-1 transition-transform" />
-                  Return to Top
-                </div>
-             </button>
-
-             <div className="flex gap-4">
-               {[Github, Linkedin, Twitter].map((Icon, i) => (
-                 <a key={i} href="/" className="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded transition-all">
-                   <Icon size={20} />
-                 </a>
-               ))}
-             </div>
-          </div>
         </div>
-      </div>
 
-      {/* --- BOTTOM BAR: TICKER & COPYRIGHT --- */}
-      <div className="border-t border-slate-900 bg-[#050505] relative">
-        <div className="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-slate-600 uppercase tracking-wider">
+        {/* Bottom Tier: Clock, Social Links, Legal */}
+        <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs">
           
-          <div className="flex items-center gap-4">
-             <span>© 2024 DEV_NAME. ALL RIGHTS RESERVED.</span>
-             <span className="hidden md:inline text-slate-800">|</span>
-             <div className="hidden md:flex items-center gap-1 text-slate-500">
-               <Zap size={10} />
-               <span>POWERED BY REACT</span>
-             </div>
+          <div className="flex items-center gap-4 text-text-muted text-[11px]">
+            <span>© {new Date().getFullYear()} PARTH CHOUDHARY</span>
+            <span>•</span>
+            <span className="text-text-primary">
+              TIME_SYNC (IST): {time || '00:00:00'}
+            </span>
           </div>
 
-          {/* Live Clock */}
-          <div className="font-mono text-cyan-900 bg-cyan-950/10 px-2 py-0.5 rounded border border-cyan-900/20">
-            TIME_SYNC: {timeString}
+          {/* Social Links */}
+          <div className="flex items-center gap-5 text-text-secondary">
+            <a
+              href={personalData.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-text-primary transition-colors"
+              aria-label="GitHub"
+            >
+              <Github size={15} />
+            </a>
+            <a
+              href={personalData.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-text-primary transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={15} />
+            </a>
+            <a
+              href={personalData.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-text-primary transition-colors"
+              aria-label="WhatsApp"
+            >
+              <Phone size={15} />
+            </a>
+            <a
+              href={`mailto:${personalData.email}`}
+              className="hover:text-text-primary transition-colors"
+              aria-label="Email"
+            >
+              <Mail size={15} />
+            </a>
           </div>
+
         </div>
 
-        {/* SCROLLING TERMINAL TICKER */}
-        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-900 overflow-hidden flex">
-             {/* Uses a CSS animation defined below */}
-             <div className="animate-ticker flex whitespace-nowrap min-w-full">
-                {Array(10).fill(" // INIT_SEQUENCE_COMPLETE // STANDBY FOR INPUT // CONNECTION_SECURE // ").map((text, i) => (
-                  <span key={i} className="text-[10px] text-slate-800 font-bold px-4">{text}</span>
-                ))}
-             </div>
-        </div>
       </div>
-
-      <style>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-ticker {
-          animation: ticker 20s linear infinite;
-        }
-      `}</style>
     </footer>
-  );
-};
-
-export default CyberFooter;
+  )
+}
