@@ -1,150 +1,45 @@
 @import "tailwindcss";
-
-@layer base {
-  :root {
-    --bg: #F5F2EA;
-    --surface: #FFFFFF;
-    --surface-subtle: #ECE8DD;
-    --surface-hover: #E5DFD1;
-    --border: #E0DDD2;
-    --border-subtle: #EBE8DE;
-    --text-primary: #17202A;
-    --text-secondary: #65717C;
-    --text-muted: #8E98A3;
-    
-    /* Brand Color System */
-    --brand-blue: #3157D5;
-    --brand-blue-hover: #2646B0;
-    --brand-coral: #E8795E;
-    --brand-coral-hover: #D6674C;
-    --brand-sage: #8BAF8D;
-    --brand-yellow: #E9B85C;
-
-    /* Tinted Surfaces */
-    --surface-blue: #E8EDFC;
-    --surface-coral: #F8E8E2;
-    --surface-sage: #E7EFE5;
-    
-    /* Contrast dark section */
-    --surface-dark-section: #0E1420;
-    --text-dark-section: #F5F3ED;
-    --text-dark-muted: #9BA7B5;
-    --border-dark-section: #1D2638;
-  }
-
-  .dark {
-    --bg: #10141C;
-    --surface: #171D27;
-    --surface-subtle: #1E2532;
-    --surface-hover: #242D3C;
-    --border: #232B3A;
-    --border-subtle: #1C2330;
-    --text-primary: #F5F3ED;
-    --text-secondary: #9BA7B5;
-    --text-muted: #647080;
-
-    /* Brand Color System */
-    --brand-blue: #6F8EFF;
-    --brand-blue-hover: #8AA4FF;
-    --brand-coral: #F08B73;
-    --brand-coral-hover: #FF9E87;
-    --brand-sage: #91B896;
-    --brand-yellow: #E8BD68;
-
-    /* Tinted Surfaces */
-    --surface-blue: #16223D;
-    --surface-coral: #2B1D19;
-    --surface-sage: #17231B;
-
-    /* Contrast dark section */
-    --surface-dark-section: #0B0E15;
-    --text-dark-section: #F5F3ED;
-    --text-dark-muted: #8B98A8;
-    --border-dark-section: #19202E;
-  }
-
-  * {
-    border-color: var(--border);
-  }
-
-  html {
-    scroll-behavior: smooth;
-    background-color: var(--bg);
-    color: var(--text-primary);
-  }
-
-  body {
-    background-color: var(--bg);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    overflow-x: hidden;
-    transition: background-color 200ms ease, color 200ms ease;
-  }
-
-  ::selection {
-    background-color: var(--brand-blue);
-    color: #FFFFFF;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--brand-blue);
-    outline-offset: 2px;
-  }
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 112px;
+}
+html {
+  /* 1. Enables smooth scrolling for anchor links (#home, etc.) */
+  scroll-behavior: smooth;
 }
 
-@theme {
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-subtle: var(--surface-subtle);
-  --color-surface-hover: var(--surface-hover);
-  --color-border: var(--border);
-  --color-border-subtle: var(--border-subtle);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-
-  --color-brand-blue: var(--brand-blue);
-  --color-brand-blue-hover: var(--brand-blue-hover);
-  --color-brand-coral: var(--brand-coral);
-  --color-brand-coral-hover: var(--brand-coral-hover);
-  --color-brand-sage: var(--brand-sage);
-  --color-brand-yellow: var(--brand-yellow);
-
-  --color-surface-blue: var(--surface-blue);
-  --color-surface-coral: var(--surface-coral);
-  --color-surface-sage: var(--surface-sage);
-
-  --color-surface-dark-section: var(--surface-dark-section);
-  --color-text-dark-section: var(--text-dark-section);
-  --color-text-dark-muted: var(--text-dark-muted);
-  --color-border-dark-section: var(--border-dark-section);
+/* 2. Define base colors for light/dark mode if not already done */
+body {
+    @apply bg-slate-100 text-slate-900;
 }
 
-/* Atmospheric hero background composition */
-.hero-atmosphere {
-  background-image: 
-    radial-gradient(circle at 80% 38%, rgba(49, 87, 213, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 55% 65%, rgba(232, 121, 94, 0.08) 0%, transparent 40%);
+/* When the 'dark' class is added to HTML tag */
+.dark body {
+    @apply bg-[#020617] text-slate-100; /* A very deep dark blue/black */
 }
 
-.dark .hero-atmosphere {
-  background-image: 
-    radial-gradient(circle at 80% 38%, rgba(111, 142, 255, 0.10) 0%, transparent 45%),
-    radial-gradient(circle at 55% 65%, rgba(240, 139, 115, 0.06) 0%, transparent 40%);
-}
+/* Optional fonts to enhance cyberpunk feel */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
-/* Reduced motion */
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+.playfair {
+  font-family: 'Playfair Display', serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+}
+/* Keep the existing sections' fixed decorative layers inside their section. */
+#about, #projects, #contact {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+}
+@media (max-width: 767px) {
+  html { scroll-padding-top: 96px; }
+}
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  html { scroll-behavior: auto; }
 }

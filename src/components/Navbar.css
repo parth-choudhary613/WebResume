@@ -1,0 +1,209 @@
+.portfolio-navbar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  padding-inline: clamp(24px, 5vw, 72px);
+  color: #292923;
+  background: #000000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  animation: portfolio-nav-reveal 650ms ease both;
+}
+
+.portfolio-navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1420px;
+  min-height: 96px;
+  margin-inline: auto;
+  border-bottom: 1px solid #d9d4cc;
+}
+
+.portfolio-navbar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.portfolio-navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.portfolio-navbar__monogram {
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.095em;
+  line-height: 1;
+}
+
+.portfolio-navbar__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.portfolio-navbar__name {
+  font-size: 13px;
+  font-weight: 550;
+  letter-spacing: -0.015em;
+}
+
+.portfolio-navbar__role {
+  color: #000000;
+  font-size: 10px;
+  letter-spacing: 0.025em;
+}
+
+.portfolio-navbar__desktop {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.portfolio-navbar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  padding-block: 12px;
+  color: #292923;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 180ms ease;
+}
+
+.portfolio-navbar__link::after {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 220ms ease;
+}
+
+.portfolio-navbar__link:hover {
+  color: #050505;
+}
+
+.portfolio-navbar__link:hover::after {
+  transform: scaleX(1);
+}
+
+.portfolio-navbar__link svg {
+  transition: transform 220ms ease;
+}
+
+.portfolio-navbar__link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.portfolio-navbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 78px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  color: black;
+  background: transparent;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.portfolio-navbar__mobile {
+  display: none;
+}
+
+.portfolio-navbar__skip {
+  position: absolute;
+  top: 12px;
+  left: 24px;
+  z-index: 1;
+  padding: 12px 18px;
+  border: 1px solid #292923;
+  border-radius: 3px;
+  background: #f6f3ed;
+  font-size: 14px;
+  transform: translateY(-200%);
+}
+
+.portfolio-navbar__skip:focus {
+  transform: translateY(0);
+}
+
+.portfolio-navbar :is(a, button):focus-visible {
+  outline: 2px solid #786451;
+  outline-offset: 5px;
+  border-radius: 2px;
+}
+
+@keyframes portfolio-nav-reveal {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 767px) {
+  .portfolio-navbar__inner {
+    min-height: 80px;
+    gap: 12px;
+  }
+
+  .portfolio-navbar__brand {
+    gap: 12px;
+  }
+
+  .portfolio-navbar__monogram {
+    font-size: 28px;
+  }
+
+  .portfolio-navbar__name {
+    font-size: 12px;
+  }
+
+  .portfolio-navbar__role,
+  .portfolio-navbar__desktop {
+    display: none;
+  }
+
+  .portfolio-navbar__toggle {
+    display: inline-flex;
+  }
+
+  .portfolio-navbar__mobile:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    padding-block: 12px 22px;
+  }
+
+  .portfolio-navbar__mobile .portfolio-navbar__link {
+    min-height: 52px;
+    padding-block: 16px;
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-navbar {
+    animation: none;
+  }
+
+  .portfolio-navbar__link,
+  .portfolio-navbar__link::after,
+  .portfolio-navbar__link svg {
+    transition: none;
+  }
+  .portfolio-navbar__link:hover svg {
+    transform: none;
+  }
+}
