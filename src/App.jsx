@@ -22,37 +22,6 @@ export default function App() {
     localStorage.setItem('theme', dark ? 'dark' : 'light')
   }, [dark])
 
-  // --- NEW LOADER LOGIC ---
-  useEffect(() => {
-    const loader = document.getElementById('global-loader');
-    
-    const handleLoad = () => {
-      if (loader) {
-        // 1. Start fade out
-        loader.style.opacity = '0';
-        
-        // 2. Remove from DOM after fade finishes (0.5s)
-        setTimeout(() => {
-          loader.remove();
-        }, 500);
-      }
-    };
-
-    // Wait for the complete internet load (images, scripts, etc.)
-    if (document.readyState === 'complete') {
-      handleLoad();
-    } else {
-      window.addEventListener('load', handleLoad);
-    }
-    
-    // Cleanup
-    return () => window.removeEventListener('load', handleLoad);
-  }, []);
-  // ------------------------
-
-  // Note: No "if (loading) return..." needed anymore. 
-  // The HTML loader covers the screen until we remove it.
-
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-950 dark:text-slate-100 transition-colors duration-300 playfair relative">
       <div className="fixed inset-0 z-0 pointer-events-none"></div>

@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 112px;
 }
 html {
   /* 1. Enables smooth scrolling for anchor links (#home, etc.) */
@@ -29,4 +30,16 @@ body {
   font-optical-sizing: auto;
   font-weight: weight;
   font-style: normal;
+}
+/* Keep the existing sections' fixed decorative layers inside their section. */
+#about, #projects, #contact {
+  position: relative;
+  isolation: isolate;
+  contain: paint;
+}
+@media (max-width: 767px) {
+  html { scroll-padding-top: 96px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
