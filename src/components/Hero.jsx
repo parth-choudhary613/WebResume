@@ -29,7 +29,7 @@ export default function Hero() {
       transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
     },
   };
-
+  
   return (
     <section className="hero-wrapper">
       {/* 3D WebGL Background */}
@@ -41,7 +41,7 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-      >
+        >
         <motion.header className="hero-header" variants={itemVariants}>
         
         </motion.header>
@@ -80,6 +80,7 @@ export default function Hero() {
             SCROLL TO EXPLORE
             <div className="scroll-line"></div>
           </div>
+        
         </motion.footer>
       </motion.div>
     </section>
