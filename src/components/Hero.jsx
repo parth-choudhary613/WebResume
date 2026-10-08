@@ -43,11 +43,7 @@ export default function Hero() {
         animate="visible"
       >
         <motion.header className="hero-header" variants={itemVariants}>
-          <div>FRONT-END REACT DEVELOPER</div>
-          <div className="hero-status">
-            <span className="status-dot"></span>
-            AVAILABLE FOR SELECT PROJECTS
-          </div>
+        
         </motion.header>
 
         <main className="hero-main">
