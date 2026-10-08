@@ -1,24 +1,10 @@
-/* --- Light Theme (Default) --- */
-:root, [data-theme="light"] {
+:root {
   --bg-color: #F8F8F6;
   --text-main: #141414;
   --text-muted: #5A5A5A;
   --accent: #FF8E7C;
-  --btn-border: rgba(20, 20, 20, 0.15);
-  --title-blend: multiply;
 }
 
-/* --- Dark Theme --- */
-[data-theme="dark"] {
-  --bg-color: #12121202;
-  --text-main: #F8F8F6;
-  --text-muted: #A0A0A0;
-  --accent: #E86A58;
-  --btn-border: rgba(248, 248, 246, 0.15);
-  --title-blend: normal; /* Multiply makes text invisible on dark backgrounds */
-}
-
-/* --- Base Layout --- */
 .hero-wrapper {
   position: relative;
   width: 100%;
@@ -27,7 +13,6 @@
   color: var(--text-main);
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 /* Subtle noise texture */
@@ -41,11 +26,6 @@
   z-index: 1;
 }
 
-[data-theme="dark"] .hero-wrapper::before {
-  opacity: 0.02; /* Less noise needed in dark mode */
-}
-
-/* --- Components --- */
 .hero-canvas-container {
   position: absolute;
   inset: 0;
@@ -61,11 +41,11 @@
   justify-content: space-between;
   min-height: 100vh;
   padding: 2rem 4vw;
-  pointer-events: none;
+  pointer-events: none; /* Allows clicks to pass to canvas */
 }
 
 .hero-content > * {
-  pointer-events: auto; 
+  pointer-events: auto; /* Re-enables interaction for text/buttons */
 }
 
 .hero-header {
@@ -76,34 +56,6 @@
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-}
-
-.hero-header-right {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-/* Theme Toggle Button */
-.theme-toggle {
-  background: transparent;
-  border: 1px solid var(--btn-border);
-  color: var(--text-main);
-  padding: 0.4rem 0.8rem;
-  border-radius: 2rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.theme-toggle:hover {
-  background: var(--text-main);
-  color: var(--bg-color);
 }
 
 .hero-status {
@@ -126,16 +78,6 @@
   100% { box-shadow: 0 0 0 0 rgba(255, 142, 124, 0); }
 }
 
-[data-theme="dark"] .status-dot {
-  animation: pulse-dark 2s infinite ease-in-out;
-}
-
-@keyframes pulse-dark {
-  0% { box-shadow: 0 0 0 0 rgba(232, 106, 88, 0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(232, 106, 88, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(232, 106, 88, 0); }
-}
-
 .hero-main {
   flex: 1;
   display: flex;
@@ -152,8 +94,7 @@
   line-height: 0.92;
   letter-spacing: -0.04em;
   margin: 0;
-  mix-blend-mode: var(--title-blend);
-  transition: mix-blend-mode 0.5s ease;
+  mix-blend-mode: multiply; /* Integrates typography beautifully with 3D objects */
 }
 
 .hero-title-line {
@@ -169,7 +110,6 @@
   max-width: 500px;
   color: var(--text-muted);
   font-weight: 400;
-  transition: color 0.5s ease;
 }
 
 .hero-actions {
@@ -214,7 +154,7 @@
 .btn-secondary {
   background-color: transparent;
   color: var(--text-main);
-  border: 1px solid var(--btn-border);
+  border: 1px solid rgba(20, 20, 20, 0.15);
 }
 
 .btn-secondary:hover {
@@ -254,15 +194,10 @@
   100% { background-position: 100% -100%; }
 }
 
-/* --- Responsive --- */
 @media (max-width: 768px) {
   .hero-header {
     flex-direction: column;
     gap: 1rem;
-  }
-  .hero-header-right {
-    width: 100%;
-    justify-content: space-between;
   }
   .hero-actions {
     flex-direction: column;
@@ -279,6 +214,6 @@
     align-items: flex-start;
   }
   .hero-title {
-    mix-blend-mode: normal; 
+    mix-blend-mode: normal; /* Disable multiply on mobile for better readability */
   }
 }

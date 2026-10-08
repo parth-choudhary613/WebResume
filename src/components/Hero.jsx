@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import HeroScene from './HeroScene3D';
 import './Hero.css';
 
 export default function Hero() {
-  // Check system preference for initial theme
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
-
-  // Framer Motion Variants
+  // Framer Motion Animation Variants
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.3 } },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    },
   };
 
   const lineVariants = {
     hidden: { y: '100%' },
-    visible: { y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } },
+    visible: {
+      y: 0,
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
+    },
   };
 
   return (
-    <section className="hero-wrapper" data-theme={theme}>
-      {/* Pass theme to WebGL Scene */}
-      <HeroScene theme={theme} />
+    <section className="hero-wrapper">
+      {/* 3D WebGL Background */}
+      <HeroScene />
       
+      {/* Minimal UI Overlay */}
       <motion.div 
         className="hero-content"
         variants={containerVariants}
@@ -43,9 +43,11 @@ export default function Hero() {
         animate="visible"
       >
         <motion.header className="hero-header" variants={itemVariants}>
-          
-          
-     
+          <div>FRONT-END REACT DEVELOPER</div>
+          <div className="hero-status">
+            <span className="status-dot"></span>
+            AVAILABLE FOR SELECT PROJECTS
+          </div>
         </motion.header>
 
         <main className="hero-main">
