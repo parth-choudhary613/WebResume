@@ -1,0 +1,7 @@
+// Simple class-name helper. No clsx or tailwind-merge packages required.
+export function cn(...inputs) {
+  return inputs
+    .flat(Infinity)
+    .filter((value) => typeof value === "string" && value.trim())
+    .join(" ");
+}

@@ -1,11 +1,13 @@
 import React from 'react'
 import { GraduationCap, MapPin, Heart, Compass, Mountain, Music, Car } from 'lucide-react'
-import { personalData, educationData } from '../data/portfolioData'
+import { educationData } from '../data/portfolioData'
 import Portrait3D from './Portrait3D'
+import Text from './Text/Text'
 
 export default function About() {
   return (
     <section id="about" className="py-24 sm:py-32 bg-surface-subtle/40 border-y border-border relative">
+           <Text/>
       <div className="max-w-[1360px] mx-auto px-6 sm:px-10 lg:px-12">
         
         {/* Asymmetrical 2-Column Layout (Section 27) */}
@@ -21,42 +23,19 @@ export default function About() {
               </div>
 
               {/* Identity & Location Details */}
-            
+           
+  
 
             </div>
           </div>
 
           {/* ================= RIGHT: STATEMENT + PLAYFUL SVG ACCENT + CONCISE COPY ================= */}
           <div className="lg:col-span-7 flex flex-col justify-center">
-            
+     
             <span className="font-mono text-xs uppercase tracking-widest text-brand-coral font-semibold block mb-3">
               About & Background
             </span>
-
             {/* Large Statement with ONE Handcrafted SVG Underline (Section 28) */}
-            <div className="relative mb-8">
-              <h2 className="font-display text-3xl sm:text-5xl font-bold tracking-tight text-text-primary leading-[1.12]">
-                Design sensibility. <br />
-                <span className="relative inline-block text-brand-blue">
-                  Engineering discipline.
-                  {/* ONE Playful Visual Moment: Expressive SVG underline */}
-                  <svg
-                    className="absolute -bottom-2 left-0 w-full h-3 text-brand-coral overflow-visible"
-                    viewBox="0 0 240 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M2 9.5C65 2.5 155 1.5 238 9.5"
-                      stroke="currentColor"
-                      strokeWidth="3.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-              </h2>
-            </div>
-
             {/* Concise Human Copy (Section 27) */}
             <div className="space-y-4 font-sans text-base sm:text-lg text-text-secondary leading-relaxed font-normal mb-8">
               <p>

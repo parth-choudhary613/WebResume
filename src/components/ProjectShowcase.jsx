@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import {
   Sparkle,
   ArrowUpRight,
@@ -22,11 +23,42 @@ import {
   Calendar,
   MessageSquare,
 } from "lucide-react";
+
 import Humflow from "../components/assets/humflow.png";
 import Personal from "../components/assets/PersonalPortfolio.png";
 import Agrovision from "../components/assets/AgroVision.png";
 import Vendorprofile from "../components/assets/vendorprofile.png";
 
+// =====================================
+// PROJECT DETAILS
+// =====================================
+
+const PROJECTS = {
+  humflow: {
+    name: "HumFlow",
+    url: "https://parth-choudhary613.github.io/HumFlow/",
+    tech: ["React", "Tailwind CSS", "GSAP", "Three.js", "Vite"],
+  },
+  personal: {
+    name: "Personal Portfolio",
+    url: "https://webresume-bzt.pages.dev/",
+    tech: ["React", "Tailwind CSS", "Framer Motion", "JavaScript"],
+  },
+  agrovision: {
+    name: "AgroVision",
+    url: "https://agrovision-sand.vercel.app/",
+    tech: ["React", "Tailwind CSS", "Node.js", "Express", "MongoDB", "Firebase"],
+  },
+  vendor: {
+    name: "VendorProfile",
+    url: "https://vandorprofile.parthchoudhary4372.workers.dev/",
+    tech: ["React", "Tailwind CSS", "React Router", "Framer Motion", "Google Maps"],
+  },
+};
+
+// =====================================
+// SOFTWARE ROWS
+// =====================================
 
 const SOFTWARE_ROW_1 = [
   { id: "figma-1", name: "Figma", Icon: Figma },
@@ -50,51 +82,235 @@ const SOFTWARE_ROW_2 = [
   { id: "layers-2", name: "Design Systems", Icon: Layers },
 ];
 
+// =====================================
+// CONTACT FORM DEFAULT VALUES
+// =====================================
+
 const INITIAL_FORM = {
   name: "",
-  eCat: "",
-  scope: "Brand & Visual Systems",
-  timeline: "Q2 2026",
+  email: "",
+  scope: "Web Product Design",
+  timeline: "Flexible / Exploration",
   message: "",
 };
+
+// =====================================
+// REUSABLE TECH STACK COMPONENT
+// =====================================
+
+function TechStack({ tech }) {
+  return (
+    <div className="w-full border-t border-white/15 pt-3">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[10px] uppercase tracking-[0.18em] text-white/60 font-medium">
+          Tech Stack
+        </span>
+
+        <ArrowUpRight
+          className="h-4 w-4 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+          strokeWidth={1.5}
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-1.5">
+        {tech.map((item) => (
+          <span
+            key={item}
+            className="px-2.5 py-1 rounded-full bg-white/[0.08] border border-white/[0.12] text-[10px] sm:text-[11px] text-white/80 backdrop-blur-md group-hover:bg-white/[0.12] group-hover:text-white transition-all duration-300"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// =====================================
+// REUSABLE PROJECT IMAGE
+// =====================================
+
+function ProjectImage({ src, alt }) {
+  return (
+    <>
+      <img
+        src={src}
+        alt={alt}
+        className="absolute inset-0 w-full h-full object-cover brightness-[0.65] saturate-[0.70] transition-transform duration-700 group-hover:scale-[1.06]"
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/35 to-black/95 pointer-events-none" />
+    </>
+  );
+}
+
+// =====================================
+// REUSABLE PROJECT LABEL
+// =====================================
+
+function ProjectLabel({ children }) {
+  return (
+    <div className="relative z-10 flex items-center justify-center gap-2">
+      <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+
+      <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
+        {children}
+      </span>
+
+      <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+    </div>
+  );
+}
+
+// =====================================
+// MAIN COMPONENT
+// =====================================
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedField, setCopiedField] = useState(null);
   const [activeSoftware, setActiveSoftware] = useState(null);
-  const [inquirySent, setInquirySent] = useState(false);
   const [inquiryForm, setInquiryForm] = useState(INITIAL_FORM);
 
-  const handleCopy = (text, fieldName, e) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(text);
-    setCopiedField(fieldName);
-    setTimeout(() => setCopiedField(null), 2000);
+  // =====================================
+  // COPY FUNCTION
+  // =====================================
+
+  const handleCopy = async (text, fieldName) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(fieldName);
+
+      setTimeout(() => {
+        setCopiedField(null);
+      }, 2000);
+    } catch (error) {
+      console.error("Clipboard copy failed:", error);
+    }
   };
+
+  // =====================================
+  // CLOSE MODAL WITH ESC
+  // =====================================
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsModalOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isModalOpen]);
+
+  // =====================================
+  // FORM SUBMIT
+  // Opens the user's email application.
+  // =====================================
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    // Demo-only success state. Connect a backend or eCat service to send data.
-    setInquirySent(true);
-    setTimeout(() => {
-      setInquirySent(false);
-      setIsModalOpen(false);
-      setInquiryForm(INITIAL_FORM);
-    }, 2400);
+
+    const subject = `Collaboration Inquiry - ${inquiryForm.scope}`;
+
+    const body = `
+Name: ${inquiryForm.name}
+Email: ${inquiryForm.email}
+Project Scope: ${inquiryForm.scope}
+Timeline: ${inquiryForm.timeline}
+
+Project Brief:
+${inquiryForm.message}
+    `.trim();
+
+    const mailto = `mailto:choudharyparth118@gmail.com?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    window.location.href = mailto;
   };
 
+  // =====================================
+  // RENDER
+  // =====================================
+
   return (
-    <main className="min-h-screen lg:h-screen w-full bg- text-white flex flex-col justify-between px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8 md:py-10 antialiased overflow-y-auto lg:overflow-hidden font-sans">
-      {/* Top header row */}
+    <main className="min-h-screen lg:h-screen lg:min-h-[760px] w-full bg-transparent text-white flex flex-col justify-between px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8 md:py-10 antialiased overflow-y-auto font-sans">
+
+      {/* =====================================
+          ANIMATION + GLASS CSS
+      ===================================== */}
+
+      <style>
+        {`
+          .liquid-glass {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+          }
+
+          @keyframes marquee-left {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+
+          @keyframes marquee-right {
+            0% {
+              transform: translateX(-50%);
+            }
+            100% {
+              transform: translateX(0);
+            }
+          }
+
+          .animate-marquee-left {
+            animation: marquee-left 28s linear infinite;
+          }
+
+          .animate-marquee-right {
+            animation: marquee-right 28s linear infinite;
+          }
+
+          .animate-marquee-left:hover,
+          .animate-marquee-right:hover {
+            animation-play-state: paused;
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .animate-marquee-left,
+            .animate-marquee-right {
+              animation: none;
+            }
+          }
+        `}
+      </style>
+
+      {/* =====================================
+          HEADER
+      ===================================== */}
+
       <header className="w-full flex flex-col md:flex-row md:items-start justify-between gap-6 shrink-0 mb-6 md:mb-7">
+
         <div className="max-w-3xl">
           <h1 className="text-[28px] sm:text-3xl md:text-4xl lg:text-[44px] leading-[1.15] font-normal tracking-tight text-white mb-3">
             Here's my work
           </h1>
+
           <p className="text-sm md:text-[15px] leading-[1.6] text-white/60">
-            A collection of ideas brought to life through creativity, clean
-            design, and thoughtful development. Explore what I’ve built, one
-            project at a time.{" "}
+            A collection of ideas brought to life through creativity,
+            clean design, and thoughtful development. Explore what
+            I've built, one project at a time.
           </p>
         </div>
 
@@ -109,7 +325,9 @@ export default function App() {
               className="h-3.5 w-3.5 text-white/60 group-hover:text-white transition-colors"
               strokeWidth={1.5}
             />
+
             <span>Let's Team Up Today</span>
+
             <ArrowUpRight
               className="h-3.5 w-3.5 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
               strokeWidth={1.5}
@@ -118,271 +336,366 @@ export default function App() {
         </div>
       </header>
 
-      {/* Three-column layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 flex-1 min-h-0 w-full">
-        {/* Column 1: Background */}
-        <section
-          aria-label="Career Background"
-          className="relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between h-full min-h-[400px] md:min-h-[460px] lg:min-h-0 border border-white/[0.08]"
-        >
-          <img
-            src={Humflow}
-            alt="Humflow project showcase"
-            className=" absolute inset-0
-    w-full h-full
-    object-cover
-    brightness-[0.65]
-    saturate-[0.70]
-    transition-transform
-    duration-700
-    group-hover:scale-[1.02]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/90 pointer-events-none" />
+      {/* =====================================
+          THREE-COLUMN LAYOUT
+      ===================================== */}
 
-          <div className="relative z-10 pt-5 md:pt-6 px-5 md:px-6 flex items-center justify-center gap-2">
-            <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-            <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
-              HumFlow
-            </span>
-            <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 flex-1 min-h-0 w-full">
+
+        {/* =====================================
+            CARD 1 - HUMFLOW
+            FULL CARD CLICKABLE
+        ===================================== */}
+
+        <a
+          href={PROJECTS.humflow.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View HumFlow project"
+          className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between h-full min-h-[440px] md:min-h-[500px] lg:min-h-0 border border-white/[0.08] hover:border-white/25 transition-all duration-500 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+        >
+          <ProjectImage
+            src={Humflow}
+            alt="HumFlow project showcase"
+          />
+
+          {/* Top title */}
+
+          <div className="relative z-10 pt-5 md:pt-6 px-5 md:px-6">
+            <ProjectLabel>HumFlow</ProjectLabel>
           </div>
+
+          {/* Bottom details */}
 
           <div className="relative z-10 p-5 md:p-6 lg:p-7">
-            <div className="liquid-glass rounded-xl p-4 sm:p-4.5 bg-black/40 backdrop-blur-md border border-white/[0.08]">
-          
+            <div className="rounded-xl p-4 bg-black/40 backdrop-blur-md border border-white/[0.08] group-hover:bg-black/50 transition-all duration-300">
+
+              <h3 className="text-lg md:text-xl font-medium text-white mb-1">
+                HumFlow
+              </h3>
+
+              <p className="text-xs text-white/60 leading-relaxed mb-4">
+                An interactive digital experience with creative
+                animations and seamless transitions.
+              </p>
+
+              <TechStack tech={PROJECTS.humflow.tech} />
             </div>
           </div>
-        </section>
+        </a>
 
-        {/* Column 2: Testimonial and impact */}
-        <div className="grid grid-rows-[auto_1fr] gap-4 md:gap-5 h-full min-h-[460px] lg:min-h-0">
-          <section
-            aria-label="Featured Project"
-            className="group relative rounded-2xl bg-[#172626]
-    min-h-[220px] overflow-hidden flex flex-col
-    justify-between border border-white/[0.08]"
+        {/* =====================================
+            COLUMN 2
+        ===================================== */}
+
+        <div className="grid grid-rows-[minmax(260px,1fr)_minmax(260px,1fr)] gap-4 md:gap-5 h-full min-h-[560px] lg:min-h-0">
+
+          {/* =====================================
+              CARD 2 - PERSONAL PORTFOLIO
+              FULL CARD CLICKABLE
+          ===================================== */}
+
+          <a
+            href={PROJECTS.personal.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View Personal Portfolio project"
+            className="group relative rounded-2xl bg-[#172626] min-h-0 overflow-hidden flex flex-col justify-between border border-white/[0.08] hover:border-white/25 transition-all duration-500 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            {/* Project Background Image */}
-            <img
+            <ProjectImage
               src={Personal}
-              alt="My project preview"
-              className="absolute inset-0 w-full h-full
-      object-cover brightness-[0.60] saturate-[0.70]
-      transition-transform duration-700
-      group-hover:scale-[1.02]"
+              alt="Personal Portfolio project preview"
             />
 
-            {/* Dark Gradient Overlay */}
-            <div
-              className="absolute inset-0
-      bg-gradient-to-t
-      from-black/90 via-black/50 to-black/30
-      pointer-events-none"
-            />
+            {/* Top label */}
 
-            {/* Top Label */}
-            <div className="relative z-10 flex items-center gap-2 p-5 md:p-6">
-              <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-              <span className="text-[11px] uppercase tracking-[0.22em] text-white/70">
-                FEATURED PROJECT
-              </span>
-              <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+            <div className="relative z-10 p-5 md:p-6">
+              <ProjectLabel>Featured Project</ProjectLabel>
             </div>
 
-            {/* Project Details */}
+            {/* Bottom details */}
+
             <div className="relative z-10 p-5 md:p-6">
-              <h3 className="text-lg font-medium text-white mb-1">
+
+              <h3 className="text-lg font-medium text-white mb-3">
                 Personal Portfolio
               </h3>
 
-              <div className="flex items-center justify-between border-t border-white/15 pt-3">
-                <span className="text-xs text-white/60">
-                  React • Tailwind CSS • JavaScript
-                </span>
-
-                <a
-                  href="https://webresume-bzt.pages.dev/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="View project on GitHub"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              </div>
+              <TechStack tech={PROJECTS.personal.tech} />
             </div>
-          </section>
+          </a>
 
-          <section
-            aria-label="Impact Metric"
-            className="relative rounded-2xl bg-black overflow-hidden flex flex-col items-center justify-center p-5 md:p-6 border border-white/[0.08] min-h-[200px]"
+          {/* =====================================
+              CARD 3 - AGROVISION
+              FULL CARD CLICKABLE
+          ===================================== */}
+
+          <a
+            href={PROJECTS.agrovision.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View AI AgroVision project"
+            className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between p-5 md:p-6 border border-white/[0.08] hover:border-white/25 transition-all duration-500 min-h-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
           >
-            <img
+            <ProjectImage
               src={Agrovision}
               alt="AI AgroVision project preview"
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.65] saturate-[0.70] transition-transform duration-700 group-hover:scale-[1.02]"
             />
-            <div className="absolute inset-0 bg-black/50 pointer-events-none" />
-            <div className="relative z-10 flex flex-col items-center text-center">
-              <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-light tracking-tight text-white drop-shadow-lg leading-none select-none">
+
+            {/* Main center content */}
+
+            <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center min-h-0">
+
+              <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-light tracking-tight text-white drop-shadow-lg leading-none select-none group-hover:scale-105 transition-transform duration-500">
                 AI
               </span>
-              <p className="mt-2 text-sm sm:text-base text-white/85 tracking-normal font-normal">
+
+              <p className="mt-2 text-sm sm:text-base text-white/85 font-normal">
                 AgroVision
               </p>
             </div>
-          </section>
+
+            {/* Bottom tech stack */}
+
+            <div className="relative z-10 w-full mt-4">
+              <TechStack tech={PROJECTS.agrovision.tech} />
+            </div>
+          </a>
         </div>
 
-        {/* Column 3: Software and contact */}
-        <div className="grid grid-rows-[1fr_auto] md:col-span-2 lg:col-span-1 gap-4 md:gap-5 h-full min-h-[460px] lg:min-h-0">
-          <section
-            aria-label="Daily Software"
-            className="relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between py-5 md:py-6 border border-white/[0.08] min-h-[260px] lg:min-h-0"
-          >
-            <img
-              src={Vendorprofile}
-              alt="Daily software showcase background"
-              className="absolute inset-0 w-full h-full object-cover brightness-[0.65] saturate-[0.70] transition-transform duration-700 group-hover:scale-[1.02]"
-            />
-            <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+        {/* =====================================
+            COLUMN 3
+        ===================================== */}
 
-            <div className="relative z-10 flex items-center justify-center gap-2 px-5">
-              <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-              <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
-                VendorProfile
-              </span>
-              <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+        <div className="grid grid-rows-[minmax(330px,1fr)_auto] md:col-span-2 lg:col-span-1 gap-4 md:gap-5 h-full min-h-[560px] lg:min-h-0">
+
+          {/* =====================================
+              CARD 4 - VENDORPROFILE
+              FULL CARD CLICKABLE
+          ===================================== */}
+
+          <a
+            href={PROJECTS.vendor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View VendorProfile project"
+            className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between py-5 md:py-6 border border-white/[0.08] hover:border-white/25 transition-all duration-500 min-h-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          >
+            <ProjectImage
+              src={Vendorprofile}
+              alt="VendorProfile project preview"
+            />
+
+            {/* Top label */}
+
+            <div className="relative z-10 px-5">
+              <ProjectLabel>VendorProfile</ProjectLabel>
             </div>
+
+            {/* Active software name */}
+
             <div className="relative z-10 px-5 text-center h-4">
               <span className="text-[11px] text-white/60 transition-opacity duration-200">
-                {activeSoftware ? `Toolkit item: ${activeSoftware}` : ""}
+                {activeSoftware
+                  ? `Toolkit item: ${activeSoftware}`
+                  : ""}
               </span>
             </div>
 
+            {/* Animated software icons */}
+
             <div className="relative z-10 flex flex-col gap-3 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+
+              {/* Row 1 */}
+
               <div className="flex w-max animate-marquee-left gap-3">
-                {[...SOFTWARE_ROW_1, ...SOFTWARE_ROW_1].map((item, idx) => {
-                  const Icon = item.Icon;
-                  return (
-                    <div
-                      key={`r1-${idx}`}
-                      onMouseEnter={() => setActiveSoftware(item.name)}
-                      onMouseLeave={() => setActiveSoftware(null)}
-                      title={item.name}
-                      className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 cursor-pointer shrink-0"
-                    >
-                      <Icon
-                        className="h-6 w-6 md:h-7 md:w-7"
-                        strokeWidth={1.5}
-                      />
-                    </div>
-                  );
-                })}
+                {[...SOFTWARE_ROW_1, ...SOFTWARE_ROW_1].map(
+                  (item, idx) => {
+                    const Icon = item.Icon;
+
+                    return (
+                      <div
+                        key={`r1-${idx}`}
+                        onMouseEnter={() => setActiveSoftware(item.name)}
+                        onMouseLeave={() => setActiveSoftware(null)}
+                        title={item.name}
+                        className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 shrink-0"
+                      >
+                        <Icon
+                          className="h-6 w-6 md:h-7 md:w-7"
+                          strokeWidth={1.5}
+                        />
+                      </div>
+                    );
+                  }
+                )}
               </div>
 
+              {/* Row 2 */}
+
               <div className="flex w-max animate-marquee-right gap-3">
-                {[...SOFTWARE_ROW_2, ...SOFTWARE_ROW_2].map((item, idx) => {
-                  const Icon = item.Icon;
-                  return (
-                    <div
-                      key={`r2-${idx}`}
-                      onMouseEnter={() => setActiveSoftware(item.name)}
-                      onMouseLeave={() => setActiveSoftware(null)}
-                      title={item.name}
-                      className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 cursor-pointer shrink-0"
-                    >
-                      <Icon
-                        className="h-6 w-6 md:h-7 md:w-7"
-                        strokeWidth={1.5}
-                      />
-                    </div>
-                  );
-                })}
+                {[...SOFTWARE_ROW_2, ...SOFTWARE_ROW_2].map(
+                  (item, idx) => {
+                    const Icon = item.Icon;
+
+                    return (
+                      <div
+                        key={`r2-${idx}`}
+                        onMouseEnter={() => setActiveSoftware(item.name)}
+                        onMouseLeave={() => setActiveSoftware(null)}
+                        title={item.name}
+                        className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 shrink-0"
+                      >
+                        <Icon
+                          className="h-6 w-6 md:h-7 md:w-7"
+                          strokeWidth={1.5}
+                        />
+                      </div>
+                    );
+                  }
+                )}
               </div>
             </div>
-          </section>
+
+            {/* Bottom tech stack */}
+
+            <div className="relative z-10 px-5 md:px-6 mt-5">
+
+              <h3 className="text-base font-medium text-white mb-3">
+                VendorProfile
+              </h3>
+
+              <TechStack tech={PROJECTS.vendor.tech} />
+            </div>
+          </a>
+
+          {/* =====================================
+              CONTACT CARD
+          ===================================== */}
 
           <section
             aria-label="Contact Information"
-            className="relative rounded-2xl bg-[#07071a] p-5 md:p-6 noise-overlay flex flex-col justify-between overflow-hidden border border-white/[0.08]"
+            className="relative rounded-2xl bg-[#07071a] p-5 md:p-6 flex flex-col justify-between overflow-hidden border border-white/[0.08]"
           >
+            {/* Contact heading */}
+
             <div className="relative z-10 flex items-center justify-between mb-4">
+
               <div className="flex items-center gap-2">
-                <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+                <Sparkle
+                  className="h-3 w-3 text-white/60"
+                  strokeWidth={1.5}
+                />
+
                 <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
-                  REACH ME
+                  Reach Me
                 </span>
-                <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+
+                <Sparkle
+                  className="h-3 w-3 text-white/60"
+                  strokeWidth={1.5}
+                />
               </div>
+
+              {/* Email button */}
+
               <a
-                href="choudharyparth118@gmail.com"
-                aria-label="Direct eCat contact"
+                href="mailto:choudharyparth118@gmail.com"
+                aria-label="Send email"
                 className="liquid-glass h-9 w-9 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
               >
-                <ArrowUpRight className="h-4 w-4" strokeWidth={1.5} />
+                <ArrowUpRight
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
               </a>
             </div>
 
+            {/* Contact details */}
+
             <div className="relative z-10 flex flex-col gap-2.5">
-              <div className="group flex items-center justify-between">
+
+              {/* GitHub */}
+
+              <div className="group flex items-center justify-between gap-2">
+
                 <a
                   href="https://github.com/parth-choudhary613"
-                  className="text-sm md:text-[15px] text-white/95 hover:text-white transition-colors flex items-center gap-2 font-medium"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm md:text-[15px] text-white/95 hover:text-white transition-colors flex items-center gap-2 font-medium min-w-0"
                 >
                   <Cat
-                    className="h-3.5 w-3.5 text-white/60 group-hover:text-white transition-colors"
+                    className="h-3.5 w-3.5 shrink-0 text-white/60 group-hover:text-white transition-colors"
                     strokeWidth={1.5}
                   />
-                  <span>parth-choudhary613</span>
+
+                  <span className="break-all">
+                    parth-choudhary613
+                  </span>
                 </a>
+
                 <button
                   type="button"
-                  onClick={(e) =>
+                  onClick={() =>
                     handleCopy(
                       "https://github.com/parth-choudhary613",
-                      "eCat",
-                      e,
+                      "github"
                     )
                   }
-                  title="Copy eCat to clipboard"
-                  aria-label="Copy eCat address"
-                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer"
+                  title="Copy GitHub URL"
+                  aria-label="Copy GitHub URL"
+                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer shrink-0"
                 >
-                  {copiedField === "eCat" ? (
+                  {copiedField === "github" ? (
                     <span className="text-[11px] text-emerald-400 flex items-center gap-0.5">
-                      <Check className="h-3 w-3" strokeWidth={1.5} /> Copied
+                      <Check className="h-3 w-3" />
+                      Copied
                     </span>
                   ) : (
-                    <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
+                    <Copy
+                      className="h-3.5 w-3.5"
+                      strokeWidth={1.5}
+                    />
                   )}
                 </button>
               </div>
 
-              <div className="group flex items-center justify-between">
+              {/* Phone */}
+
+              <div className="group flex items-center justify-between gap-2">
+
                 <a
-                  href="tel:+91 8894459562"
+                  href="tel:+918894459562"
                   className="text-sm md:text-[15px] text-white/95 hover:text-white transition-colors flex items-center gap-2 font-mono tabular-nums"
                 >
                   <Phone
                     className="h-3.5 w-3.5 text-white/60 group-hover:text-white transition-colors"
                     strokeWidth={1.5}
                   />
+
                   <span>+91 88944-59562</span>
                 </a>
+
                 <button
                   type="button"
-                  onClick={(e) => handleCopy("+91 8894459562", "phone", e)}
-                  title="Copy phone to clipboard"
+                  onClick={() =>
+                    handleCopy("+91 8894459562", "phone")
+                  }
+                  title="Copy phone number"
                   aria-label="Copy phone number"
-                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer"
+                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   {copiedField === "phone" ? (
                     <span className="text-[11px] text-emerald-400 flex items-center gap-0.5">
-                      <Check className="h-3 w-3" strokeWidth={1.5} /> Copied
+                      <Check className="h-3 w-3" />
+                      Copied
                     </span>
                   ) : (
-                    <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
+                    <Copy
+                      className="h-3.5 w-3.5"
+                      strokeWidth={1.5}
+                    />
                   )}
                 </button>
               </div>
@@ -391,30 +704,42 @@ export default function App() {
         </div>
       </div>
 
-      {/* Collaboration / contact modal */}
+      {/* =====================================
+          COLLABORATION MODAL
+      ===================================== */}
+
       {isModalOpen && (
         <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="collab-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
-          onClick={() => setIsModalOpen(false)}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsModalOpen(false);
+            }
+          }}
         >
           <div
-            className="liquid-glass relative w-full max-w-lg rounded-2xl bg-[#141414]/95 p-6 sm:p-7 border border-white/10 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="collab-title"
+            className="liquid-glass relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-[#141414]/95 p-6 sm:p-7 border border-white/10 shadow-2xl"
           >
-            <div className="flex items-start justify-between mb-5">
+            {/* Modal header */}
+
+            <div className="flex items-start justify-between gap-4 mb-5">
+
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
+
                   <Sparkle
                     className="h-3.5 w-3.5 text-white/60"
                     strokeWidth={1.5}
                   />
+
                   <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium">
-                    COLLABORATION INQUIRY
+                    Collaboration Inquiry
                   </span>
                 </div>
+
                 <h2
                   id="collab-title"
                   className="text-xl sm:text-2xl font-normal text-white"
@@ -422,172 +747,226 @@ export default function App() {
                   Let's build something memorable.
                 </h2>
               </div>
+
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 aria-label="Close modal"
-                className="liquid-glass h-8 w-8 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
+                className="liquid-glass h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
               >
-                <X className="h-4 w-4" strokeWidth={1.5} />
+                <X
+                  className="h-4 w-4"
+                  strokeWidth={1.5}
+                />
               </button>
             </div>
 
-            {inquirySent ? (
-              <div className="py-10 text-center flex flex-col items-center">
-                <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <Check className="h-6 w-6" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-lg font-medium text-white mb-1">
-                  Message dispatched!
-                </h3>
-                <p className="text-xs text-white/60 max-w-xs">
-                  Thanks for reaching out. Max will review your project brief
-                  and get back to you within 24 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label
-                      htmlFor="inquiry-name"
-                      className="block text-xs text-white/70 mb-1"
-                    >
-                      Your Name
-                    </label>
-                    <input
-                      id="inquiry-name"
-                      type="text"
-                      required
-                      placeholder="Elena Brooks"
-                      value={inquiryForm.name}
-                      onChange={(e) =>
-                        setInquiryForm({ ...inquiryForm, name: e.target.value })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="inquiry-eCat"
-                      className="block text-xs text-white/70 mb-1"
-                    >
-                      ECat
-                    </label>
-                    <input
-                      id="inquiry-eCat"
-                      type="eCat"
-                      required
-                      placeholder="elena@halcyon.studio"
-                      value={inquiryForm.eCat}
-                      onChange={(e) =>
-                        setInquiryForm({ ...inquiryForm, eCat: e.target.value })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
-                    />
-                  </div>
-                </div>
+            {/* =====================================
+                INQUIRY FORM
+            ===================================== */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label
-                      htmlFor="inquiry-scope"
-                      className="block text-xs text-white/70 mb-1"
-                    >
-                      Project Scope
-                    </label>
-                    <select
-                      id="inquiry-scope"
-                      value={inquiryForm.scope}
-                      onChange={(e) =>
-                        setInquiryForm({
-                          ...inquiryForm,
-                          scope: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
-                    >
-                      <option value="Brand & Visual Systems">
-                        Brand &amp; Visual Systems
-                      </option>
-                      <option value="Web Product Design">
-                        Web Product Design
-                      </option>
-                      <option value="Story & Campaign Motion">
-                        Story &amp; Campaign Motion
-                      </option>
-                      <option value="Design System Consulting">
-                        Design System Consulting
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="inquiry-timeline"
-                      className="block text-xs text-white/70 mb-1"
-                    >
-                      Target Timeline
-                    </label>
-                    <select
-                      id="inquiry-timeline"
-                      value={inquiryForm.timeline}
-                      onChange={(e) =>
-                        setInquiryForm({
-                          ...inquiryForm,
-                          timeline: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
-                    >
-                      <option value="Immediate (This month)">
-                        Immediate (This month)
-                      </option>
-                      <option value="Q2 2026">Q2 2026</option>
-                      <option value="Q3 2026">Q3 2026</option>
-                      <option value="Flexible / Exploration">
-                        Flexible / Exploration
-                      </option>
-                    </select>
-                  </div>
+            <form
+              onSubmit={handleFormSubmit}
+              className="space-y-4"
+            >
+              {/* Name and email */}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <div>
+                  <label
+                    htmlFor="inquiry-name"
+                    className="block text-xs text-white/70 mb-1"
+                  >
+                    Your Name
+                  </label>
+
+                  <input
+                    id="inquiry-name"
+                    type="text"
+                    required
+                    placeholder="Elena Brooks"
+                    value={inquiryForm.name}
+                    onChange={(e) =>
+                      setInquiryForm({
+                        ...inquiryForm,
+                        name: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
+                  />
                 </div>
 
                 <div>
                   <label
-                    htmlFor="inquiry-message"
+                    htmlFor="inquiry-email"
                     className="block text-xs text-white/70 mb-1"
                   >
-                    Brief / Goals
+                    Email
                   </label>
-                  <textarea
-                    id="inquiry-message"
-                    rows={3}
-                    placeholder="Tell me a bit about your product, what you need crafted, and the target audience..."
-                    value={inquiryForm.message}
+
+                  <input
+                    id="inquiry-email"
+                    type="email"
+                    required
+                    placeholder="elena@example.com"
+                    value={inquiryForm.email}
                     onChange={(e) =>
                       setInquiryForm({
                         ...inquiryForm,
-                        message: e.target.value,
+                        email: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40 resize-none"
+                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
                   />
                 </div>
+              </div>
 
-                <div className="flex items-center justify-between pt-2">
-                  <div className="text-[11px] text-white/50 flex items-center gap-1.5">
-                    <Calendar className="h-3 w-3" strokeWidth={1.5} />
-                    <span>Booking Q2/Q3 2026</span>
-                  </div>
-                  <button
-                    type="submit"
-                    className="liquid-glass px-5 py-2 rounded-full text-xs font-medium text-white hover:text-white bg-white/10 hover:bg-white/20 transition-all cursor-pointer flex items-center gap-1.5"
+              {/* Scope and timeline */}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                <div>
+                  <label
+                    htmlFor="inquiry-scope"
+                    className="block text-xs text-white/70 mb-1"
                   >
-                    <MessageSquare className="h-3.5 w-3.5" strokeWidth={1.5} />
-                    <span>Send Brief</span>
-                  </button>
+                    Project Scope
+                  </label>
+
+                  <select
+                    id="inquiry-scope"
+                    value={inquiryForm.scope}
+                    onChange={(e) =>
+                      setInquiryForm({
+                        ...inquiryForm,
+                        scope: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
+                  >
+                    <option value="Brand & Visual Systems">
+                      Brand &amp; Visual Systems
+                    </option>
+
+                    <option value="Web Product Design">
+                      Web Product Design
+                    </option>
+
+                    <option value="Website Development">
+                      Website Development
+                    </option>
+
+                    <option value="Full Stack Development">
+                      Full Stack Development
+                    </option>
+
+                    <option value="Design System Consulting">
+                      Design System Consulting
+                    </option>
+                  </select>
                 </div>
-              </form>
-            )}
+
+                <div>
+                  <label
+                    htmlFor="inquiry-timeline"
+                    className="block text-xs text-white/70 mb-1"
+                  >
+                    Target Timeline
+                  </label>
+
+                  <select
+                    id="inquiry-timeline"
+                    value={inquiryForm.timeline}
+                    onChange={(e) =>
+                      setInquiryForm({
+                        ...inquiryForm,
+                        timeline: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
+                  >
+                    <option value="Immediate (This month)">
+                      Immediate (This month)
+                    </option>
+
+                    <option value="Within 1-2 months">
+                      Within 1–2 months
+                    </option>
+
+                    <option value="Within 3 months">
+                      Within 3 months
+                    </option>
+
+                    <option value="Flexible / Exploration">
+                      Flexible / Exploration
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Project description */}
+
+              <div>
+                <label
+                  htmlFor="inquiry-message"
+                  className="block text-xs text-white/70 mb-1"
+                >
+                  Brief / Goals
+                </label>
+
+                <textarea
+                  id="inquiry-message"
+                  rows={3}
+                  placeholder="Tell me about your product, what you need crafted, and your target audience..."
+                  value={inquiryForm.message}
+                  onChange={(e) =>
+                    setInquiryForm({
+                      ...inquiryForm,
+                      message: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40 resize-none"
+                />
+              </div>
+
+              {/* Form footer */}
+
+              <div className="flex items-center justify-between gap-3 pt-2">
+
+                <div className="text-[11px] text-white/50 flex items-center gap-1.5">
+                  <Calendar
+                    className="h-3 w-3 shrink-0"
+                    strokeWidth={1.5}
+                  />
+
+                  <span>Open for collaboration</span>
+                </div>
+
+                <button
+                  type="submit"
+                  className="liquid-glass px-5 py-2 rounded-full text-xs font-medium text-white bg-white/10 hover:bg-white/20 transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+                >
+                  <MessageSquare
+                    className="h-3.5 w-3.5"
+                    strokeWidth={1.5}
+                  />
+
+                  <span>Send Brief</span>
+
+                  <ArrowUpRight
+                    className="h-3.5 w-3.5"
+                    strokeWidth={1.5}
+                  />
+                </button>
+              </div>
+
+              <p className="text-[11px] text-white/40">
+                This opens your email application with the brief
+                prefilled. Review and send the email to complete
+                your inquiry.
+              </p>
+            </form>
           </div>
         </div>
       )}

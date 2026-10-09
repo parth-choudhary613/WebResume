@@ -1,55 +1,96 @@
-import React, { useState, useEffect } from 'react'
 
-import Header from './components/Header'
-import Hero from './components/Hero'
-import ProjectShowcase from './components/ProjectShowcase'
-import About from './components/About'
-import SkillsMatrix from './components/SkillsMatrix'
-import Experience from './components/Experience'
-import Principles from './components/Principles'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import ResumeModal from './components/ResumeModal'
-import Reactbitsbackground from './components/Reactbitsbackground'
+import React, { useState, useEffect } from "react";
+
+import Loader from "./components/Loader";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import ProjectShowcase from "./components/ProjectShowcase";
+import About from "./components/About";
+import SkillsMatrix from "./components/SkillsMatrix";
+import Experience from "./components/Experience";
+import Principles from "./components/Principles";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import ResumeModal from "./components/ResumeModal";
+import Reactbitsbackground from "./components/Reactbitsbackground";
 
 export default function App() {
+  // Theme state
   const [dark, setDark] = useState(() => {
-    if (typeof window === 'undefined') return false
+    if (typeof window === "undefined") return false;
 
-    const stored = localStorage.getItem('theme')
+    const stored = window.localStorage.getItem("theme");
 
     if (stored) {
-      return stored === 'dark'
+      return stored === "dark";
     }
 
-    return (
-      window.matchMedia &&
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    )
-  })
+    return window.matchMedia
+      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      : false;
+  });
 
-  const [resumeOpen, setResumeOpen] = useState(false)
+  // Resume modal state
+  const [resumeOpen, setResumeOpen] = useState(false);
+
+  // Loader states
+  const [loading, setLoading] = useState(true);
+  const [fadeOut, setFadeOut] = useState(false);
 
   // Sync theme with HTML root
   useEffect(() => {
-    const root = document.documentElement
+    const root = document.documentElement;
 
     if (dark) {
-      root.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
+      root.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      root.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
+      root.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
-  }, [dark])
+  }, [dark]);
+
+  // Initial website loading animation
+  useEffect(() => {
+    const fadeTimer = setTimeout(() => {
+      setFadeOut(true);
+    }, 2000);
+
+    const removeTimer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(removeTimer);
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden isolate">
 
-      {/* =====================================================
+      {/* =========================================
+          FULLSCREEN LOADER
+      ========================================= */}
+      {loading && (
+        <div
+          className={`
+            fixed inset-0 z-[9999]
+            flex items-center justify-center
+            bg-[#080808]
+            transition-opacity duration-500 ease-in-out
+            ${fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}
+          `}
+          role="status"
+          aria-label="Loading portfolio"
+        >
+          <Loader />
+        </div>
+      )}
+
+      {/* =========================================
           GLOBAL REACT BITS BACKGROUND
-          Fixed behind the complete website
-      ====================================================== */}
+      ========================================= */}
       <div
         className="
           fixed
@@ -63,11 +104,9 @@ export default function App() {
         <Reactbitsbackground dark={dark} />
       </div>
 
-
-      {/* =====================================================
+      {/* =========================================
           WEBSITE CONTENT
-          Everything stays above the animated background
-      ====================================================== */}
+      ========================================= */}
       <div className="relative z-10 min-h-screen flex flex-col">
 
         {/* Primary Sticky Header */}
@@ -102,19 +141,16 @@ export default function App() {
 
         {/* Editorial Footer */}
         <Footer />
-
       </div>
 
-
-      {/* =====================================================
-          MODAL
-          Keep outside normal site layer
-      ====================================================== */}
+      {/* =========================================
+          RESUME MODAL
+      ========================================= */}
       <ResumeModal
         isOpen={resumeOpen}
         onClose={() => setResumeOpen(false)}
       />
 
     </div>
-  )
+  );
 }
