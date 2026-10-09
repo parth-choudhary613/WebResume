@@ -153,13 +153,19 @@ const MoltenMetal = ({
     const container = containerRef.current;
     if (!container) return;
 
-    const renderer = new Renderer({
+    let renderer;
+    try {
+      renderer = new Renderer({
       webgl: 2,
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
       dpr: Math.min(window.devicePixelRatio || 1, 2)
-    });
+      });
+    } catch {
+      // Preserve a readable static background on older WebViews without WebGL2.
+      return;
+    }
 
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -214,8 +220,10 @@ const MoltenMetal = ({
       renderer.render({ scene: mesh });
     };
 
-    const ro = new ResizeObserver(setSize);
-    ro.observe(container);
+    // ResizeObserver is not available in some older Android WebViews.
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(setSize) : null;
+    if (ro) ro.observe(container);
+    else window.addEventListener('resize', setSize, { passive: true });
     setSize();
 
     const targetMouse = [0.5, 0.5];
@@ -237,8 +245,25 @@ const MoltenMetal = ({
     let isVisible = true;
     let isPageVisible = !document.hidden;
     const t0 = performance.now();
+    let previousFrame = 0;
+    let slowFrames = 0;
+    let qualityReduced = false;
 
     const loop = t => {
+      // Keep the full-resolution design on capable devices. Only if real
+      // frame timing is consistently slow, lower the GPU backing resolution
+      // (not the layout, colors, motion, or CSS size) to avoid frame freezes.
+      if (previousFrame && !qualityReduced && renderer.dpr > 1.25) {
+        const frameMs = t - previousFrame;
+        if (frameMs > 27 && frameMs < 180) slowFrames++;
+        else slowFrames = Math.max(0, slowFrames - 2);
+        if (slowFrames >= 50) {
+          qualityReduced = true;
+          renderer.dpr = 1.25;
+          setSize();
+        }
+      }
+      previousFrame = t;
       program.uniforms.iTime.value = (t - t0) * 0.001;
       currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
       currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
@@ -277,7 +302,8 @@ const MoltenMetal = ({
 
     return () => {
       tryStop();
-      ro.disconnect();
+      ro?.disconnect();
+      if (!ro) window.removeEventListener('resize', setSize);
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
       canvas.removeEventListener('mousemove', handleMouseMove);
@@ -292,7 +318,11 @@ const MoltenMetal = ({
     const container = containerRef.current;
     if (!container) return;
     const ctx = ctxMap.get(container);
-    if (!ctx) return;
+    if (!ctx) {
+      // The matching solid palette is only used if WebGL2 is unavailable.
+      container.style.backgroundColor = backgroundColor;
+      return;
+    }
     const u = ctx.program.uniforms;
 
     u.uSpeed.value = speed;

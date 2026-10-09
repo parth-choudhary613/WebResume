@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import Loader from "./components/Loader";
 import Header from "./components/Header";
@@ -11,7 +11,7 @@ import Experience from "./components/Experience";
 import Principles from "./components/Principles";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import ResumeModal from "./components/ResumeModal";
+const ResumeModal = lazy(() => import("./components/ResumeModal"));
 import Reactbitsbackground from "./components/Reactbitsbackground";
 
 export default function App() {
@@ -146,10 +146,14 @@ export default function App() {
       {/* =========================================
           RESUME MODAL
       ========================================= */}
-      <ResumeModal
-        isOpen={resumeOpen}
-        onClose={() => setResumeOpen(false)}
-      />
+      {resumeOpen && (
+        <Suspense fallback={null}>
+          <ResumeModal
+            isOpen={resumeOpen}
+            onClose={() => setResumeOpen(false)}
+          />
+        </Suspense>
+      )}
 
     </div>
   );

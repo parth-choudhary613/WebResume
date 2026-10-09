@@ -1,11 +1,11 @@
 // Centralized, factual data for Parth Choudhary's Portfolio
-import humflowImg from '../components/assets/humflow.png'
-import omnicassionImg from '../components/assets/omnicassion.png'
-import vendorImg from '../components/assets/vendorprofile.png'
-import agrovisionImg from '../components/assets/portfolio.png'
+import humflowImg from '../components/assets/humflow.webp'
+import omnicassionImg from '../components/assets/omnicassion.webp'
+import vendorImg from '../components/assets/vendorprofile.webp'
+import agrovisionImg from '../components/assets/portfolio.webp'
 import avatarImg from '../components/assets/parth_avatar.png'
-import monogramImg from '../components/assets/navlogo.png'
-import portraitImg from '../components/assets/parth-portrait.png'
+import monogramImg from '../components/assets/navlogo.webp'
+import portraitImg from '../components/assets/parth-portrait.webp'
 
 export const personalData = {
   name: "Parth Choudhary",

@@ -116,8 +116,11 @@ export default function Header({ dark, setDark }) {
           {/* Custom Logo */}
           <div className="flex items-center justify-center shrink-0">
           <img
-  src="/assets/TechLogo.png"
+  src="/assets/TechLogo.webp"
   alt={`${personalData.name} logo`}
+  width="1254"
+  height="1254"
+  decoding="async"
   className="w-20 h-20 sm:w-15 sm:h-15 object-contain transition-transform duration-300 group-hover:scale-105"
 />
           </div>

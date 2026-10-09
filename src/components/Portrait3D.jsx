@@ -13,6 +13,7 @@ import {
 } from '@react-three/drei'
 
 import * as THREE from 'three'
+import useSceneActivity from '../hooks/useSceneActivity'
 
 // ------------------------------------------------------------
 // Automatic animation sequence
@@ -95,7 +96,7 @@ function Character({ pointer, interactionRef }) {
   // ----------------------------------------------------------
 
   const texture = useTexture(
-    '/texture/Texture.png'
+    '/texture/Texture.webp'
   )
 
   // ----------------------------------------------------------
@@ -403,6 +404,7 @@ function Character({ pointer, interactionRef }) {
 // ------------------------------------------------------------
 
 export default function Portrait3D() {
+  const { elementRef, active } = useSceneActivity()
   const pointer = useRef({
     x: 0,
     y: 0,
@@ -621,6 +623,7 @@ export default function Portrait3D() {
 
   return (
     <div
+      ref={elementRef}
       className="w-full h-full"
       onPointerEnter={
         handlePointerEnter
@@ -633,6 +636,7 @@ export default function Portrait3D() {
       }
     >
       <Canvas
+        frameloop={active ? "always" : "never"}
         camera={{
           position: [0, 1, 7],
           fov: 32,
@@ -676,28 +680,3 @@ export default function Portrait3D() {
     </div>
   )
 }
-
-// ------------------------------------------------------------
-// Preload model + animation files
-// ------------------------------------------------------------
-
-useGLTF.preload(
-  '/models/Breathing Idle.glb'
-)
-
-useGLTF.preload(
-  '/models/Walking.glb'
-)
-
-useGLTF.preload(
-  '/models/Running.glb'
-)
-
-useGLTF.preload(
-  '/models/Sitting.glb'
-)
-
-// Preload texture
-useTexture.preload(
-  '/texture/Texture.png'
-)

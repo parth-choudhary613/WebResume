@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Mail, Linkedin, Github, Phone, ArrowUpRight, Copy, Check, Send, MessageSquare } from 'lucide-react'
 import SectionHeader from './SectionHeader'
 import { personalData } from '../data/portfolioData'
@@ -7,21 +7,33 @@ export default function Contact() {
   const [copiedEmail, setCopiedEmail] = useState(false)
   const [formState, setFormState] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState('idle') // 'idle' | 'submitting' | 'success'
+  const pendingTimers = useRef(new Set())
+  useEffect(() => () => {
+    pendingTimers.current.forEach(clearTimeout)
+    pendingTimers.current.clear()
+  }, [])
+  const schedule = (callback, delay) => {
+    const timer = setTimeout(() => {
+      pendingTimers.current.delete(timer)
+      callback()
+    }, delay)
+    pendingTimers.current.add(timer)
+  }
 
   const copyEmail = () => {
     navigator.clipboard.writeText(personalData.email)
     setCopiedEmail(true)
-    setTimeout(() => setCopiedEmail(false), 2000)
+    schedule(() => setCopiedEmail(false), 2000)
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setStatus('submitting')
     // Simulate reliable dispatch
-    setTimeout(() => {
+    schedule(() => {
       setStatus('success')
       setFormState({ name: '', email: '', message: '' })
-      setTimeout(() => setStatus('idle'), 4000)
+      schedule(() => setStatus('idle'), 4000)
     }, 800)
   }
 

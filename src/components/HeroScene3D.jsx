@@ -2,6 +2,7 @@ import React, { useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, RoundedBox, SoftShadows, Environment } from '@react-three/drei';
 import * as THREE from 'three';
+import useSceneActivity from '../hooks/useSceneActivity';
 
 // Custom Clay Component - UI Panel
 const ClayPanel = ({ position, rotation, scale, color }) => {
@@ -69,9 +70,10 @@ const SceneContainer = () => {
 };
 
 export default function HeroScene() {
+  const { elementRef, active } = useSceneActivity();
   return (
-    <div className="hero-canvas-container">
-      <Canvas shadows camera={{ position: [0, 0, 8], fov: 40 }} dpr={[1, 1.5]} gl={{ antialias: true }}>
+    <div ref={elementRef} className="hero-canvas-container">
+      <Canvas frameloop={active ? "always" : "never"} shadows camera={{ position: [0, 0, 8], fov: 40 }} dpr={[1, 1.5]} gl={{ antialias: true }}>
         <SoftShadows size={15} samples={10} focus={0.5} />
         
         {/* Soft Studio Lighting setup */}

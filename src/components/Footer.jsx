@@ -19,8 +19,15 @@ export default function Footer() {
     }
 
     updateTime()
-    const timer = setInterval(updateTime, 1000)
-    return () => clearInterval(timer)
+    const onVisible = () => {
+      if (!document.hidden) updateTime()
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    const timer = setInterval(onVisible, 1000)
+    return () => {
+      clearInterval(timer)
+      document.removeEventListener('visibilitychange', onVisible)
+    }
   }, [])
 
   const scrollToTop = () => {

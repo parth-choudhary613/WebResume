@@ -1,7 +1,7 @@
 import React from 'react'
 import { GraduationCap, MapPin, Heart, Compass, Mountain, Music, Car } from 'lucide-react'
 import { educationData } from '../data/portfolioData'
-import Portrait3D from './Portrait3D'
+import NearViewportPortrait from './NearViewportPortrait'
 import Text from './Text/Text'
 
 export default function About() {
@@ -19,7 +19,7 @@ export default function About() {
               
               {/* Natural Color Portrait with Warm Tone */}
               <div className="relative aspect-4/5  overflow-hidden ">
-                 <Portrait3D />
+                 <NearViewportPortrait />
               </div>
 
               {/* Identity & Location Details */}

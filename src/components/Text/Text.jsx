@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import { Marquee } from "./marquee.jsx"
 import { MarqueeDemo } from "./demo"
@@ -30,6 +30,8 @@ function ShowcaseContent() {
   const [strokeWidth, setStrokeWidth] = useState("1.5px")
   const [repeat, setRepeat] = useState(4)
   const [copiedCode, setCopiedCode] = useState(false)
+  const copyTimer = useRef(null)
+  useEffect(() => () => clearTimeout(copyTimer.current), [])
   const [activeTab, setActiveTab] = useState("preview")
 
   const presets = [
@@ -86,7 +88,8 @@ export default function Example() {
 }`
     navigator.clipboard.writeText(code)
     setCopiedCode(true)
-    setTimeout(() => setCopiedCode(false), 2000)
+    clearTimeout(copyTimer.current)
+    copyTimer.current = setTimeout(() => setCopiedCode(false), 2000)
   }
 
   return (

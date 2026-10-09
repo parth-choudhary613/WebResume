@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Sparkle,
   ArrowUpRight,
@@ -24,10 +24,10 @@ import {
   MessageSquare,
 } from "lucide-react";
 
-import Humflow from "../components/assets/humflow.png";
-import Personal from "../components/assets/PersonalPortfolio.png";
-import Agrovision from "../components/assets/AgroVision.png";
-import Vendorprofile from "../components/assets/vendorprofile.png";
+import Humflow from "../components/assets/humflow.webp";
+import Personal from "../components/assets/PersonalPortfolio.webp";
+import Agrovision from "../components/assets/AgroVision.webp";
+import Vendorprofile from "../components/assets/vendorprofile.webp";
 
 // =====================================
 // PROJECT DETAILS
@@ -136,6 +136,8 @@ function ProjectImage({ src, alt }) {
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover brightness-[0.65] saturate-[0.70] transition-transform duration-700 group-hover:scale-[1.06]"
       />
 
@@ -171,6 +173,9 @@ export default function App() {
   const [copiedField, setCopiedField] = useState(null);
   const [activeSoftware, setActiveSoftware] = useState(null);
   const [inquiryForm, setInquiryForm] = useState(INITIAL_FORM);
+  const copyTimer = useRef(null);
+
+  useEffect(() => () => clearTimeout(copyTimer.current), []);
 
   // =====================================
   // COPY FUNCTION
@@ -181,7 +186,8 @@ export default function App() {
       await navigator.clipboard.writeText(text);
       setCopiedField(fieldName);
 
-      setTimeout(() => {
+      clearTimeout(copyTimer.current);
+      copyTimer.current = setTimeout(() => {
         setCopiedField(null);
       }, 2000);
     } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Check, Copy, Code, Terminal, Sparkles } from 'lucide-react'
 import SectionHeader from './SectionHeader'
 import { philosophyPrinciples } from '../data/portfolioData'
@@ -6,13 +6,16 @@ import { philosophyPrinciples } from '../data/portfolioData'
 export default function Principles() {
   const [activeId, setActiveId] = useState('performance')
   const [copied, setCopied] = useState(false)
+  const copyTimer = useRef(null)
+  useEffect(() => () => clearTimeout(copyTimer.current), [])
 
   const activePrinciple = philosophyPrinciples.find((p) => p.id === activeId) || philosophyPrinciples[0]
 
   const handleCopy = () => {
     navigator.clipboard.writeText(activePrinciple.codeSnippet)
     setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    clearTimeout(copyTimer.current)
+    copyTimer.current = setTimeout(() => setCopied(false), 2000)
   }
 
   return (
