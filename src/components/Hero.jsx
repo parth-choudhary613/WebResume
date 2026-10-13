@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { motion } from 'framer-motion';
-import HeroScene from './HeroScene3D';
 import './Hero.css';
+
+const HeroScene = lazy(() => import('./HeroScene3D'));
 
 export default function Hero() {
   // Framer Motion Animation Variants
@@ -33,7 +34,9 @@ export default function Hero() {
   return (
     <section className="hero-wrapper">
       {/* 3D WebGL Background */}
-      <HeroScene />
+      <Suspense fallback={null}>
+        <HeroScene />
+      </Suspense>
       
       {/* Minimal UI Overlay */}
       <motion.div 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ArrowUp, Github, Linkedin, Mail, Phone } from 'lucide-react'
 import { personalData } from '../data/portfolioData'
 
-export default function Footer() {
+function TimeDisplay() {
   const [time, setTime] = useState('')
 
   useEffect(() => {
@@ -29,6 +29,11 @@ export default function Footer() {
       document.removeEventListener('visibilitychange', onVisible)
     }
   }, [])
+
+  return <span>TIME_SYNC (IST): {time || '00:00:00'}</span>
+}
+
+export default function Footer() {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -87,7 +92,7 @@ export default function Footer() {
             <span>© {new Date().getFullYear()} PARTH CHOUDHARY</span>
             <span>•</span>
             <span className="text-text-primary">
-              TIME_SYNC (IST): {time || '00:00:00'}
+              <TimeDisplay />
             </span>
           </div>
 

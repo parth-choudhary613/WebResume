@@ -134,7 +134,7 @@
 .btn-primary {
   background-color: rgba(255, 246, 246, 0.13);
   color: var(--text-main);
-  border: 1px solid (--text-main);
+  border: 1px solid var(--text-main);
 }
 
 .btn-primary:hover {
@@ -213,5 +213,14 @@
   }
   .hero-title {
     mix-blend-mode: normal; /* Disable multiply on mobile for better readability */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot,
+  .scroll-line,
+  .btn {
+    animation: none !important;
+    transition: none !important;
   }
 }

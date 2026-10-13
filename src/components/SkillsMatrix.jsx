@@ -127,8 +127,18 @@ export default function SkillsMatrix() {
               return (
                 <div
                   key={node.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isActive}
+                  onClick={() => setActiveStackNode(i)}
                   onMouseEnter={() => setActiveStackNode(i)}
-                  className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setActiveStackNode(i)
+                    }
+                  }}
+                  className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-blue ${
                     isActive
                       ? `${node.color} shadow-sm -translate-y-1`
                       : 'bg-surface-subtle/50 border-border hover:border-text-secondary/40'

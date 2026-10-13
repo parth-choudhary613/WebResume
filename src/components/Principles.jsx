@@ -41,9 +41,18 @@ export default function Principles() {
               return (
                 <div
                   key={item.id}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={isActive}
                   onClick={() => setActiveId(item.id)}
                   onMouseEnter={() => setActiveId(item.id)}
-                  className={`p-6 border rounded-xs transition-all duration-200 cursor-pointer ${
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setActiveId(item.id)
+                    }
+                  }}
+                  className={`p-6 border rounded-xs transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent ${
                     isActive
                       ? 'border-accent bg-surface shadow-xs'
                       : 'border-border bg-surface/50 hover:bg-surface hover:border-border-strong'

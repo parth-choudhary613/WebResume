@@ -34,8 +34,14 @@ export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
   // Loader states
-  const [loading, setLoading] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [loading, setLoading] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
+  const [fadeOut, setFadeOut] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  });
 
   // Sync theme with HTML root
   useEffect(() => {
@@ -52,22 +58,31 @@ export default function App() {
 
   // Initial website loading animation
   useEffect(() => {
+    if (!loading) return;
+
     const fadeTimer = setTimeout(() => {
       setFadeOut(true);
-    }, 2000);
+    }, 600);
 
     const removeTimer = setTimeout(() => {
       setLoading(false);
-    }, 2500);
+    }, 900);
 
     return () => {
       clearTimeout(fadeTimer);
       clearTimeout(removeTimer);
     };
-  }, []);
+  }, [loading]);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden isolate">
+      {/* Accessible skip navigation link */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-surface focus:text-text-primary focus:border focus:border-border focus:font-mono focus:text-xs focus:rounded-xs focus:shadow-xl"
+      >
+        Skip to main content
+      </a>
 
       {/* =========================================
           FULLSCREEN LOADER

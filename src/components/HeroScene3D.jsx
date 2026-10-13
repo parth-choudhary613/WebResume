@@ -71,10 +71,11 @@ const SceneContainer = () => {
 
 export default function HeroScene() {
   const { elementRef, active } = useSceneActivity();
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return (
     <div ref={elementRef} className="hero-canvas-container">
-      <Canvas frameloop={active ? "always" : "never"} shadows camera={{ position: [0, 0, 8], fov: 40 }} dpr={[1, 1.5]} gl={{ antialias: true }}>
-        <SoftShadows size={15} samples={10} focus={0.5} />
+      <Canvas frameloop={active ? "always" : "never"} shadows camera={{ position: [0, 0, 8], fov: 40 }} dpr={isMobile ? [1, 1.25] : [1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }}>
+        <SoftShadows size={15} samples={isMobile ? 6 : 10} focus={0.5} />
         
         {/* Soft Studio Lighting setup */}
         <ambientLight intensity={0.6} />
@@ -82,7 +83,7 @@ export default function HeroScene() {
           position={[5, 10, 5]} 
           intensity={1.2} 
           castShadow 
-          shadow-mapSize={1024}
+          shadow-mapSize={isMobile ? 512 : 1024}
           shadow-bias={-0.0001}
         />
         <pointLight position={[-5, -5, -5]} intensity={0.5} color="#FF8E7C" />

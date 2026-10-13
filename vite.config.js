@@ -11,12 +11,27 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          three: ['three', '@react-three/fiber'],
-          lucide: ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('three') || id.includes('@react-three')) {
+              return 'three-bundle';
+            }
+            if (id.includes('framer-motion')) {
+              return 'motion-bundle';
+            }
+            if (id.includes('lucide-react')) {
+              return 'lucide-bundle';
+            }
+            if (id.includes('ogl')) {
+              return 'ogl-bundle';
+            }
+            if (id.includes('react') || id.includes('react-dom') || id.includes('scheduler')) {
+              return 'react-core';
+            }
+          }
         },
       },
     },
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 1200,
   },
 })

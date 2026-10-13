@@ -24,8 +24,6 @@ const AUTO_SEQUENCE = [
   'Walking',
   'Breathing',
   'Sitting',
-  'Breathing',
-  'Running',
 ]
 
 // ------------------------------------------------------------
@@ -118,6 +116,7 @@ function Character({ pointer, interactionRef }) {
   // ----------------------------------------------------------
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
     texture.flipY = false
 
     // Correct color interpretation for normal PNG color maps
@@ -283,11 +282,11 @@ function Character({ pointer, interactionRef }) {
   // ----------------------------------------------------------
 
   useEffect(() => {
-    interactionRef.current.play =
-      playAnimation
+    const interaction = interactionRef.current
+    interaction.play = playAnimation
 
     return () => {
-      interactionRef.current.play = null
+      interaction.play = null
     }
   }, [
     interactionRef,
@@ -427,6 +426,7 @@ export default function Portrait3D() {
     useRef(null)
 
   const resumeTimer = useRef(null)
+  const rectRef = useRef(null)
 
   // ----------------------------------------------------------
   // Clear timer helper
@@ -443,7 +443,8 @@ export default function Portrait3D() {
   // Mouse enters
   // ----------------------------------------------------------
 
-  const handlePointerEnter = () => {
+  const handlePointerEnter = (event) => {
+    rectRef.current = event.currentTarget.getBoundingClientRect()
     interactionRef.current
       .isInteracting = true
 
@@ -461,9 +462,11 @@ export default function Portrait3D() {
   const handlePointerMove = (
     event
   ) => {
-    const rect =
-      event.currentTarget
-        .getBoundingClientRect()
+    let rect = rectRef.current
+    if (!rect) {
+      rect = event.currentTarget.getBoundingClientRect()
+      rectRef.current = rect
+    }
 
     const normalizedX =
       (
@@ -531,7 +534,7 @@ export default function Portrait3D() {
     if (speed > 0.006) {
       interactionRef.current
         .play?.(
-          'Running',
+          'Walking',
           0.25
         )
 
@@ -541,8 +544,8 @@ export default function Portrait3D() {
         setTimeout(() => {
           interactionRef.current
             .play?.(
-              'Walking',
-              0.4
+              'Breathing',
+              0.5
             )
         }, 1100)
     }
@@ -585,6 +588,7 @@ export default function Portrait3D() {
     () => {
       pointer.current.x = 0
       pointer.current.y = 0
+      rectRef.current = null
 
       clearTimer(idleTimer)
       clearTimer(runningTimer)
@@ -645,7 +649,7 @@ export default function Portrait3D() {
           antialias: true,
           alpha: true,
         }}
-        dpr={[1, 2]}
+        dpr={[1, 1.5]}
       >
         {/* General light */}
         <ambientLight

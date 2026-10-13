@@ -155,12 +155,14 @@ const MoltenMetal = ({
 
     let renderer;
     try {
+      const isMobile = typeof window !== 'undefined' && (window.innerWidth < 768 || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4));
+      const targetDpr = isMobile ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.25);
       renderer = new Renderer({
-      webgl: 2,
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+        webgl: 2,
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: false,
+        dpr: targetDpr
       });
     } catch {
       // Preserve a readable static background on older WebViews without WebGL2.
@@ -226,6 +228,19 @@ const MoltenMetal = ({
     else window.addEventListener('resize', setSize, { passive: true });
     setSize();
 
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      program.uniforms.iTime.value = 0.5;
+      renderer.render({ scene: mesh });
+      return () => {
+        ro?.disconnect();
+        if (!ro) window.removeEventListener('resize', setSize);
+        ctxMap.delete(container);
+        if (canvas.parentNode === container) container.removeChild(canvas);
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+      };
+    }
+
     const targetMouse = [0.5, 0.5];
     const currentMouse = [0.5, 0.5];
 
@@ -238,8 +253,8 @@ const MoltenMetal = ({
       targetMouse[0] = 0.5;
       targetMouse[1] = 0.5;
     };
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('mousemove', handleMouseMove, { passive: true });
+    canvas.addEventListener('mouseleave', handleMouseLeave, { passive: true });
 
     let raf = 0;
     let isVisible = true;
@@ -250,16 +265,13 @@ const MoltenMetal = ({
     let qualityReduced = false;
 
     const loop = t => {
-      // Keep the full-resolution design on capable devices. Only if real
-      // frame timing is consistently slow, lower the GPU backing resolution
-      // (not the layout, colors, motion, or CSS size) to avoid frame freezes.
-      if (previousFrame && !qualityReduced && renderer.dpr > 1.25) {
+      if (previousFrame && !qualityReduced && renderer.dpr > 1.0) {
         const frameMs = t - previousFrame;
         if (frameMs > 27 && frameMs < 180) slowFrames++;
         else slowFrames = Math.max(0, slowFrames - 2);
-        if (slowFrames >= 50) {
+        if (slowFrames >= 40) {
           qualityReduced = true;
-          renderer.dpr = 1.25;
+          renderer.dpr = 1.0;
           setSize();
         }
       }
@@ -298,10 +310,22 @@ const MoltenMetal = ({
     };
     document.addEventListener('visibilitychange', onVisibility);
 
+    let scrollTimeout = 0;
+    const handleScroll = () => {
+      tryStop();
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        tryStart();
+      }, 120);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     tryStart();
 
     return () => {
       tryStop();
+      clearTimeout(scrollTimeout);
+      window.removeEventListener('scroll', handleScroll);
       ro?.disconnect();
       if (!ro) window.removeEventListener('resize', setSize);
       io.disconnect();

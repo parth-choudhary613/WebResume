@@ -5,16 +5,15 @@ const Portrait3D = lazy(() => import('./Portrait3D'))
 
 export default function NearViewportPortrait() {
   const containerRef = useRef(null)
-  const [shouldLoad, setShouldLoad] = useState(false)
+  const [shouldLoad, setShouldLoad] = useState(() => {
+    return typeof window !== 'undefined' && !('IntersectionObserver' in window)
+  })
 
   useEffect(() => {
     const element = containerRef.current
-    if (!element) return
+    if (!element || shouldLoad) return
 
-    if (!('IntersectionObserver' in window)) {
-      setShouldLoad(true)
-      return
-    }
+    if (!('IntersectionObserver' in window)) return
 
     // Start early, before the portrait scrolls into view. Once mounted, keep
     // the model around so returning to the section never downloads it again.
@@ -26,7 +25,7 @@ export default function NearViewportPortrait() {
     }, { rootMargin: '900px 0px' })
     observer.observe(element)
     return () => observer.disconnect()
-  }, [])
+  }, [shouldLoad])
 
   return (
     <div ref={containerRef} className="w-full h-full">
