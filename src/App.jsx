@@ -8,7 +8,7 @@ import ProjectShowcase from "./components/ProjectShowcase";
 import About from "./components/About";
 import SkillsMatrix from "./components/SkillsMatrix";
 import Experience from "./components/Experience";
-import Principles from "./components/Principles";
+// import Principles from "./components/Principles";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 const ResumeModal = lazy(() => import("./components/ResumeModal"));
@@ -149,7 +149,7 @@ export default function App() {
 
           <Experience />
 
-          <Principles />
+          {/* <Principles /> */}
 
           <Contact />
         </main>

@@ -35,8 +35,8 @@ import Vendorprofile from "../components/assets/vendorprofile.webp";
 
 const PROJECTS = {
   humflow: {
-    name: "HumFlow",
-    url: "https://parth-choudhary613.github.io/HumFlow/",
+    name: "Omnicassion",
+    url: "https://omnicassion.com/",
     tech: ["React", "Tailwind CSS", "GSAP", "Three.js", "Vite"],
   },
   personal: {
@@ -368,7 +368,7 @@ ${inquiryForm.message}
           {/* Top title */}
 
           <div className="relative z-10 pt-5 md:pt-6 px-5 md:px-6">
-            <ProjectLabel>HumFlow</ProjectLabel>
+            <ProjectLabel>Omnicassion</ProjectLabel>
           </div>
 
           {/* Bottom details */}
@@ -377,12 +377,11 @@ ${inquiryForm.message}
             <div className="rounded-xl p-4 bg-black/40 backdrop-blur-md border border-white/[0.08] group-hover:bg-black/50 transition-all duration-300">
 
               <h3 className="text-lg md:text-xl font-medium text-white mb-1">
-                HumFlow
+                Omnicassion
               </h3>
 
               <p className="text-xs text-white/60 leading-relaxed mb-4">
-                An interactive digital experience with creative
-                animations and seamless transitions.
+                An interactive to book your special day with Omnicassion, a leading wedding planning platform.
               </p>
 
               <TechStack tech={PROJECTS.humflow.tech} />

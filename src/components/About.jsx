@@ -45,7 +45,7 @@ export default function About() {
                 Having engineered client-facing vendor platforms at <strong className="text-text-primary font-semibold">Omnicassions</strong> and optimized full-stack applications at <strong className="text-text-primary font-semibold">Excellence Technologies</strong> (boosting app speeds by 40%), I prioritize smooth rendering pipelines, modular component architectures, and responsive precision.
               </p>
               <p className="text-sm sm:text-base text-text-muted">
-                Off-screen, I'm captivated by mechanical engineering: following automotive designs, late-night cruiser drives, hiking Himalayan mountain trails, and listening to timeless 90s tracks.
+                Off-screen, I'm late-night cruiser drives, hiking Himalayan mountain trails, and listening to timeless 90s tracks.
               </p>
             </div>
 
