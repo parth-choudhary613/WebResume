@@ -10,7 +10,7 @@ import {
 import { personalData } from '../data/portfolioData'
 
 
-export default function Header({ dark, setDark }) {
+export default function Header({ dark, setDark, onOpenResume }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('work')
@@ -40,6 +40,16 @@ export default function Header({ dark, setDark }) {
     }
   }, [])
 
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    if (!mobileOpen) return
+    const handleKey = (e) => {
+      if (e.key === 'Escape') setMobileOpen(false)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [mobileOpen])
+
   // Active navigation section observer
   useEffect(() => {
     const sections = [
@@ -47,7 +57,6 @@ export default function Header({ dark, setDark }) {
       'about',
       'stack',
       'experience',
-      'philosophy',
       'contact',
     ]
 
@@ -66,7 +75,6 @@ export default function Header({ dark, setDark }) {
 
     sections.forEach((id) => {
       const element = document.getElementById(id)
-
       if (element) {
         observer.observe(element)
       }
@@ -106,13 +114,13 @@ export default function Header({ dark, setDark }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-bg/85 backdrop-blur-md border-b border-border/80 py-3.5 shadow-xs'
-          : 'bg-transparent py-5 sm:py-7'
+          ? 'bg-surface/85 backdrop-blur-md border-b border-border py-3 shadow-xs'
+          : 'bg-transparent py-4 sm:py-6'
       }`}
     >
-      <div className="max-w-[1360px] mx-auto px-6 sm:px-10 lg:px-12 flex items-center justify-between">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between">
 
         {/* Left: Logo + Name + Status */}
         <a
@@ -122,30 +130,28 @@ export default function Header({ dark, setDark }) {
           aria-label={`${personalData.name} - Home`}
         >
           {/* Custom Logo */}
-          <div className="flex items-center justify-center shrink-0">
-          <img
-  src="/assets/TechLogo.webp"
-  alt={`${personalData.name} logo`}
-  width="1254"
-  height="1254"
-  decoding="async"
-  className="w-20 h-20 sm:w-15 sm:h-15 object-contain transition-transform duration-300 group-hover:scale-105"
-/>
+          <div className="flex items-center justify-center shrink-0 w-10 h-10 sm:w-20 sm:h-20  shadow-2xs group-hover:border-accent/40 transition-colors">
+            <img
+              src="/assets/TechLogo.webp"
+              alt={`${personalData.name} logo`}
+              width="1254"
+              height="1254"
+              decoding="async"
+              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+            />
           </div>
 
           {/* Name + availability */}
           <div className="hidden xs:flex flex-col">
-            <span className="font-display font-bold text-sm tracking-tight text-text-primary group-hover:text-brand-blue transition-colors">
+            <span className="font-display font-bold text-sm tracking-tight text-text-primary group-hover:text-accent transition-colors">
               {personalData.name}
             </span>
 
             <span className="font-sans text-[11px] text-text-muted flex items-center gap-1.5 font-medium">
               <span className="relative flex w-1.5 h-1.5">
                 <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-
                 <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-500" />
               </span>
-
               Available for opportunities
             </span>
           </div>
@@ -165,14 +171,14 @@ export default function Header({ dark, setDark }) {
                 href={`#${link.id}`}
                 className={`relative py-1 transition-colors duration-150 ${
                   isActive
-                    ? 'text-brand-blue font-semibold'
+                    ? 'text-accent font-semibold'
                     : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 {link.label}
 
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-brand-blue rounded-full" />
+                  <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent rounded-full" />
                 )}
               </a>
             )
@@ -180,7 +186,7 @@ export default function Header({ dark, setDark }) {
         </nav>
 
         {/* Right Controls */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
 
           {/* Dark / Light mode toggle */}
           <button
@@ -195,12 +201,15 @@ export default function Header({ dark, setDark }) {
               bg-surface
               text-text-secondary
               hover:text-text-primary
-              hover:border-text-secondary
+              hover:border-border-strong
+              hover:bg-surface-subtle
               flex
               items-center
               justify-center
-              transition-colors
+              transition-all
+              duration-200
               cursor-pointer
+              shadow-2xs
             "
             aria-label={
               dark
@@ -216,15 +225,44 @@ export default function Header({ dark, setDark }) {
             {dark ? (
               <Sun
                 size={16}
-                className="text-brand-yellow transition-transform duration-300 hover:rotate-45"
+                className="text-amber-400 transition-transform duration-300 hover:rotate-45"
               />
             ) : (
               <Moon
                 size={16}
-                className="text-text-secondary transition-transform duration-300 hover:-rotate-12"
+                className="text-slate-700 transition-transform duration-300 hover:-rotate-12"
               />
             )}
           </button>
+
+          {/* Resume button */}
+          {onOpenResume && (
+            <button
+              type="button"
+              onClick={onOpenResume}
+              className="
+                hidden
+                sm:inline-flex
+                items-center
+                px-3.5
+                py-1.5
+                rounded-xl
+                text-xs
+                font-medium
+                border
+                border-border
+                bg-surface
+                text-text-secondary
+                hover:text-text-primary
+                hover:border-border-strong
+                hover:bg-surface-subtle
+                transition-all
+                cursor-pointer
+              "
+            >
+              CV / Résumé
+            </button>
+          )}
 
           {/* Contact button */}
           <a
@@ -239,8 +277,8 @@ export default function Header({ dark, setDark }) {
               rounded-xl
               text-xs
               font-semibold
-              bg-brand-blue
-              hover:bg-brand-blue-hover
+              bg-accent
+              hover:bg-accent-hover
               text-white
               transition-all
               shadow-xs
@@ -249,7 +287,6 @@ export default function Header({ dark, setDark }) {
             "
           >
             <span>Let's Talk</span>
-
             <ArrowUpRight size={13} />
           </a>
 
@@ -290,9 +327,9 @@ export default function Header({ dark, setDark }) {
 
       {/* Mobile Navigation */}
       {mobileOpen && (
-        <div className="md:hidden border-b border-border bg-bg/95 backdrop-blur-lg px-6 py-6 shadow-lg">
+        <div className="md:hidden border-b border-border bg-surface/98 backdrop-blur-xl px-6 py-6 shadow-xl">
           <nav
-            className="flex flex-col gap-4 font-sans text-base font-medium"
+            className="flex flex-col gap-3 font-sans text-base font-medium"
             aria-label="Mobile Navigation"
           >
             {navLinks.map((link) => {
@@ -307,19 +344,18 @@ export default function Header({ dark, setDark }) {
                     flex
                     items-center
                     justify-between
-                    py-2
+                    py-2.5
                     border-b
                     border-border-subtle
                     transition-colors
                     ${
                       isActive
-                        ? 'text-brand-blue'
-                        : 'text-text-secondary hover:text-brand-blue'
+                        ? 'text-accent font-semibold'
+                        : 'text-text-secondary hover:text-text-primary'
                     }
                   `}
                 >
                   <span>{link.label}</span>
-
                   <span className="text-xs text-text-muted">
                     ↗
                   </span>
@@ -327,7 +363,35 @@ export default function Header({ dark, setDark }) {
               )
             })}
 
-            <div className="pt-2">
+            <div className="pt-3 flex flex-col gap-2">
+              {onOpenResume && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeMobileMenu()
+                    onOpenResume()
+                  }}
+                  className="
+                    w-full
+                    py-2.5
+                    text-center
+                    text-sm
+                    font-medium
+                    border
+                    border-border
+                    bg-surface
+                    text-text-primary
+                    rounded-xl
+                    block
+                    shadow-2xs
+                    transition-colors
+                    cursor-pointer
+                  "
+                >
+                  View Curriculum Vitae (PDF)
+                </button>
+              )}
+
               <a
                 href="#contact"
                 onClick={closeMobileMenu}
@@ -337,8 +401,8 @@ export default function Header({ dark, setDark }) {
                   text-center
                   text-sm
                   font-semibold
-                  bg-brand-blue
-                  hover:bg-brand-blue-hover
+                  bg-accent
+                  hover:bg-accent-hover
                   text-white
                   rounded-xl
                   block

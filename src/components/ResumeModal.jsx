@@ -24,19 +24,19 @@ export default function ResumeModal({ isOpen, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-xs">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs print:p-0 print:bg-white print:fixed-none">
       {/* Modal Dialog Card */}
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Parth Choudhary Résumé"
-        className="relative w-full max-w-4xl max-h-[90vh] bg-surface border border-border rounded-xs shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+        className="relative w-full max-w-4xl max-h-[90vh] bg-surface border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150 print:border-none print:shadow-none print:max-h-none print:rounded-none"
       >
         {/* Modal Controls Header */}
-        <div className="px-6 py-3.5 border-b border-border bg-surface-subtle flex items-center justify-between font-mono text-xs text-text-secondary">
+        <div className="px-5 sm:px-6 py-3.5 border-b border-border bg-surface-subtle flex items-center justify-between font-mono text-xs text-text-secondary print:hidden">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-xs bg-accent inline-block" />
-            <span className="text-text-primary font-medium uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-accent inline-block" />
+            <span className="text-text-primary font-semibold uppercase tracking-wider">
               CURRICULUM VITAE // PARTH CHOUDHARY
             </span>
           </div>
@@ -44,7 +44,7 @@ export default function ResumeModal({ isOpen, onClose }) {
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1 bg-surface border border-border hover:border-text-secondary rounded-xs text-text-primary transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-surface border border-border hover:border-accent hover:text-accent rounded-xl text-text-primary transition-colors cursor-pointer shadow-2xs"
               title="Print / Save as PDF"
             >
               <Printer size={13} />
@@ -53,7 +53,7 @@ export default function ResumeModal({ isOpen, onClose }) {
 
             <button
               onClick={onClose}
-              className="p-1 rounded-xs hover:bg-surface border border-transparent hover:border-border text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
+              className="p-1.5 rounded-xl hover:bg-surface border border-border text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
               aria-label="Close modal"
             >
               <X size={16} />
@@ -156,7 +156,7 @@ export default function ResumeModal({ isOpen, onClose }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
               {skillsCategories.map((group) => (
-                <div key={group.category} className="p-3 border border-border-subtle bg-surface-subtle rounded-xs">
+                <div key={group.category} className="p-3.5 border border-border bg-surface-subtle rounded-xl">
                   <span className="font-semibold text-text-primary block uppercase mb-1.5">
                     {group.category}
                   </span>
@@ -171,11 +171,11 @@ export default function ResumeModal({ isOpen, onClose }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-3 border-t border-border bg-surface-subtle flex items-center justify-between font-mono text-[11px] text-text-muted">
+        <div className="px-6 py-3.5 border-t border-border bg-surface-subtle flex items-center justify-between font-mono text-[11px] text-text-muted print:hidden">
           <span>PARTH CHOUDHARY // RESUME_DATA</span>
           <button
             onClick={onClose}
-            className="text-text-primary hover:text-accent font-medium cursor-pointer"
+            className="text-text-primary hover:text-accent font-medium cursor-pointer transition-colors"
           >
             Close View [Esc]
           </button>

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import {
   Sparkle,
@@ -100,14 +99,14 @@ const INITIAL_FORM = {
 
 function TechStack({ tech }) {
   return (
-    <div className="w-full border-t border-white/15 pt-3">
+    <div className="w-full border-t border-border pt-3 mt-3">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-[10px] uppercase tracking-[0.18em] text-white/60 font-medium">
+        <span className="text-[10px] uppercase tracking-[0.18em] text-text-muted font-medium font-mono">
           Tech Stack
         </span>
 
         <ArrowUpRight
-          className="h-4 w-4 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
+          className="h-3.5 w-3.5 text-text-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300"
           strokeWidth={1.5}
         />
       </div>
@@ -116,7 +115,7 @@ function TechStack({ tech }) {
         {tech.map((item) => (
           <span
             key={item}
-            className="px-2.5 py-1 rounded-full bg-white/[0.08] border border-white/[0.12] text-[10px] sm:text-[11px] text-white/80 backdrop-blur-md group-hover:bg-white/[0.12] group-hover:text-white transition-all duration-300"
+            className="px-2.5 py-0.5 rounded-md bg-surface-subtle border border-border text-[10px] sm:text-[11px] font-mono text-text-secondary group-hover:border-accent/40 group-hover:text-text-primary transition-colors duration-200"
           >
             {item}
           </span>
@@ -138,10 +137,11 @@ function ProjectImage({ src, alt }) {
         alt={alt}
         loading="lazy"
         decoding="async"
-        className="absolute inset-0 w-full h-full object-cover brightness-[0.65] saturate-[0.70] transition-transform duration-700 group-hover:scale-[1.06]"
+        className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/35 to-black/95 pointer-events-none" />
+      {/* Theme-aware gentle overlay to preserve screenshot clarity while guaranteeing readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/40 to-transparent dark:from-bg/95 dark:via-bg/50 dark:to-transparent pointer-events-none transition-opacity duration-300" />
     </>
   );
 }
@@ -152,14 +152,12 @@ function ProjectImage({ src, alt }) {
 
 function ProjectLabel({ children }) {
   return (
-    <div className="relative z-10 flex items-center justify-center gap-2">
-      <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
-
-      <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
+    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface/90 dark:bg-surface/80 border border-border shadow-xs backdrop-blur-md">
+      <Sparkle className="h-3 w-3 text-accent" strokeWidth={1.5} />
+      <span className="text-[10px] uppercase tracking-[0.2em] text-text-primary font-mono font-medium select-none">
         {children}
       </span>
-
-      <Sparkle className="h-3 w-3 text-white/60" strokeWidth={1.5} />
+      <Sparkle className="h-3 w-3 text-accent" strokeWidth={1.5} />
     </div>
   );
 }
@@ -168,7 +166,7 @@ function ProjectLabel({ children }) {
 // MAIN COMPONENT
 // =====================================
 
-export default function App() {
+export default function ProjectShowcase() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [copiedField, setCopiedField] = useState(null);
   const [activeSoftware, setActiveSoftware] = useState(null);
@@ -209,9 +207,11 @@ export default function App() {
     };
 
     document.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
 
@@ -242,470 +242,336 @@ ${inquiryForm.message}
     window.location.href = mailto;
   };
 
-  // =====================================
-  // RENDER
-  // =====================================
-
   return (
-    <main className="min-h-screen lg:h-screen lg:min-h-[760px] w-full bg-transparent text-white flex flex-col justify-between px-4 sm:px-6 md:px-10 lg:px-14 py-6 sm:py-8 md:py-10 antialiased overflow-y-auto font-sans">
-
-      {/* =====================================
-          ANIMATION + GLASS CSS
-      ===================================== */}
-
-      <style>
-        {`
-          .liquid-glass {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-          }
-
-          @keyframes marquee-left {
-            0% {
-              transform: translateX(0);
-            }
-            100% {
-              transform: translateX(-50%);
-            }
-          }
-
-          @keyframes marquee-right {
-            0% {
-              transform: translateX(-50%);
-            }
-            100% {
-              transform: translateX(0);
-            }
-          }
-
-          .animate-marquee-left {
-            animation: marquee-left 28s linear infinite;
-          }
-
-          .animate-marquee-right {
-            animation: marquee-right 28s linear infinite;
-          }
-
-          .animate-marquee-left:hover,
-          .animate-marquee-right:hover {
-            animation-play-state: paused;
-          }
-
-          @media (prefers-reduced-motion: reduce) {
-            .animate-marquee-left,
-            .animate-marquee-right {
-              animation: none;
-            }
-          }
-        `}
-      </style>
-
-      {/* =====================================
-          HEADER
-      ===================================== */}
-
-      <header className="w-full flex flex-col md:flex-row md:items-start justify-between gap-6 shrink-0 mb-6 md:mb-7">
-
-        <div className="max-w-3xl">
-          <h1 className="text-[28px] sm:text-3xl md:text-4xl lg:text-[44px] leading-[1.15] font-normal tracking-tight text-white mb-3">
-            Here's my work
-          </h1>
-
-          <p className="text-sm md:text-[15px] leading-[1.6] text-white/60">
-            A collection of ideas brought to life through creativity,
-            clean design, and thoughtful development. Explore what
-            I've built, one project at a time.
-          </p>
-        </div>
-
-        <div className="shrink-0 flex items-center">
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            aria-label="Open contact and collaboration modal"
-            className="liquid-glass group relative inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-medium text-white/90 hover:text-white transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer whitespace-nowrap shadow-lg shadow-black/40"
-          >
-            <Sparkle
-              className="h-3.5 w-3.5 text-white/60 group-hover:text-white transition-colors"
-              strokeWidth={1.5}
-            />
-
-            <span>Let's Team Up Today</span>
-
-            <ArrowUpRight
-              className="h-3.5 w-3.5 text-white/60 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
-              strokeWidth={1.5}
-            />
-          </button>
-        </div>
-      </header>
-
-      {/* =====================================
-          THREE-COLUMN LAYOUT
-      ===================================== */}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 flex-1 min-h-0 w-full">
-
+    <section
+      id="work"
+      className="py-20 sm:py-28 w-full bg-bg text-text-primary flex flex-col justify-between px-4 sm:px-8 lg:px-12 antialiased font-sans border-b border-border relative"
+    >
+      <div className="max-w-[1360px] mx-auto w-full">
         {/* =====================================
-            CARD 1 - HUMFLOW
-            FULL CARD CLICKABLE
+            HEADER
         ===================================== */}
 
-        <a
-          href={PROJECTS.humflow.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="View HumFlow project"
-          className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between h-full min-h-[440px] md:min-h-[500px] lg:min-h-0 border border-white/[0.08] hover:border-white/25 transition-all duration-500 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-        >
-          <ProjectImage
-            src={Humflow}
-            alt="HumFlow project showcase"
-          />
-
-          {/* Top title */}
-
-          <div className="relative z-10 pt-5 md:pt-6 px-5 md:px-6">
-            <ProjectLabel>Omnicassion</ProjectLabel>
+        <header className="w-full flex flex-col md:flex-row md:items-end justify-between gap-6 shrink-0 mb-10 sm:mb-14">
+          <div className="max-w-3xl">
+            <span className="font-mono text-xs uppercase tracking-widest text-accent font-semibold block mb-3">
+              Selected Work & Case Studies
+            </span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display tracking-tight text-text-primary leading-[1.15]">
+              Here's my work
+            </h2>
+            <p className="mt-3 text-sm md:text-base leading-relaxed text-text-secondary max-w-2xl font-normal">
+              A curated collection of production applications, interactive environments, and interface experiments built with modern frontend engineering discipline.
+            </p>
           </div>
 
-          {/* Bottom details */}
-
-          <div className="relative z-10 p-5 md:p-6 lg:p-7">
-            <div className="rounded-xl p-4 bg-black/40 backdrop-blur-md border border-white/[0.08] group-hover:bg-black/50 transition-all duration-300">
-
-              <h3 className="text-lg md:text-xl font-medium text-white mb-1">
-                Omnicassion
-              </h3>
-
-              <p className="text-xs text-white/60 leading-relaxed mb-4">
-                An interactive to book your special day with Omnicassion, a leading wedding planning platform.
-              </p>
-
-              <TechStack tech={PROJECTS.humflow.tech} />
-            </div>
+          <div className="shrink-0 flex items-center">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              aria-label="Open contact and collaboration modal"
+              className="group relative inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full text-xs sm:text-sm font-semibold bg-surface border border-border text-text-primary hover:border-accent hover:text-accent transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer shadow-xs"
+            >
+              <Sparkle
+                className="h-3.5 w-3.5 text-accent transition-transform group-hover:rotate-12"
+                strokeWidth={1.5}
+              />
+              <span>Let's Team Up Today</span>
+              <ArrowUpRight
+                className="h-3.5 w-3.5 text-text-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+                strokeWidth={1.5}
+              />
+            </button>
           </div>
-        </a>
+        </header>
 
         {/* =====================================
-            COLUMN 2
+            THREE-COLUMN LAYOUT
         ===================================== */}
 
-        <div className="grid grid-rows-[minmax(260px,1fr)_minmax(260px,1fr)] gap-4 md:gap-5 h-full min-h-[560px] lg:min-h-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
 
           {/* =====================================
-              CARD 2 - PERSONAL PORTFOLIO
+              CARD 1 - HUMFLOW / OMNICASSION
               FULL CARD CLICKABLE
           ===================================== */}
 
           <a
-            href={PROJECTS.personal.url}
+            href={PROJECTS.humflow.url}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="View Personal Portfolio project"
-            className="group relative rounded-2xl bg-[#172626] min-h-0 overflow-hidden flex flex-col justify-between border border-white/[0.08] hover:border-white/25 transition-all duration-500 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+            aria-label="View Omnicassion project"
+            className="group relative rounded-2xl bg-surface border border-border overflow-hidden flex flex-col justify-between min-h-[480px] md:min-h-[520px] shadow-xs hover:shadow-md hover:border-accent/40 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent"
           >
             <ProjectImage
-              src={Personal}
-              alt="Personal Portfolio project preview"
+              src={Humflow}
+              alt="Omnicassion project showcase"
             />
 
-            {/* Top label */}
-
-            <div className="relative z-10 p-5 md:p-6">
-              <ProjectLabel>Featured Project</ProjectLabel>
+            {/* Top title */}
+            <div className="relative z-10 pt-5 px-5">
+              <ProjectLabel>Omnicassion</ProjectLabel>
             </div>
 
             {/* Bottom details */}
+            <div className="relative z-10 p-4 sm:p-5">
+              <div className="rounded-xl p-4 sm:p-5 bg-surface/90 dark:bg-surface/90 backdrop-blur-md border border-border group-hover:border-accent/30 transition-all duration-300 shadow-xs">
+                <h3 className="text-lg md:text-xl font-bold font-display text-text-primary mb-1.5 flex items-center justify-between">
+                  <span>Omnicassion</span>
+                  <ArrowUpRight className="h-4 w-4 text-text-muted group-hover:text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </h3>
 
-            <div className="relative z-10 p-5 md:p-6">
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
+                  Interactive booking platform engineered for Omnicassion, connecting clients with premier wedding and event planning services.
+                </p>
 
-              <h3 className="text-lg font-medium text-white mb-3">
-                Personal Portfolio
-              </h3>
-
-              <TechStack tech={PROJECTS.personal.tech} />
+                <TechStack tech={PROJECTS.humflow.tech} />
+              </div>
             </div>
           </a>
 
           {/* =====================================
-              CARD 3 - AGROVISION
-              FULL CARD CLICKABLE
+              COLUMN 2
           ===================================== */}
 
-          <a
-            href={PROJECTS.agrovision.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View AI AgroVision project"
-            className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between p-5 md:p-6 border border-white/[0.08] hover:border-white/25 transition-all duration-500 min-h-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-          >
-            <ProjectImage
-              src={Agrovision}
-              alt="AI AgroVision project preview"
-            />
+          <div className="flex flex-col gap-6 h-full">
 
-            {/* Main center content */}
+            {/* =====================================
+                CARD 2 - PERSONAL PORTFOLIO
+            ===================================== */}
 
-            <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center min-h-0">
+            <a
+              href={PROJECTS.personal.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View Personal Portfolio project"
+              className="group relative rounded-2xl bg-surface border border-border overflow-hidden flex flex-col justify-between min-h-[250px] flex-1 shadow-xs hover:shadow-md hover:border-accent/40 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <ProjectImage
+                src={Personal}
+                alt="Personal Portfolio project preview"
+              />
 
-              <span className="text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-light tracking-tight text-white drop-shadow-lg leading-none select-none group-hover:scale-105 transition-transform duration-500">
-                AI
-              </span>
+              <div className="relative z-10 pt-4 px-4 sm:px-5">
+                <ProjectLabel>Featured Project</ProjectLabel>
+              </div>
 
-              <p className="mt-2 text-sm sm:text-base text-white/85 font-normal">
-                AgroVision
-              </p>
-            </div>
+              <div className="relative z-10 p-4 sm:p-5">
+                <div className="rounded-xl p-4 bg-surface/90 dark:bg-surface/90 backdrop-blur-md border border-border group-hover:border-accent/30 transition-all duration-300 shadow-xs">
+                  <h3 className="text-base sm:text-lg font-bold font-display text-text-primary mb-1 flex items-center justify-between">
+                    <span>Personal Portfolio</span>
+                    <ArrowUpRight className="h-4 w-4 text-text-muted group-hover:text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </h3>
+                  <TechStack tech={PROJECTS.personal.tech} />
+                </div>
+              </div>
+            </a>
 
-            {/* Bottom tech stack */}
+            {/* =====================================
+                CARD 3 - AGROVISION
+            ===================================== */}
 
-            <div className="relative z-10 w-full mt-4">
-              <TechStack tech={PROJECTS.agrovision.tech} />
-            </div>
-          </a>
-        </div>
+            <a
+              href={PROJECTS.agrovision.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View AI AgroVision project"
+              className="group relative rounded-2xl bg-surface border border-border overflow-hidden flex flex-col justify-between min-h-[250px] flex-1 shadow-xs hover:shadow-md hover:border-accent/40 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <ProjectImage
+                src={Agrovision}
+                alt="AI AgroVision project preview"
+              />
 
-        {/* =====================================
-            COLUMN 3
-        ===================================== */}
+              <div className="relative z-10 pt-4 px-4 sm:px-5">
+                <ProjectLabel>AI System</ProjectLabel>
+              </div>
 
-        <div className="grid grid-rows-[minmax(330px,1fr)_auto] md:col-span-2 lg:col-span-1 gap-4 md:gap-5 h-full min-h-[560px] lg:min-h-0">
+              <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center p-4">
+                <span className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight text-text-primary drop-shadow-sm leading-none select-none group-hover:scale-105 transition-transform duration-300">
+                  AI
+                </span>
+                <p className="mt-1.5 text-xs sm:text-sm text-text-secondary font-medium">
+                  AgroVision
+                </p>
+              </div>
+
+              <div className="relative z-10 p-4 sm:p-5">
+                <div className="rounded-xl p-4 bg-surface/90 dark:bg-surface/90 backdrop-blur-md border border-border group-hover:border-accent/30 transition-all duration-300 shadow-xs">
+                  <TechStack tech={PROJECTS.agrovision.tech} />
+                </div>
+              </div>
+            </a>
+          </div>
 
           {/* =====================================
-              CARD 4 - VENDORPROFILE
-              FULL CARD CLICKABLE
+              COLUMN 3
           ===================================== */}
 
-          <a
-            href={PROJECTS.vendor.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View VendorProfile project"
-            className="group relative rounded-2xl bg-black overflow-hidden flex flex-col justify-between py-5 md:py-6 border border-white/[0.08] hover:border-white/25 transition-all duration-500 min-h-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-          >
-            <ProjectImage
-              src={Vendorprofile}
-              alt="VendorProfile project preview"
-            />
+          <div className="flex flex-col gap-6 md:col-span-2 lg:col-span-1 h-full">
 
-            {/* Top label */}
+            {/* =====================================
+                CARD 4 - VENDORPROFILE
+            ===================================== */}
 
-            <div className="relative z-10 px-5">
-              <ProjectLabel>VendorProfile</ProjectLabel>
-            </div>
+            <a
+              href={PROJECTS.vendor.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View VendorProfile project"
+              className="group relative rounded-2xl bg-surface border border-border overflow-hidden flex flex-col justify-between py-5 shadow-xs hover:shadow-md hover:border-accent/40 transition-all duration-300 cursor-pointer focus-visible:ring-2 focus-visible:ring-accent flex-1"
+            >
+              <ProjectImage
+                src={Vendorprofile}
+                alt="VendorProfile project preview"
+              />
 
-            {/* Active software name */}
+              <div className="relative z-10 px-5 flex items-center justify-between">
+                <ProjectLabel>VendorProfile</ProjectLabel>
+                <ArrowUpRight className="h-4 w-4 text-text-muted group-hover:text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
 
-            <div className="relative z-10 px-5 text-center h-4">
-              <span className="text-[11px] text-white/60 transition-opacity duration-200">
-                {activeSoftware
-                  ? `Toolkit item: ${activeSoftware}`
-                  : ""}
-              </span>
-            </div>
+              {/* Active software indicator */}
+              <div className="relative z-10 px-5 text-center h-4 my-2">
+                <span className="text-[11px] font-mono text-accent transition-opacity duration-200">
+                  {activeSoftware ? `Toolkit item: ${activeSoftware}` : ""}
+                </span>
+              </div>
 
-            {/* Animated software icons */}
-
-            <div className="relative z-10 flex flex-col gap-3 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-
-              {/* Row 1 */}
-
-              <div className="flex w-max animate-marquee-left gap-3">
-                {[...SOFTWARE_ROW_1, ...SOFTWARE_ROW_1].map(
-                  (item, idx) => {
+              {/* Animated software marquee */}
+              <div className="relative z-10 flex flex-col gap-2.5 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                {/* Row 1 */}
+                <div className="flex w-max animate-marquee-left gap-2.5">
+                  {[...SOFTWARE_ROW_1, ...SOFTWARE_ROW_1].map((item, idx) => {
                     const Icon = item.Icon;
-
                     return (
                       <div
                         key={`r1-${idx}`}
                         onMouseEnter={() => setActiveSoftware(item.name)}
                         onMouseLeave={() => setActiveSoftware(null)}
                         title={item.name}
-                        className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 shrink-0"
+                        className="h-12 w-12 sm:h-13 sm:w-13 rounded-xl flex items-center justify-center bg-surface/85 dark:bg-surface/80 border border-border text-text-secondary hover:text-accent hover:border-accent/40 shadow-2xs backdrop-blur-md transition-all duration-200 hover:scale-105 shrink-0"
                       >
-                        <Icon
-                          className="h-6 w-6 md:h-7 md:w-7"
-                          strokeWidth={1.5}
-                        />
+                        <Icon className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
                       </div>
                     );
-                  }
-                )}
-              </div>
+                  })}
+                </div>
 
-              {/* Row 2 */}
-
-              <div className="flex w-max animate-marquee-right gap-3">
-                {[...SOFTWARE_ROW_2, ...SOFTWARE_ROW_2].map(
-                  (item, idx) => {
+                {/* Row 2 */}
+                <div className="flex w-max animate-marquee-right gap-2.5">
+                  {[...SOFTWARE_ROW_2, ...SOFTWARE_ROW_2].map((item, idx) => {
                     const Icon = item.Icon;
-
                     return (
                       <div
                         key={`r2-${idx}`}
                         onMouseEnter={() => setActiveSoftware(item.name)}
                         onMouseLeave={() => setActiveSoftware(null)}
                         title={item.name}
-                        className="liquid-glass h-14 w-14 md:h-16 md:w-16 rounded-xl flex items-center justify-center text-white/85 hover:text-white transition-all duration-200 hover:scale-105 shrink-0"
+                        className="h-12 w-12 sm:h-13 sm:w-13 rounded-xl flex items-center justify-center bg-surface/85 dark:bg-surface/80 border border-border text-text-secondary hover:text-accent hover:border-accent/40 shadow-2xs backdrop-blur-md transition-all duration-200 hover:scale-105 shrink-0"
                       >
-                        <Icon
-                          className="h-6 w-6 md:h-7 md:w-7"
-                          strokeWidth={1.5}
-                        />
+                        <Icon className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
                       </div>
                     );
-                  }
-                )}
-              </div>
-            </div>
-
-            {/* Bottom tech stack */}
-
-            <div className="relative z-10 px-5 md:px-6 mt-5">
-
-              <h3 className="text-base font-medium text-white mb-3">
-                VendorProfile
-              </h3>
-
-              <TechStack tech={PROJECTS.vendor.tech} />
-            </div>
-          </a>
-
-          {/* =====================================
-              CONTACT CARD
-          ===================================== */}
-
-          <section
-            aria-label="Contact Information"
-            className="relative rounded-2xl bg-[#07071a] p-5 md:p-6 flex flex-col justify-between overflow-hidden border border-white/[0.08]"
-          >
-            {/* Contact heading */}
-
-            <div className="relative z-10 flex items-center justify-between mb-4">
-
-              <div className="flex items-center gap-2">
-                <Sparkle
-                  className="h-3 w-3 text-white/60"
-                  strokeWidth={1.5}
-                />
-
-                <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium select-none">
-                  Reach Me
-                </span>
-
-                <Sparkle
-                  className="h-3 w-3 text-white/60"
-                  strokeWidth={1.5}
-                />
+                  })}
+                </div>
               </div>
 
-              {/* Email button */}
+              {/* Bottom tech stack */}
+              <div className="relative z-10 px-4 sm:px-5 mt-4">
+                <div className="rounded-xl p-4 bg-surface/90 dark:bg-surface/90 backdrop-blur-md border border-border group-hover:border-accent/30 transition-all duration-300 shadow-xs">
+                  <h3 className="text-base font-bold font-display text-text-primary mb-1">
+                    VendorProfile
+                  </h3>
+                  <TechStack tech={PROJECTS.vendor.tech} />
+                </div>
+              </div>
+            </a>
 
-              <a
-                href="mailto:choudharyparth118@gmail.com"
-                aria-label="Send email"
-                className="liquid-glass h-9 w-9 rounded-full flex items-center justify-center text-white/80 hover:text-white hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
-              >
-                <ArrowUpRight
-                  className="h-4 w-4"
-                  strokeWidth={1.5}
-                />
-              </a>
-            </div>
+            {/* =====================================
+                CONTACT CARD
+            ===================================== */}
 
-            {/* Contact details */}
-
-            <div className="relative z-10 flex flex-col gap-2.5">
-
-              {/* GitHub */}
-
-              <div className="group flex items-center justify-between gap-2">
-
-                <a
-                  href="https://github.com/parth-choudhary613"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm md:text-[15px] text-white/95 hover:text-white transition-colors flex items-center gap-2 font-medium min-w-0"
-                >
-                  <Cat
-                    className="h-3.5 w-3.5 shrink-0 text-white/60 group-hover:text-white transition-colors"
-                    strokeWidth={1.5}
-                  />
-
-                  <span className="break-all">
-                    parth-choudhary613
+            <div
+              aria-label="Contact Information"
+              className="relative rounded-2xl bg-surface border border-border p-5 sm:p-6 flex flex-col justify-between overflow-hidden shadow-xs"
+            >
+              <div className="relative z-10 flex items-center justify-between mb-4">
+                <div className="flex items-center gap-1.5">
+                  <Sparkle className="h-3 w-3 text-accent" strokeWidth={1.5} />
+                  <span className="text-[10px] uppercase tracking-[0.2em] text-text-muted font-mono font-medium">
+                    Reach Me Directly
                   </span>
-                </a>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleCopy(
-                      "https://github.com/parth-choudhary613",
-                      "github"
-                    )
-                  }
-                  title="Copy GitHub URL"
-                  aria-label="Copy GitHub URL"
-                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer shrink-0"
-                >
-                  {copiedField === "github" ? (
-                    <span className="text-[11px] text-emerald-400 flex items-center gap-0.5">
-                      <Check className="h-3 w-3" />
-                      Copied
-                    </span>
-                  ) : (
-                    <Copy
-                      className="h-3.5 w-3.5"
-                      strokeWidth={1.5}
-                    />
-                  )}
-                </button>
-              </div>
-
-              {/* Phone */}
-
-              <div className="group flex items-center justify-between gap-2">
+                </div>
 
                 <a
-                  href="tel:+918894459562"
-                  className="text-sm md:text-[15px] text-white/95 hover:text-white transition-colors flex items-center gap-2 font-mono tabular-nums"
+                  href="mailto:choudharyparth118@gmail.com"
+                  aria-label="Send email"
+                  className="h-8 w-8 rounded-full border border-border bg-surface-subtle flex items-center justify-center text-text-secondary hover:text-accent hover:border-accent/40 transition-all duration-200 cursor-pointer shadow-2xs"
                 >
-                  <Phone
-                    className="h-3.5 w-3.5 text-white/60 group-hover:text-white transition-colors"
-                    strokeWidth={1.5}
-                  />
-
-                  <span>+91 88944-59562</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
                 </a>
+              </div>
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleCopy("+91 8894459562", "phone")
-                  }
-                  title="Copy phone number"
-                  aria-label="Copy phone number"
-                  className="text-white/40 hover:text-white p-1 rounded transition-colors text-xs flex items-center gap-1 cursor-pointer shrink-0"
-                >
-                  {copiedField === "phone" ? (
-                    <span className="text-[11px] text-emerald-400 flex items-center gap-0.5">
-                      <Check className="h-3 w-3" />
-                      Copied
-                    </span>
-                  ) : (
-                    <Copy
-                      className="h-3.5 w-3.5"
-                      strokeWidth={1.5}
-                    />
-                  )}
-                </button>
+              <div className="relative z-10 flex flex-col gap-3 font-mono text-xs">
+                {/* GitHub */}
+                <div className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-surface-subtle border border-border-subtle">
+                  <a
+                    href="https://github.com/parth-choudhary613"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-text-primary hover:text-accent transition-colors flex items-center gap-2 font-medium min-w-0"
+                  >
+                    <Cat className="h-3.5 w-3.5 shrink-0 text-text-muted" strokeWidth={1.5} />
+                    <span className="truncate">parth-choudhary613</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("https://github.com/parth-choudhary613", "github")}
+                    title="Copy GitHub URL"
+                    aria-label="Copy GitHub URL"
+                    className="text-text-muted hover:text-text-primary p-1 rounded transition-colors cursor-pointer shrink-0"
+                  >
+                    {copiedField === "github" ? (
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
+                    )}
+                  </button>
+                </div>
+
+                {/* Phone */}
+                <div className="flex items-center justify-between gap-2 p-2.5 rounded-lg bg-surface-subtle border border-border-subtle">
+                  <a
+                    href="tel:+918894459562"
+                    className="text-text-primary hover:text-accent transition-colors flex items-center gap-2 tabular-nums"
+                  >
+                    <Phone className="h-3.5 w-3.5 text-text-muted" strokeWidth={1.5} />
+                    <span>+91 88944-59562</span>
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("+91 8894459562", "phone")}
+                    title="Copy phone number"
+                    aria-label="Copy phone number"
+                    className="text-text-muted hover:text-text-primary p-1 rounded transition-colors cursor-pointer shrink-0"
+                  >
+                    {copiedField === "phone" ? (
+                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                        <Check className="h-3 w-3" />
+                      </span>
+                    ) : (
+                      <Copy className="h-3.5 w-3.5" strokeWidth={1.5} />
+                    )}
+                  </button>
+                </div>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       </div>
 
@@ -715,7 +581,7 @@ ${inquiryForm.message}
 
       {isModalOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs"
           onMouseDown={(e) => {
             if (e.target === e.currentTarget) {
               setIsModalOpen(false);
@@ -726,28 +592,19 @@ ${inquiryForm.message}
             role="dialog"
             aria-modal="true"
             aria-labelledby="collab-title"
-            className="liquid-glass relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-[#141414]/95 p-6 sm:p-7 border border-white/10 shadow-2xl"
+            className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-surface p-6 sm:p-8 border border-border shadow-2xl text-text-primary"
           >
             {/* Modal header */}
-
-            <div className="flex items-start justify-between gap-4 mb-5">
-
+            <div className="flex items-start justify-between gap-4 mb-6 pb-4 border-b border-border">
               <div>
-                <div className="flex items-center gap-2 mb-1.5">
-
-                  <Sparkle
-                    className="h-3.5 w-3.5 text-white/60"
-                    strokeWidth={1.5}
-                  />
-
-                  <span className="text-[11px] uppercase tracking-[0.22em] text-white/70 font-medium">
-                    Collaboration Inquiry
-                  </span>
+                <div className="flex items-center gap-2 mb-1.5 font-mono text-[10px] text-accent uppercase tracking-[0.2em]">
+                  <Sparkle className="h-3 w-3" strokeWidth={1.5} />
+                  <span>Collaboration Inquiry</span>
                 </div>
 
                 <h2
                   id="collab-title"
-                  className="text-xl sm:text-2xl font-normal text-white"
+                  className="text-xl sm:text-2xl font-bold font-display text-text-primary"
                 >
                   Let's build something memorable.
                 </h2>
@@ -757,40 +614,27 @@ ${inquiryForm.message}
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 aria-label="Close modal"
-                className="liquid-glass h-8 w-8 shrink-0 rounded-full flex items-center justify-center text-white/70 hover:text-white transition-colors cursor-pointer"
+                className="h-8 w-8 shrink-0 rounded-xl border border-border bg-surface-subtle flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors cursor-pointer"
               >
-                <X
-                  className="h-4 w-4"
-                  strokeWidth={1.5}
-                />
+                <X className="h-4 w-4" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* =====================================
-                INQUIRY FORM
-            ===================================== */}
-
-            <form
-              onSubmit={handleFormSubmit}
-              className="space-y-4"
-            >
-              {/* Name and email */}
-
+            {/* Inquiry form */}
+            <form onSubmit={handleFormSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
                 <div>
                   <label
                     htmlFor="inquiry-name"
-                    className="block text-xs text-white/70 mb-1"
+                    className="block font-mono text-[11px] uppercase tracking-wider text-text-secondary mb-1.5"
                   >
                     Your Name
                   </label>
-
                   <input
                     id="inquiry-name"
                     type="text"
                     required
-                    placeholder="Elena Brooks"
+                    placeholder="Elena Vance"
                     value={inquiryForm.name}
                     onChange={(e) =>
                       setInquiryForm({
@@ -798,23 +642,22 @@ ${inquiryForm.message}
                         name: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-subtle border border-border text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:bg-surface transition-colors"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="inquiry-email"
-                    className="block text-xs text-white/70 mb-1"
+                    className="block font-mono text-[11px] uppercase tracking-wider text-text-secondary mb-1.5"
                   >
-                    Email
+                    Email Address
                   </label>
-
                   <input
                     id="inquiry-email"
                     type="email"
                     required
-                    placeholder="elena@example.com"
+                    placeholder="elena@company.com"
                     value={inquiryForm.email}
                     onChange={(e) =>
                       setInquiryForm({
@@ -822,23 +665,19 @@ ${inquiryForm.message}
                         email: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-subtle border border-border text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:bg-surface transition-colors"
                   />
                 </div>
               </div>
 
-              {/* Scope and timeline */}
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
                 <div>
                   <label
                     htmlFor="inquiry-scope"
-                    className="block text-xs text-white/70 mb-1"
+                    className="block font-mono text-[11px] uppercase tracking-wider text-text-secondary mb-1.5"
                   >
                     Project Scope
                   </label>
-
                   <select
                     id="inquiry-scope"
                     value={inquiryForm.scope}
@@ -848,38 +687,23 @@ ${inquiryForm.message}
                         scope: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-subtle border border-border text-sm text-text-primary focus:outline-none focus:border-accent focus:bg-surface transition-colors cursor-pointer"
                   >
-                    <option value="Brand & Visual Systems">
-                      Brand &amp; Visual Systems
-                    </option>
-
-                    <option value="Web Product Design">
-                      Web Product Design
-                    </option>
-
-                    <option value="Website Development">
-                      Website Development
-                    </option>
-
-                    <option value="Full Stack Development">
-                      Full Stack Development
-                    </option>
-
-                    <option value="Design System Consulting">
-                      Design System Consulting
-                    </option>
+                    <option value="Brand & Visual Systems">Brand & Visual Systems</option>
+                    <option value="Web Product Design">Web Product Design</option>
+                    <option value="Website Development">Website Development</option>
+                    <option value="Full Stack Development">Full Stack Development</option>
+                    <option value="Design System Consulting">Design System Consulting</option>
                   </select>
                 </div>
 
                 <div>
                   <label
                     htmlFor="inquiry-timeline"
-                    className="block text-xs text-white/70 mb-1"
+                    className="block font-mono text-[11px] uppercase tracking-wider text-text-secondary mb-1.5"
                   >
                     Target Timeline
                   </label>
-
                   <select
                     id="inquiry-timeline"
                     value={inquiryForm.timeline}
@@ -889,37 +713,23 @@ ${inquiryForm.message}
                         timeline: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 rounded-lg bg-[#1a1a1a] border border-white/10 text-sm text-white focus:outline-none focus:border-white/40"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-surface-subtle border border-border text-sm text-text-primary focus:outline-none focus:border-accent focus:bg-surface transition-colors cursor-pointer"
                   >
-                    <option value="Immediate (This month)">
-                      Immediate (This month)
-                    </option>
-
-                    <option value="Within 1-2 months">
-                      Within 1–2 months
-                    </option>
-
-                    <option value="Within 3 months">
-                      Within 3 months
-                    </option>
-
-                    <option value="Flexible / Exploration">
-                      Flexible / Exploration
-                    </option>
+                    <option value="Immediate (This month)">Immediate (This month)</option>
+                    <option value="Within 1-2 months">Within 1–2 months</option>
+                    <option value="Within 3 months">Within 3 months</option>
+                    <option value="Flexible / Exploration">Flexible / Exploration</option>
                   </select>
                 </div>
               </div>
 
-              {/* Project description */}
-
               <div>
                 <label
                   htmlFor="inquiry-message"
-                  className="block text-xs text-white/70 mb-1"
+                  className="block font-mono text-[11px] uppercase tracking-wider text-text-secondary mb-1.5"
                 >
                   Brief / Goals
                 </label>
-
                 <textarea
                   id="inquiry-message"
                   rows={3}
@@ -931,50 +741,33 @@ ${inquiryForm.message}
                       message: e.target.value,
                     })
                   }
-                  className="w-full px-3 py-2 rounded-lg bg-white/[0.04] border border-white/10 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40 resize-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-surface-subtle border border-border text-sm text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent focus:bg-surface transition-colors resize-none"
                 />
               </div>
 
-              {/* Form footer */}
-
-              <div className="flex items-center justify-between gap-3 pt-2">
-
-                <div className="text-[11px] text-white/50 flex items-center gap-1.5">
-                  <Calendar
-                    className="h-3 w-3 shrink-0"
-                    strokeWidth={1.5}
-                  />
-
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                <div className="text-[11px] font-mono text-text-muted flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.5} />
                   <span>Open for collaboration</span>
                 </div>
 
                 <button
                   type="submit"
-                  className="liquid-glass px-5 py-2 rounded-full text-xs font-medium text-white bg-white/10 hover:bg-white/20 transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+                  className="px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white bg-accent hover:bg-accent-hover transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-xs"
                 >
-                  <MessageSquare
-                    className="h-3.5 w-3.5"
-                    strokeWidth={1.5}
-                  />
-
+                  <MessageSquare className="h-3.5 w-3.5" strokeWidth={1.5} />
                   <span>Send Brief</span>
-
-                  <ArrowUpRight
-                    className="h-3.5 w-3.5"
-                    strokeWidth={1.5}
-                  />
+                  <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
                 </button>
               </div>
 
-              <p className="text-[11px] text-white/40">
-                This opens your email application with the brief
-                prefilled. Review and send the email to complete
-                your inquiry.
+              <p className="text-[11px] font-mono text-text-muted">
+                Pre-fills your email application with the brief details for instant dispatch.
               </p>
             </form>
           </div>
         </div>
       )}
-    </main>
+    </section>
   );
 }

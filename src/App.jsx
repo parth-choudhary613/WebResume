@@ -8,7 +8,6 @@ import ProjectShowcase from "./components/ProjectShowcase";
 import About from "./components/About";
 import SkillsMatrix from "./components/SkillsMatrix";
 import Experience from "./components/Experience";
-// import Principles from "./components/Principles";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 const ResumeModal = lazy(() => import("./components/ResumeModal"));
@@ -43,16 +42,19 @@ export default function App() {
     return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   });
 
-  // Sync theme with HTML root
+  // Sync theme with HTML root and meta tag
   useEffect(() => {
     const root = document.documentElement;
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
 
     if (dark) {
       root.classList.add("dark");
       localStorage.setItem("theme", "dark");
+      if (metaThemeColor) metaThemeColor.setAttribute("content", "#0B1120");
     } else {
       root.classList.remove("dark");
       localStorage.setItem("theme", "light");
+      if (metaThemeColor) metaThemeColor.setAttribute("content", "#F8FAFC");
     }
   }, [dark]);
 
@@ -75,11 +77,11 @@ export default function App() {
   }, [loading]);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden isolate">
+    <div className="relative min-h-screen overflow-x-hidden isolate bg-bg text-text-primary transition-colors duration-250">
       {/* Accessible skip navigation link */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-surface focus:text-text-primary focus:border focus:border-border focus:font-mono focus:text-xs focus:rounded-xs focus:shadow-xl"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-surface focus:text-text-primary focus:border focus:border-border focus:font-mono focus:text-xs focus:rounded-md focus:shadow-xl focus:ring-2 focus:ring-accent"
       >
         Skip to main content
       </a>
@@ -92,7 +94,7 @@ export default function App() {
           className={`
             fixed inset-0 z-[9999]
             flex items-center justify-center
-            bg-[#080808]
+            bg-bg
             transition-opacity duration-500 ease-in-out
             ${fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}
           `}
@@ -113,10 +115,11 @@ export default function App() {
           z-0
           w-full
           h-full
+          pointer-events-none
         "
         aria-hidden="true"
       >
-        <Reactbitsbackground dark={dark} />
+        <Reactbitsbackground lightMode={!dark} glowColor={dark ? "#4f46e5" : "#6366f1"} />
       </div>
 
       {/* =========================================
@@ -148,8 +151,6 @@ export default function App() {
           <SkillsMatrix />
 
           <Experience />
-
-          {/* <Principles /> */}
 
           <Contact />
         </main>

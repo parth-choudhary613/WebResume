@@ -6,7 +6,7 @@ export function MarqueeDemo() {
     <div className="w-full overflow-hidden">
       <Marquee
         text="Design sensibility. Engineering discipline."
-        duration={20}
+        duration={50}
         repeat={4}
         fontSize="lg"
         strokeWidth="1.5px"

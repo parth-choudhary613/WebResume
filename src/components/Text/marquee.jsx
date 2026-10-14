@@ -16,7 +16,7 @@ export const Marquee = React.forwardRef(function Marquee(
     className,
     text = "Design sensibility. Engineering discipline.",
     repeat = 4,
-    duration = -2,
+    duration = 60,
     fontSize = "lg",
     strokeWidth = "1.5px",
     strokeColor = "#aaa3ba",

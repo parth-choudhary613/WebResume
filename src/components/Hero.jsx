@@ -49,7 +49,7 @@ export default function Hero() {
         
         </motion.header>
 
-        <main className="hero-main">
+        <div className="hero-main">
           <h1 className="hero-title">
             <span className="hero-title-line">
               <motion.span style={{ display: 'inline-block' }} variants={lineVariants}>I craft interfaces</motion.span>
@@ -75,7 +75,7 @@ export default function Hero() {
               About Me
             </a>
           </motion.div>
-        </main>
+        </div>
 
         <motion.footer className="hero-footer" variants={itemVariants}>
           <div>BASED IN INDIA <br/> REACT / MOTION / WEBGL</div>

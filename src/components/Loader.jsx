@@ -3,7 +3,7 @@ import React from "react";
 
 const loaderStyles = `
 .loader-wrapper {
-  color: #fff;
+  color: var(--text-primary, #fff);
   user-select: none;
   background-color: transparent;
   border-radius: 50%;
@@ -11,9 +11,10 @@ const loaderStyles = `
   align-items: center;
   width: 180px;
   height: 180px;
-  font-family: Inter, sans-serif;
-  font-size: 1.2em;
-  font-weight: 300;
+  font-family: var(--font-sans, Inter, sans-serif);
+  font-size: 1.15em;
+  font-weight: 500;
+  letter-spacing: 0.05em;
   display: flex;
   position: relative;
 }
@@ -34,25 +35,25 @@ const loaderStyles = `
   0% {
     transform: rotate(90deg);
     box-shadow:
-      inset 0 10px 20px #fff,
-      inset 0 20px 30px #ad5fff,
-      inset 0 60px 60px #471eec;
+      inset 0 10px 20px rgba(99, 102, 241, 0.4),
+      inset 0 20px 30px rgba(165, 180, 252, 0.5),
+      inset 0 60px 60px rgba(79, 70, 229, 0.4);
   }
 
   50% {
     transform: rotate(270deg);
     box-shadow:
-      inset 0 10px 20px #fff,
-      inset 0 20px 10px #d60a47,
-      inset 0 40px 60px #311e80;
+      inset 0 10px 20px rgba(244, 63, 94, 0.4),
+      inset 0 20px 20px rgba(251, 113, 133, 0.5),
+      inset 0 40px 60px rgba(99, 102, 241, 0.4);
   }
 
   100% {
     transform: rotate(450deg);
     box-shadow:
-      inset 0 10px 20px #fff,
-      inset 0 20px 30px #ad5fff,
-      inset 0 60px 60px #471eec;
+      inset 0 10px 20px rgba(99, 102, 241, 0.4),
+      inset 0 20px 30px rgba(165, 180, 252, 0.5),
+      inset 0 60px 60px rgba(79, 70, 229, 0.4);
   }
 }
 

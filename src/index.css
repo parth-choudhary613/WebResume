@@ -1,22 +1,154 @@
 @import "tailwindcss";
 
+:root {
+  /* Light Mode Palette */
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-subtle: #F1F5F9;
+  --surface-muted: #E2E8F0;
+  --surface-blue: #EFF6FF;
+  --surface-coral: #FFF1F2;
+  --surface-sage: #F0FDF4;
+
+  --border: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  --border-strong: #CBD5E1;
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+
+  --accent: #4F46E5;
+  --accent-hover: #4338CA;
+  --accent-subtle: #EEF2FF;
+
+  --brand-blue: #2563EB;
+  --brand-blue-hover: #1D4ED8;
+  --brand-coral: #E11D48;
+  --brand-sage: #059669;
+  --brand-yellow: #D97706;
+
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(226, 232, 240, 0.9);
+  --card-glass: rgba(255, 255, 255, 0.7);
+  --card-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+
+  --scrollbar-thumb: #CBD5E1;
+  --scrollbar-thumb-hover: #94A3B8;
+  --scrollbar-track: #F1F5F9;
+}
+
+.dark {
+  /* Dark Mode Palette */
+  --bg: #0B1120;
+  --surface: #111827;
+  --surface-subtle: #1E293B;
+  --surface-muted: #334155;
+  --surface-blue: #172554;
+  --surface-coral: #38101C;
+  --surface-sage: #052E16;
+
+  --border: #334155;
+  --border-subtle: #1E293B;
+  --border-strong: #475569;
+
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+
+  --accent: #818CF8;
+  --accent-hover: #A5B4FC;
+  --accent-subtle: #1E1B4B;
+
+  --brand-blue: #60A5FA;
+  --brand-blue-hover: #93C5FD;
+  --brand-coral: #FB7185;
+  --brand-sage: #34D399;
+  --brand-yellow: #FBBF24;
+
+  --card-bg: rgba(17, 24, 39, 0.85);
+  --card-border: rgba(51, 65, 85, 0.8);
+  --card-glass: rgba(17, 24, 39, 0.7);
+  --card-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.35);
+
+  --scrollbar-thumb: #334155;
+  --scrollbar-thumb-hover: #475569;
+  --scrollbar-track: #0B1120;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-blue: var(--surface-blue);
+  --color-surface-coral: var(--surface-coral);
+  --color-surface-sage: var(--surface-sage);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-hover: var(--brand-blue-hover);
+  --color-brand-coral: var(--brand-coral);
+  --color-brand-sage: var(--brand-sage);
+  --color-brand-yellow: var(--brand-yellow);
+
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 112px;
+  scroll-padding-top: 100px;
+  color-scheme: light dark;
 }
 
-/* Base colors for light/dark mode */
 body {
-  @apply bg-slate-100 text-slate-900;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* When the 'dark' class is added to HTML tag */
-.dark body {
-  @apply bg-[#020617] text-slate-100;
+/* Custom refined scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }
 
 .font-mono {
   font-family: 'JetBrains Mono', monospace;
+}
+
+.font-display {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .playfair {
@@ -27,15 +159,47 @@ body {
 }
 
 /* Keep the existing sections' fixed decorative layers inside their section. */
-#about, #work, #projects, #contact {
+#about, #work, #projects, #contact, #stack, #experience {
   position: relative;
   isolation: isolate;
   contain: paint;
 }
 
+/* Focus visible styling */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Marquee animations */
+@keyframes marquee-left {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 25s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 25s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+
 @media (max-width: 767px) {
   html {
-    scroll-padding-top: 96px;
+    scroll-padding-top: 84px;
   }
 }
 
@@ -44,3 +208,4 @@ body {
     scroll-behavior: auto;
   }
 }
+
