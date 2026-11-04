@@ -338,7 +338,7 @@ export const educationData = [
     institution: "Lovely Professional University",
     degree: "Master of Computer Applications (MCA)",
     period: "2026",
-    grade: "Cumulative GPA: 7.85 / 10",
+    grade: "Cumulative GPA: 8.14 / 10",
     focus:
       "Advanced Software Architecture, Cloud Computing, Distributed Systems, Web Engineering",
   },

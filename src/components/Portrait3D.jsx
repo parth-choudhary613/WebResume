@@ -21,9 +21,6 @@ import useSceneActivity from '../hooks/useSceneActivity'
 
 const AUTO_SEQUENCE = [
   'Breathing',
-  'Walking',
-  'Breathing',
-  'Sitting',
 ]
 
 // ------------------------------------------------------------
@@ -259,13 +256,16 @@ function Character({ pointer, interactionRef }) {
           ? actions[previousName]
           : null
 
-      nextAction
-        .reset()
-        .setEffectiveTimeScale(1)
-        .setEffectiveWeight(1)
-        .fadeIn(fadeDuration)
-        .play()
+    nextAction
+  .reset()
+  .setEffectiveTimeScale(1)
+  .setEffectiveWeight(1)
 
+if (previousAction) {
+  nextAction.fadeIn(fadeDuration)
+}
+
+nextAction.play()
       if (previousAction) {
         previousAction.fadeOut(
           fadeDuration
@@ -281,17 +281,13 @@ function Character({ pointer, interactionRef }) {
   // Let Portrait3D mouse events control animations
   // ----------------------------------------------------------
 
-  useEffect(() => {
-    const interaction = interactionRef.current
-    interaction.play = playAnimation
+ useEffect(() => {
+  const breathing = actions.Breathing
+  if (!breathing) return
 
-    return () => {
-      interaction.play = null
-    }
-  }, [
-    interactionRef,
-    playAnimation,
-  ])
+  breathing.reset().setEffectiveWeight(1).play()
+  currentAnimation.current = 'Breathing'
+}, [actions.Breathing])
 
   // ----------------------------------------------------------
   // Initial animation
@@ -388,8 +384,8 @@ function Character({ pointer, interactionRef }) {
       ref={characterRef}
 
       // Adjust these if necessary
-      position={[0, -1.15, 0]}
-      scale={1.65}
+      position={[0, -1.1, 0]}
+      scale={1.2}
     >
       <primitive
         object={idleGLB.scene}
@@ -643,7 +639,7 @@ export default function Portrait3D() {
         frameloop={active ? "always" : "never"}
         camera={{
           position: [0, 1, 7],
-          fov: 32,
+          fov: 28,
         }}
         gl={{
           antialias: true,

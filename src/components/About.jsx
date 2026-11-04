@@ -16,23 +16,15 @@ export default function About() {
           
           {/* ================= LEFT: 3D PORTRAIT STAGE ================= */}
           <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-[420px] p-3 sm:p-4 ">
+            <div className="relative w-full max-w-[500px] h-[550px] sm:h-[600px] p-3 sm:p-4">
               
               {/* Natural Color Portrait with Studio Stage Frame */}
-              <div className="relative overflow-hidden">
+              <div className="relative w-full h-full overflow-hidden rounded-2xl">
                 <NearViewportPortrait />
               </div>
 
               {/* Identity & Location Details Footer Badge */}
-              <div className="mt-3 px-3 py-2 flex items-center justify-between font-mono text-[11px] text-text-muted">
-                <span className="flex items-center gap-1.5">
-                  <MapPin size={12} className="text-accent" />
-                  Himachal Pradesh, IN
-                </span>
-                <span className="text-[10px] uppercase tracking-wider text-text-secondary font-medium">
-                  3D Viewport
-                </span>
-              </div>
+           
             </div>
           </div>
 
