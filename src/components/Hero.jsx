@@ -177,6 +177,8 @@ export default function Hero() {
         ref={videoRef}
         src={VIDEO_URL}
         className="hero__video"
+        autoPlay
+        loop
         muted
         playsInline
         preload="auto"
