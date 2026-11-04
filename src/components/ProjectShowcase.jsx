@@ -245,7 +245,7 @@ ${inquiryForm.message}
   return (
     <section
       id="work"
-      className="py-20 sm:py-28 w-full bg-bg text-text-primary flex flex-col justify-between px-4 sm:px-8 lg:px-12 antialiased font-sans border-b border-border relative"
+      className="py-20 sm:py-28 w-full  backdrop-blur-sm text-text-primary flex flex-col justify-between px-4 sm:px-8 lg:px-12 antialiased font-sans border-b border-border relative"
     >
       <div className="max-w-[1360px] mx-auto w-full">
         {/* =====================================

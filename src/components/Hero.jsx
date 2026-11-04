@@ -1,91 +1,222 @@
-import React, { lazy, Suspense } from 'react';
-import { motion } from 'framer-motion';
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import React, { useEffect, useRef, useState } from 'react';
 import './Hero.css';
 
-const HeroScene = lazy(() => import('./HeroScene3D'));
+const VIDEO_URL =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_041744_63efcd78-bf7d-4039-99e2-2461e8a61903.mp4';
+
+const HERO_PROMPT =
+  'I build fast, expressive, and interactive digital experiences blending React, fluid motion, and modern web';
+
+function useTypewriter(text, speed = 36, startDelay = 500) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let index = 0;
+    let timer;
+
+    const initialTimer = window.setTimeout(() => {
+      setDisplayed('');
+      setDone(false);
+
+      function typeNext() {
+        index += 1;
+        setDisplayed(text.slice(0, index));
+
+        if (index >= text.length) {
+          setDone(true);
+        } else {
+          timer = window.setTimeout(typeNext, speed);
+        }
+      }
+
+      typeNext();
+    }, startDelay);
+
+    return () => {
+      window.clearTimeout(initialTimer);
+      window.clearTimeout(timer);
+    };
+  }, [text, speed, startDelay]);
+
+  return { displayed, done };
+}
+
+function useVideoScrub(videoRef) {
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const sensitivity = 0.85;
+    const smoothingMs = 45;
+    const settleSeconds = 0.002;
+
+    let pointerId = null;
+    let previousX = null;
+    let target = video.currentTime || 0;
+    let smoothed = target;
+    let lastRequested = target;
+    let lastTick = null;
+    let frame = null;
+
+    function schedule() {
+      if (frame === null) {
+        frame = window.requestAnimationFrame(tick);
+      }
+    }
+
+    function tick(now) {
+      frame = null;
+
+      const elapsed = lastTick === null ? 0 : Math.max(0, now - lastTick);
+      lastTick = now;
+
+      // Time-based easing feels consistent across 60Hz/120Hz/144Hz displays
+      const weight = 1 - Math.exp(-elapsed / smoothingMs);
+      smoothed += (target - smoothed) * weight;
+
+      const settled = Math.abs(target - smoothed) <= settleSeconds;
+      if (settled) smoothed = target;
+
+      if (!video.seeking && smoothed !== lastRequested) {
+        lastRequested = smoothed;
+        try {
+          video.currentTime = smoothed;
+        } catch {
+          // Ignore seeking edge cases during decoder reset
+        }
+      }
+
+      if (settled) {
+        lastTick = null;
+      } else {
+        schedule();
+      }
+    }
+
+    function onSeeked() {
+      if (smoothed !== lastRequested) schedule();
+    }
+
+    function onPointerDown(event) {
+      pointerId = event.pointerId;
+      previousX = event.clientX;
+    }
+
+    function onPointerMove(event) {
+      const x = event.clientX;
+      const duration = video.duration;
+      if (!Number.isFinite(duration) || duration <= 0) return;
+
+      // If active drag or primary pointer movement
+      if (pointerId !== null && previousX !== null) {
+        const delta = x - previousX;
+        previousX = x;
+        const offset = (delta / Math.max(320, window.innerWidth)) * sensitivity * duration;
+        const next = Math.max(0, Math.min(duration, target + offset));
+        if (next !== target) {
+          target = next;
+          if (lastTick === null) lastTick = performance.now();
+          schedule();
+        }
+      } else if (event.pointerType === 'mouse') {
+        // Desktop mouse hover scrubbing: subtle motion tracking mouse position
+        const relX = Math.max(0, Math.min(1, x / window.innerWidth));
+        const hoverTarget = relX * duration;
+        target = hoverTarget;
+        if (lastTick === null) lastTick = performance.now();
+        schedule();
+      }
+    }
+
+    function resetPointer() {
+      pointerId = null;
+      previousX = null;
+    }
+
+    function onPointerUp() {
+      resetPointer();
+    }
+
+    const heroEl = video.closest('.hero') || window;
+
+    video.addEventListener('seeked', onSeeked);
+    heroEl.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', resetPointer);
+    window.addEventListener('blur', resetPointer);
+
+    return () => {
+      if (frame !== null) window.cancelAnimationFrame(frame);
+      video.removeEventListener('seeked', onSeeked);
+      heroEl.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      window.removeEventListener('pointercancel', resetPointer);
+      window.removeEventListener('blur', resetPointer);
+    };
+  }, [videoRef]);
+}
 
 export default function Hero() {
-  // Framer Motion Animation Variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.3 },
-    },
-  };
+  const videoRef = useRef(null);
+  const { displayed, done } = useTypewriter(HERO_PROMPT);
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
-    },
-  };
+  useVideoScrub(videoRef);
 
-  const lineVariants = {
-    hidden: { y: '100%' },
-    visible: {
-      y: 0,
-      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
-    },
-  };
-  
   return (
-    <section className="hero-wrapper">
-      {/* 3D WebGL Background */}
-      <Suspense fallback={null}>
-        <HeroScene />
-      </Suspense>
-      
-      {/* Minimal UI Overlay */}
-      <motion.div 
-        className="hero-content"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        >
-        <motion.header className="hero-header" variants={itemVariants}>
-        
-        </motion.header>
+    <section className="hero" id="top" aria-label="Hero Introduction">
+      {/* Background Interactive Video */}
+      <video
+        ref={videoRef}
+        src={VIDEO_URL}
+        className="hero__video"
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
 
-        <div className="hero-main">
-          <h1 className="hero-title">
-            <span className="hero-title-line">
-              <motion.span style={{ display: 'inline-block' }} variants={lineVariants}>I craft interfaces</motion.span>
+      {/* Atmospheric Contrast Scrim for Universal Legibility */}
+      <div className="hero__scrim" aria-hidden="true" />
+
+      {/* Main Responsive Editorial Content Container */}
+      <div className="hero__content">
+        <div className="hero__column">
+          <h1 className="hero__headline">
+            <span className="hero__sr-only">
+              I craft interfaces that feel alive.
             </span>
-            <span className="hero-title-line">
-              <motion.span style={{ display: 'inline-block' }} variants={lineVariants}>that feel alive.</motion.span>
+
+            <span className="hero__headline-art" aria-hidden="true">
+              <span className="hero__craft">I craft</span>
+              <span className="hero__interfaces">interfaces</span>
+
+              <span className="hero__last-line">
+                <span className="hero__connector">
+                  <span>that</span>
+                  <span>feel</span>
+                </span>
+                <span className="hero__alive">alive.</span>
+              </span>
             </span>
           </h1>
-          
-          <motion.p className="hero-description" variants={itemVariants}>
-            I build fast, expressive, and interactive digital experiences blending React, fluid motion, and modern web technologies.
-          </motion.p>
-          
-          <motion.div className="hero-actions" variants={itemVariants}>
-            <a href="#work" className="btn btn-primary">
-              View My Work
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            <a href="#about" className="btn btn-secondary">
-              About Me
-            </a>
-          </motion.div>
-        </div>
 
-        <motion.footer className="hero-footer" variants={itemVariants}>
-          <div>BASED IN INDIA <br/> REACT / MOTION / WEBGL</div>
-          <div className="scroll-indicator">
-            SCROLL TO EXPLORE
-            <div className="scroll-line"></div>
-          </div>
-        
-        </motion.footer>
-      </motion.div>
+          <p className="hero__prompt">
+            <span className="hero__sr-only">{HERO_PROMPT}</span>
+            <span aria-hidden="true">
+              {displayed}
+              {!done && <span className="hero__cursor" />}
+            </span>
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

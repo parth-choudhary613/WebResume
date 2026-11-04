@@ -451,7 +451,7 @@ export default function Portrait3D() {
     interactionRef.current
       .play?.(
         'Walking',
-        0.4
+        0.1
       )
   }
 

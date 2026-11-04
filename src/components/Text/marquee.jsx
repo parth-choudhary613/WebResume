@@ -19,7 +19,7 @@ export const Marquee = React.forwardRef(function Marquee(
     duration = 60,
     fontSize = "lg",
     strokeWidth = "1.5px",
-    strokeColor = "#aaa3ba",
+    strokeColor = "var(--border-strong)",
     pauseOnHover = false,
     respectReducedMotion = false,
     style,

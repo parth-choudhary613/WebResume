@@ -1,79 +1,85 @@
 @import "tailwindcss";
 
 :root {
-  /* Light Mode Palette */
-  --bg: #F8FAFC;
+  /* Light Mode Palette: Warm Cream, Pure White, Deep Ink Black, Crimson Red */
+  --bg: #FCFAF6;
   --surface: #FFFFFF;
-  --surface-subtle: #F1F5F9;
-  --surface-muted: #E2E8F0;
-  --surface-blue: #EFF6FF;
+  --surface-subtle: #F5EDE0;
+  --surface-muted: #EDE3D3;
+  --surface-cream: #F7F2E9;
+  --surface-red: #FFF1F2;
+  --surface-blue: #FDF4F4;
   --surface-coral: #FFF1F2;
-  --surface-sage: #F0FDF4;
+  --surface-sage: #FBF8F1;
 
-  --border: #E2E8F0;
-  --border-subtle: #F1F5F9;
-  --border-strong: #CBD5E1;
+  --border: #E8DDCD;
+  --border-subtle: #F3EBE0;
+  --border-strong: #D1C3AF;
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
+  --text-primary: #111114;
+  --text-secondary: #423C36;
+  --text-muted: #786E64;
 
-  --accent: #4F46E5;
-  --accent-hover: #4338CA;
-  --accent-subtle: #EEF2FF;
+  --accent: #DC2626;
+  --accent-hover: #B91C1C;
+  --accent-subtle: #FEE2E2;
+  --accent-cream: #DDC08A;
 
-  --brand-blue: #2563EB;
-  --brand-blue-hover: #1D4ED8;
+  --brand-blue: #DC2626;
+  --brand-blue-hover: #B91C1C;
   --brand-coral: #E11D48;
-  --brand-sage: #059669;
+  --brand-sage: #B58C4C;
   --brand-yellow: #D97706;
 
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --card-border: rgba(226, 232, 240, 0.9);
-  --card-glass: rgba(255, 255, 255, 0.7);
-  --card-shadow: 0 4px 24px -2px rgba(15, 23, 42, 0.06);
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(232, 221, 205, 0.85);
+  --card-glass: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 4px 24px -2px rgba(40, 20, 10, 0.06);
 
-  --scrollbar-thumb: #CBD5E1;
-  --scrollbar-thumb-hover: #94A3B8;
-  --scrollbar-track: #F1F5F9;
+  --scrollbar-thumb: #D1C3AF;
+  --scrollbar-thumb-hover: #9E907D;
+  --scrollbar-track: #F5EDE0;
 }
 
 .dark {
-  /* Dark Mode Palette */
-  --bg: #0B1120;
-  --surface: #111827;
-  --surface-subtle: #1E293B;
-  --surface-muted: #334155;
-  --surface-blue: #172554;
-  --surface-coral: #38101C;
-  --surface-sage: #052E16;
+  /* Dark Mode Palette: Obsidian Black, Midnight Surface, Crisp White, Crimson Red, Gold-Cream */
+  --bg: #0A0A0C;
+  --surface: #121215;
+  --surface-subtle: #1A1A20;
+  --surface-muted: #26262E;
+  --surface-cream: #1C1914;
+  --surface-red: #260B0F;
+  --surface-blue: #1A1215;
+  --surface-coral: #2A0C14;
+  --surface-sage: #1F1C16;
 
-  --border: #334155;
-  --border-subtle: #1E293B;
-  --border-strong: #475569;
+  --border: #26262E;
+  --border-subtle: #1C1C22;
+  --border-strong: #3F3F4A;
 
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
+  --text-primary: #FFFFFF;
+  --text-secondary: #D8D3CC;
+  --text-muted: #8C867E;
 
-  --accent: #818CF8;
-  --accent-hover: #A5B4FC;
-  --accent-subtle: #1E1B4B;
+  --accent: #EF4444;
+  --accent-hover: #F87171;
+  --accent-subtle: rgba(239, 68, 68, 0.14);
+  --accent-cream: #DDC08A;
 
-  --brand-blue: #60A5FA;
-  --brand-blue-hover: #93C5FD;
+  --brand-blue: #EF4444;
+  --brand-blue-hover: #F87171;
   --brand-coral: #FB7185;
-  --brand-sage: #34D399;
-  --brand-yellow: #FBBF24;
+  --brand-sage: #DDC08A;
+  --brand-yellow: #F59E0B;
 
-  --card-bg: rgba(17, 24, 39, 0.85);
-  --card-border: rgba(51, 65, 85, 0.8);
-  --card-glass: rgba(17, 24, 39, 0.7);
-  --card-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.35);
+  --card-bg: rgba(18, 18, 21, 0.88);
+  --card-border: rgba(50, 50, 60, 0.7);
+  --card-glass: rgba(18, 18, 21, 0.75);
+  --card-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.6);
 
-  --scrollbar-thumb: #334155;
-  --scrollbar-thumb-hover: #475569;
-  --scrollbar-track: #0B1120;
+  --scrollbar-thumb: #2D2D37;
+  --scrollbar-thumb-hover: #424250;
+  --scrollbar-track: #0A0A0C;
 }
 
 @theme {
@@ -81,6 +87,8 @@
   --color-surface: var(--surface);
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-muted: var(--surface-muted);
+  --color-surface-cream: var(--surface-cream);
+  --color-surface-red: var(--surface-red);
   --color-surface-blue: var(--surface-blue);
   --color-surface-coral: var(--surface-coral);
   --color-surface-sage: var(--surface-sage);
@@ -96,6 +104,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-subtle: var(--accent-subtle);
+  --color-accent-cream: var(--accent-cream);
 
   --color-brand-blue: var(--brand-blue);
   --color-brand-blue-hover: var(--brand-blue-hover);

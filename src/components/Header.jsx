@@ -116,13 +116,13 @@ export default function Header({ dark, setDark, onOpenResume }) {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-surface/85 backdrop-blur-md border-b border-border py-3 shadow-xs'
+          ? 'bg-surface/85 backdrop-blur-md border-b border-border/60 py-3 shadow-xs'
           : 'bg-transparent py-4 sm:py-6'
       }`}
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12 flex items-center justify-between">
 
-        {/* Left: Logo + Name + Status */}
+        {/* Left: Logo */}
         <a
           href="#top"
           onClick={closeMobileMenu}
@@ -130,30 +130,15 @@ export default function Header({ dark, setDark, onOpenResume }) {
           aria-label={`${personalData.name} - Home`}
         >
           {/* Custom Logo */}
-          <div className="flex items-center justify-center shrink-0 w-10 h-10 sm:w-20 sm:h-20  shadow-2xs group-hover:border-accent/40 transition-colors">
+          <div className="flex items-center justify-center shrink-0 w-10 h-10 sm:w-16 sm:h-16 transition-colors">
             <img
-              src="/assets/TechLogo.webp"
+              src="/assets/TechLogo.png"
               alt={`${personalData.name} logo`}
               width="1254"
               height="1254"
               decoding="async"
-              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_2px_8px_rgba(220,38,38,0.3)]"
             />
-          </div>
-
-          {/* Name + availability */}
-          <div className="hidden xs:flex flex-col">
-            <span className="font-display font-bold text-sm tracking-tight text-text-primary group-hover:text-accent transition-colors">
-              {personalData.name}
-            </span>
-
-            <span className="font-sans text-[11px] text-text-muted flex items-center gap-1.5 font-medium">
-              <span className="relative flex w-1.5 h-1.5">
-                <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-                <span className="relative inline-flex w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              </span>
-              Available for opportunities
-            </span>
           </div>
         </a>
 
@@ -178,7 +163,7 @@ export default function Header({ dark, setDark, onOpenResume }) {
                 {link.label}
 
                 {isActive && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent rounded-full" />
+                  <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent rounded-full shadow-[0_0_8px_rgba(220,38,38,0.5)]" />
                 )}
               </a>
             )
@@ -193,46 +178,58 @@ export default function Header({ dark, setDark, onOpenResume }) {
             type="button"
             onClick={() => setDark(!dark)}
             className="
-              w-9
-              h-9
+              group relative
+              w-10 h-10
               rounded-xl
-              border
-              border-border
-              bg-surface
-              text-text-secondary
-              hover:text-text-primary
-              hover:border-border-strong
-              hover:bg-surface-subtle
-              flex
-              items-center
-              justify-center
-              transition-all
-              duration-200
+              flex items-center justify-center
               cursor-pointer
-              shadow-2xs
+              transition-all duration-300 ease-out
+              bg-surface/90 hover:bg-surface
+              border border-border hover:border-accent/60
+              backdrop-blur-md
+              shadow-xs
+              hover:shadow-[0_0_20px_rgba(220,38,38,0.25)]
+              active:scale-95
+              hover:-translate-y-0.5
+              overflow-hidden
             "
-            aria-label={
-              dark
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
-            }
-            title={
-              dark
-                ? 'Switch to light mode'
-                : 'Switch to dark mode'
-            }
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {dark ? (
-              <Sun
-                size={16}
-                className="text-amber-400 transition-transform duration-300 hover:rotate-45"
-              />
-            ) : (
-              <Moon
-                size={16}
-                className="text-slate-700 transition-transform duration-300 hover:-rotate-12"
-              />
-            )}
+            {/* Ambient Red Glow Layer Behind Icon */}
+            <div 
+              className="
+                absolute inset-0 
+                bg-gradient-to-tr from-red-600/0 via-red-600/10 to-red-500/20 
+                opacity-0 group-hover:opacity-100 
+                transition-opacity duration-300 ease-in-out
+              " 
+            />
+
+            {/* Active Theme Icon with Smooth Spin & Scale Transitions */}
+            <div className="relative z-10 transition-transform duration-500 ease-out group-hover:scale-110">
+              {dark ? (
+                <Sun
+                  size={18}
+                  className="
+                    text-red-400 
+                    drop-shadow-[0_0_8px_rgba(248,113,113,0.8)]
+                    transition-all duration-500 ease-in-out
+                    group-hover:rotate-90 group-hover:text-red-300
+                  "
+                />
+              ) : (
+                <Moon
+                  size={18}
+                  className="
+                    text-red-600 
+                    drop-shadow-[0_0_6px_rgba(220,38,38,0.4)]
+                    transition-all duration-500 ease-in-out
+                    group-hover:-rotate-45 group-hover:text-red-500
+                  "
+                />
+              )}
+            </div>
           </button>
 
           {/* Resume button */}
@@ -241,26 +238,76 @@ export default function Header({ dark, setDark, onOpenResume }) {
               type="button"
               onClick={onOpenResume}
               className="
-                hidden
-                sm:inline-flex
-                items-center
-                px-3.5
-                py-1.5
+                group relative
+                hidden sm:inline-flex items-center gap-2
+                px-4 py-2
                 rounded-xl
-                text-xs
-                font-medium
-                border
-                border-border
-                bg-surface
-                text-text-secondary
-                hover:text-text-primary
-                hover:border-border-strong
-                hover:bg-surface-subtle
-                transition-all
+                text-xs font-semibold tracking-wide
                 cursor-pointer
+                transition-all duration-300 ease-out
+                bg-surface/90 hover:bg-surface
+                text-text-primary hover:text-accent
+                border border-border hover:border-accent/60
+                backdrop-blur-md
+                shadow-xs
+                hover:shadow-[0_0_20px_rgba(220,38,38,0.2)]
+                active:scale-95
+                hover:-translate-y-0.5
+                overflow-hidden
               "
             >
-              CV / Résumé
+              {/* Subtle Red Top Accent Highlight Line */}
+              <div 
+                className="
+                  absolute top-0 left-1/4 right-1/4 h-[1px]
+                  bg-gradient-to-r from-transparent via-red-500/60 to-transparent
+                  opacity-0 group-hover:opacity-100
+                  transition-opacity duration-300
+                " 
+              />
+
+              {/* Document Icon with Crimson Accent */}
+              <svg
+                className="
+                  w-3.5 h-3.5 
+                  text-accent
+                  transition-transform duration-300 ease-out
+                  group-hover:scale-110 group-hover:rotate-3
+                  relative z-10
+                "
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 2 2 0 01-2-2V5a2 2 2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 2 2 0 01-2 2z"
+                />
+              </svg>
+
+              {/* Button Label */}
+              <span className="relative z-10 transition-colors duration-200">
+                CV / Résumé
+              </span>
+
+              {/* Small External Link Arrow */}
+              <svg
+                className="
+                  w-3 h-3
+                  text-text-muted group-hover:text-accent
+                  transition-all duration-300 ease-out
+                  group-hover:translate-x-0.5 group-hover:-translate-y-0.5
+                  relative z-10
+                "
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              </svg>
             </button>
           )}
 
@@ -282,7 +329,9 @@ export default function Header({ dark, setDark, onOpenResume }) {
               text-white
               transition-all
               shadow-xs
+              hover:shadow-[0_0_20px_rgba(220,38,38,0.35)]
               hover:-translate-y-0.5
+              active:translate-y-0
               cursor-pointer
             "
           >
@@ -296,18 +345,20 @@ export default function Header({ dark, setDark, onOpenResume }) {
             onClick={() => setMobileOpen((prev) => !prev)}
             className="
               md:hidden
-              w-9
-              h-9
+              w-10
+              h-10
               rounded-xl
               border
               border-border
               bg-surface
               text-text-secondary
               hover:text-text-primary
+              hover:border-accent/40
               flex
               items-center
               justify-center
               transition-colors
+              cursor-pointer
             "
             aria-label={
               mobileOpen
@@ -327,7 +378,7 @@ export default function Header({ dark, setDark, onOpenResume }) {
 
       {/* Mobile Navigation */}
       {mobileOpen && (
-        <div className="md:hidden border-b border-border bg-surface/98 backdrop-blur-xl px-6 py-6 shadow-xl">
+        <div className="md:hidden border-b border-border bg-surface/98 backdrop-blur-xl px-6 py-6 shadow-xl animate-in fade-in duration-200">
           <nav
             className="flex flex-col gap-3 font-sans text-base font-medium"
             aria-label="Mobile Navigation"
@@ -381,6 +432,7 @@ export default function Header({ dark, setDark, onOpenResume }) {
                     border-border
                     bg-surface
                     text-text-primary
+                    hover:border-accent/40
                     rounded-xl
                     block
                     shadow-2xs

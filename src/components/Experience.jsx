@@ -1,12 +1,14 @@
-import React from 'react'
-import SectionHeader from './SectionHeader'
-import { experienceData } from '../data/portfolioData'
+import React from "react";
+import SectionHeader from "./SectionHeader";
+import { experienceData } from "../data/portfolioData";
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-20 sm:py-28 border-b border-border bg-bg">
+    <section
+      id="experience"
+      className="py-20 sm:py-28 border-b border-border bg-transparent"
+    >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-8 lg:px-12">
-        
         {/* Section Header */}
         <SectionHeader
           number="04"
@@ -92,8 +94,7 @@ export default function Experience() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
-  )
+  );
 }

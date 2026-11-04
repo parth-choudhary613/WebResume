@@ -32,49 +32,36 @@ export default function App() {
   // Resume modal state
   const [resumeOpen, setResumeOpen] = useState(false);
 
-  // Loader states
-  const [loading, setLoading] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !window.matchMedia || !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  });
-  const [fadeOut, setFadeOut] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  });
+  // Real loader state
+  const [loading, setLoading] = useState(true);
 
-  // Sync theme with HTML root and meta tag
+  // Synchronize dark/light theme state with document element, localStorage, and meta tag
   useEffect(() => {
     const root = document.documentElement;
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-
     if (dark) {
       root.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      if (metaThemeColor) metaThemeColor.setAttribute("content", "#0B1120");
+      root.classList.remove("light");
+      root.style.colorScheme = "dark";
+      try {
+        localStorage.setItem("theme", "dark");
+      } catch {
+        // Storage access error handling in restricted environments
+      }
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", "#0A0A0C");
     } else {
       root.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      if (metaThemeColor) metaThemeColor.setAttribute("content", "#F8FAFC");
+      root.classList.add("light");
+      root.style.colorScheme = "light";
+      try {
+        localStorage.setItem("theme", "light");
+      } catch {
+        // Storage access error handling in restricted environments
+      }
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", "#FCFAF6");
     }
   }, [dark]);
-
-  // Initial website loading animation
-  useEffect(() => {
-    if (!loading) return;
-
-    const fadeTimer = setTimeout(() => {
-      setFadeOut(true);
-    }, 600);
-
-    const removeTimer = setTimeout(() => {
-      setLoading(false);
-    }, 900);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(removeTimer);
-    };
-  }, [loading]);
 
   return (
     <div className="relative min-h-screen overflow-x-hidden isolate bg-bg text-text-primary transition-colors duration-250">
@@ -87,22 +74,10 @@ export default function App() {
       </a>
 
       {/* =========================================
-          FULLSCREEN LOADER
+          FULLSCREEN REAL ASSET LOADER
       ========================================= */}
       {loading && (
-        <div
-          className={`
-            fixed inset-0 z-[9999]
-            flex items-center justify-center
-            bg-bg
-            transition-opacity duration-500 ease-in-out
-            ${fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"}
-          `}
-          role="status"
-          aria-label="Loading portfolio"
-        >
-          <Loader />
-        </div>
+        <Loader onComplete={() => setLoading(false)} />
       )}
 
       {/* =========================================
@@ -121,6 +96,7 @@ export default function App() {
       >
         <Reactbitsbackground lightMode={!dark} glowColor={dark ? "#4f46e5" : "#6366f1"} />
       </div>
+
 
       {/* =========================================
           WEBSITE CONTENT

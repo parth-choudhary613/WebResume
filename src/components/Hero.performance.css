@@ -1,0 +1,46 @@
+/* Import AFTER your existing Hero.css. The design styles stay in that file. */
+.hero-wrapper {
+  overflow: clip; /* Clip decoration without creating a nested scroll container. */
+}
+.hero-canvas-container {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hero-canvas-container[data-ready="true"] { opacity: 1; }
+.hero-canvas-container canvas { pointer-events: none; }
+
+/* Preserve native scrolling and pinch zoom; the decoration never owns gestures. */
+.hero-content { pointer-events: auto; }
+.hero-wrapper .btn {
+  transition-property: transform, background-color, color, border-color, box-shadow;
+}
+
+/* Match the original travelling gradient using a composited transform. */
+.hero-wrapper .scroll-line {
+  position: relative;
+  overflow: hidden;
+  background: none;
+  animation: none;
+}
+.hero-wrapper .scroll-line::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: 300%;
+  background: repeating-linear-gradient(to bottom,
+    var(--hero-text-main) 0 36px, transparent 36px 72px);
+  animation: hero-scroll-transform 2.2s linear infinite;
+}
+@keyframes hero-scroll-transform {
+  from { transform: translateY(0); }
+  to { transform: translateY(-72px); }
+}
+.hero-wrapper[data-active="false"] .scroll-line::before { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-canvas-container { transition: none; }
+  .hero-wrapper .scroll-line::before { animation: none; }
+  .hero-wrapper .btn, .hero-wrapper .btn svg { transition: none; }
+  .hero-wrapper .btn:hover, .hero-wrapper .btn:hover svg { transform: none; }
+  .hero-content, .hero-content * { transform: none !important; opacity: 1 !important; }
+}
